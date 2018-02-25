@@ -1,4 +1,4 @@
-package factura;
+package modelo.factura;
 
 public class Factura {
 }

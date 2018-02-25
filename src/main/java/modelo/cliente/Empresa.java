@@ -1,6 +1,4 @@
-package cliente;
-
-import cliente.Cliente;
+package modelo.cliente;
 
 public class Empresa extends Cliente {
 }

@@ -1,4 +1,4 @@
-package direccion;
+package modelo.direccion;
 
 public class Direccion {
     //==================================================
@@ -28,23 +28,27 @@ public class Direccion {
     //-----------------END CONSTRUCTORS-----------------
     //==================================================
 
-
     //==================================================
     //----------------GETTERS Y SETTERS-----------------
     //==================================================
     public int getCodigoPostal() { return codigoPostal; }
-
     public void setCodigoPostal(int codigoPostal) { this.codigoPostal = codigoPostal; }
-
     public String getProvincia() { return provincia; }
-
     public void setProvincia(String provincia) { this.provincia = provincia; }
-
     public String getPoblacion() { return poblacion; }
-
     public void setPoblacion(String poblacion) { this.poblacion = poblacion; }
-
     //==================================================
     //---------------END GETTERS Y SETTERS--------------
+    //==================================================
+
+    //==================================================
+    //----------------------METHODS---------------------
+    //==================================================
+    @Override
+    public String toString() {
+        return codigoPostal + " " + poblacion.toUpperCase() + " " + provincia;
+    }
+    //==================================================
+    //--------------------END METHODS-------------------
     //==================================================
 }
