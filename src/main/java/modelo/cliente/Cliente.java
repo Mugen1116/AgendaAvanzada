@@ -2,10 +2,11 @@ package modelo.cliente;
 
 import modelo.direccion.Direccion;
 import modelo.tarifa.Tarifa;
+import modelo.utils.DateInterface;
 
 import java.util.Date;
 
-public class Cliente {
+public class Cliente implements DateInterface {
 
     //==================================================
     //-------------------ATRIBUTOS----------------------
@@ -66,7 +67,9 @@ public class Cliente {
                 + direccion + "\nEMail: " + email + "\nTarifa: "
                 + tarifa + "\nFecha de Alta: " + fechaAlta;
     }
-
+    public Date getFecha() {
+        return getFechaAlta();
+    }
     //==================================================
     //--------------------END METHODS-------------------
     //==================================================

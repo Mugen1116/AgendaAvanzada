@@ -1,4 +1,9 @@
 package modelo.cliente;
 
-public class Empresa extends Cliente {
+import modelo.utils.DateInterface;
+
+import java.util.Date;
+
+public class Empresa extends Cliente{
+
 }

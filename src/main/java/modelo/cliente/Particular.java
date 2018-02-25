@@ -1,5 +1,9 @@
 package modelo.cliente;
 
+import modelo.utils.DateInterface;
+
+import java.util.Date;
+
 public class Particular extends Cliente {
 
     //==================================================

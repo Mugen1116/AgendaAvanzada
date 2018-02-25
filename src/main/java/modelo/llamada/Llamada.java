@@ -1,8 +1,10 @@
 package modelo.llamada;
 
+import modelo.utils.DateInterface;
+
 import java.util.Date;
 
-public class Llamada {
+public class Llamada implements DateInterface {
 
     //==================================================
     //-------------------ATRIBUTOS----------------------
@@ -40,8 +42,25 @@ public class Llamada {
     public void setDiaHora(Date diaHora) { this.diaHora = diaHora; }
     public float getDuracion() { return duracion; }
     public void setDuracion(float duracion) { this.duracion = duracion; }
+
+
     //==================================================
     //---------------END GETTERS Y SETTERS--------------
     //==================================================
 
+    //==================================================
+    //----------------------METHODS---------------------
+    //==================================================
+    @Override
+    public String toString(){
+        return  "Telefono: " + telefonoLlamado
+                + "\nFecha llamada: " + diaHora
+                + "\nDuración: " + duracion;
+    }
+    public Date getFecha() {
+        return diaHora;
+    }
+    //==================================================
+    //--------------------END METHODS-------------------
+    //==================================================
 }
