@@ -1,7 +1,7 @@
 package controlador.llamada;
 
-import modeloTest.cliente.Cliente;
-import modeloTest.llamada.Llamada;
+import modelo.cliente.Cliente;
+import modelo.llamada.Llamada;
 
 import java.util.HashMap;
 import java.util.LinkedList;
