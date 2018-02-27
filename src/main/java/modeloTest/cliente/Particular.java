@@ -1,17 +1,11 @@
-package modelo.llamada;
+package modeloTest.cliente;
 
-import modelo.utils.DateInterface;
-
-import java.util.Date;
-
-public class Llamada implements DateInterface {
+public class Particular extends Cliente {
 
     //==================================================
     //-------------------ATRIBUTOS----------------------
     //==================================================
-    private int telefonoLlamado;
-    private Date diaHora;
-    private float duracion;
+    private String apellidos;
     //==================================================
     //-------------------END ATRIBUTOS------------------
     //==================================================
@@ -19,15 +13,11 @@ public class Llamada implements DateInterface {
     //==================================================
     //-------------------CONSTRUCTORS-------------------
     //==================================================
-    public Llamada() {
-        this.telefonoLlamado = 000000000 ;
-        this.diaHora = new Date();
-        this.duracion = 0f;
+    public Particular() {
+        super();
     }
-    public Llamada(int telefonoLlamado, Date diaHora, float duracion) {
-        this.telefonoLlamado = telefonoLlamado;
-        this.diaHora = diaHora;
-        this.duracion = duracion;
+    public Particular(String apellidos) {
+        this.apellidos = apellidos;
     }
     //==================================================
     //-----------------END CONSTRUCTORS-----------------
@@ -36,14 +26,8 @@ public class Llamada implements DateInterface {
     //==================================================
     //----------------GETTERS Y SETTERS-----------------
     //==================================================
-    public int getTelefonoLlamado() { return telefonoLlamado; }
-    public void setTelefonoLlamado(int telefonoLlamado) { this.telefonoLlamado = telefonoLlamado; }
-    public Date getDiaHora() { return diaHora; }
-    public void setDiaHora(Date diaHora) { this.diaHora = diaHora; }
-    public float getDuracion() { return duracion; }
-    public void setDuracion(float duracion) { this.duracion = duracion; }
-
-
+    public String getApellidos() { return apellidos; }
+    public void setApellidos(String apellidos) { this.apellidos = apellidos; }
     //==================================================
     //---------------END GETTERS Y SETTERS--------------
     //==================================================
@@ -51,16 +35,17 @@ public class Llamada implements DateInterface {
     //==================================================
     //----------------------METHODS---------------------
     //==================================================
+
     @Override
     public String toString(){
-        return  "Telefono: " + telefonoLlamado
-                + "\nFecha llamada: " + diaHora
-                + "\nDuración: " + duracion;
-    }
-    public Date getFecha() {
-        return diaHora;
+        //super.toString() + "\nApellidos: " + apellidos;
+        return "Nombre: " + super.getNombre() + "\nApellidos: " + this.apellidos
+                + "\nDNI: " + super.getNIF() + "\nDirección: "
+                + super.getDireccion() + "\nEMail: " + super.getEmail() + "\nTarifa: "
+                + super.getTarifa() + "\nFecha de Alta: " + super.getFechaAlta();
     }
     //==================================================
     //--------------------END METHODS-------------------
     //==================================================
+
 }

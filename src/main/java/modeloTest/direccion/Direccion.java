@@ -1,15 +1,12 @@
-package modelo.cliente;
+package modeloTest.direccion;
 
-import modelo.utils.DateInterface;
-
-import java.util.Date;
-
-public class Particular extends Cliente {
-
+public class Direccion {
     //==================================================
     //-------------------ATRIBUTOS----------------------
     //==================================================
-    private String apellidos;
+    private int codigoPostal;
+    private String provincia;
+    private String poblacion;
     //==================================================
     //-------------------END ATRIBUTOS------------------
     //==================================================
@@ -17,11 +14,15 @@ public class Particular extends Cliente {
     //==================================================
     //-------------------CONSTRUCTORS-------------------
     //==================================================
-    public Particular() {
-        super();
+    public Direccion(int codigoPostal, String provincia, String poblacion) {
+        this.codigoPostal = codigoPostal;
+        this.provincia = provincia;
+        this.poblacion = poblacion;
     }
-    public Particular(String apellidos) {
-        this.apellidos = apellidos;
+    public Direccion () {
+        this.codigoPostal = 00000;
+        this.provincia = "";
+        this.poblacion = "";
     }
     //==================================================
     //-----------------END CONSTRUCTORS-----------------
@@ -30,8 +31,12 @@ public class Particular extends Cliente {
     //==================================================
     //----------------GETTERS Y SETTERS-----------------
     //==================================================
-    public String getApellidos() { return apellidos; }
-    public void setApellidos(String apellidos) { this.apellidos = apellidos; }
+    public int getCodigoPostal() { return codigoPostal; }
+    public void setCodigoPostal(int codigoPostal) { this.codigoPostal = codigoPostal; }
+    public String getProvincia() { return provincia; }
+    public void setProvincia(String provincia) { this.provincia = provincia; }
+    public String getPoblacion() { return poblacion; }
+    public void setPoblacion(String poblacion) { this.poblacion = poblacion; }
     //==================================================
     //---------------END GETTERS Y SETTERS--------------
     //==================================================
@@ -39,17 +44,11 @@ public class Particular extends Cliente {
     //==================================================
     //----------------------METHODS---------------------
     //==================================================
-
     @Override
-    public String toString(){
-        //super.toString() + "\nApellidos: " + apellidos;
-        return "Nombre: " + super.getNombre() + "\nApellidos: " + this.apellidos
-                + "\nDNI: " + super.getNIF() + "\nDirección: "
-                + super.getDireccion() + "\nEMail: " + super.getEmail() + "\nTarifa: "
-                + super.getTarifa() + "\nFecha de Alta: " + super.getFechaAlta();
+    public String toString() {
+        return codigoPostal + " " + poblacion.toUpperCase() + " " + provincia;
     }
     //==================================================
     //--------------------END METHODS-------------------
     //==================================================
-
 }

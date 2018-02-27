@@ -1,7 +1,7 @@
 package controlador.cliente;
 
-import modelo.cliente.Cliente;
-import modelo.tarifa.Tarifa;
+import modeloTest.cliente.Cliente;
+import modeloTest.tarifa.Tarifa;
 
 import java.util.Collection;
 import java.util.HashMap;

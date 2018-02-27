@@ -1,6 +1,6 @@
-package modelo.factura;
+package modeloTest.factura;
 
-import modelo.utils.DateInterface;
+import modeloTest.utils.DateInterface;
 
 import java.util.Date;
 

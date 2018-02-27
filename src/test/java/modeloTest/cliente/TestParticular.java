@@ -1,4 +1,4 @@
-package modelo.cliente;
+package modeloTest.cliente;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -7,12 +7,12 @@ import org.junit.jupiter.api.Test;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsNull.notNullValue;
 
-public class TestCliente {
+public class TestParticular {
 
-    private Cliente cliente;
+    private Particular cliente;
     @BeforeEach
     public void SetUp(){
-        cliente = new Cliente();
+        cliente = new Particular();
     }
     @AfterEach
     public void TearDown(){
@@ -20,8 +20,12 @@ public class TestCliente {
     }
 
     @Test
-    public void ClientesTest() {
+    public void ParticularesTest() {
+
+        System.out.println(cliente);
+        /*System.out.println("Apellidos: " +  particular.getApellidos() );*/
         assertThat( cliente, notNullValue() );
 
     }
+
 }

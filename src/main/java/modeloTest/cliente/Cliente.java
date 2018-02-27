@@ -1,8 +1,8 @@
-package modelo.cliente;
+package modeloTest.cliente;
 
-import modelo.direccion.Direccion;
-import modelo.tarifa.Tarifa;
-import modelo.utils.DateInterface;
+import modeloTest.direccion.Direccion;
+import modeloTest.tarifa.Tarifa;
+import modeloTest.utils.DateInterface;
 
 import java.util.Date;
 
