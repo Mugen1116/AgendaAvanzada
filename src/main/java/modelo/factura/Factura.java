@@ -1,8 +1,8 @@
 package modelo.factura;
 
-import modelo.utils.Periodo;
-import modelo.utils.DateInterface;
 import modelo.tarifa.Tarifa;
+import modelo.utils.DateInterface;
+import modelo.utils.Periodo;
 
 import java.util.Date;
 import java.util.UUID;
