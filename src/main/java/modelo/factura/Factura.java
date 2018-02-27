@@ -1,11 +1,8 @@
 package modelo.factura;
 
-<<<<<<< HEAD:src/main/java/modeloTest/factura/Factura.java
 import modelo.utils.Periodo;
 import modelo.utils.DateInterface;
-=======
 import modelo.tarifa.Tarifa;
->>>>>>> c50fbb98c0adbfc9cb7f8ac61d765f323bbfa162:src/main/java/modelo/factura/Factura.java
 
 import java.util.Date;
 import java.util.UUID;
