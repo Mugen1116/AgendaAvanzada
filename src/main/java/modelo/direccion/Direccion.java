@@ -1,4 +1,4 @@
-package modeloTest.direccion;
+package modelo.direccion;
 
 public class Direccion {
     //==================================================

@@ -1,48 +1,39 @@
-package modeloTest.factura;
+package modelo.cliente;
 
-
-import modeloTest.tarifa.Tarifa;
-import modeloTest.utils.DateInterface;
-
+import modelo.direccion.Direccion;
 import modelo.tarifa.Tarifa;
 import modelo.utils.DateInterface;
-import modelo.utils.Periodo;
-
 
 import java.util.Date;
-import java.util.UUID;
 
-public class Factura implements DateInterface {
-
+public class Cliente implements DateInterface {
 
     //==================================================
     //-------------------ATRIBUTOS----------------------
     //==================================================
+    private String nombre;
+    private String NIF;
+    private Direccion direccion;
+    private String email;
+    private Date fechaAlta;
     private Tarifa tarifa;
-    //Si se cambia la tarifa se aplica en la siguiente tarifa
-    private String uniqueID;
-    private Date fechaEmision;
-    private Periodo periodo;
-    private float importe;
     //==================================================
-    //-----------------END ATRIBUTOS--------------------
+    //-------------------END ATRIBUTOS------------------
     //==================================================
 
     //==================================================
     //-------------------CONSTRUCTORS-------------------
     //==================================================
-    public Factura(){
+    public Cliente(){
         super();
-        this.uniqueID = UUID.randomUUID().toString();
-        this.tarifa = new Tarifa();
     }
-    public Factura ( Periodo periodo, float importe){
-        this.uniqueID = UUID.randomUUID().toString();
-        this.tarifa = new Tarifa();
-        this.fechaEmision = new Date();
-        this.periodo = periodo;
-        this.importe = importe;
-
+    public Cliente(String nombre, String NIF, Direccion direccion, String email, Date fechaAlta, Tarifa tarifa) {
+        this.nombre = nombre;
+        this.NIF = NIF;
+        this.direccion = direccion;
+        this.email = email;
+        this.fechaAlta = fechaAlta;
+        this.tarifa = tarifa;
     }
     //==================================================
     //-----------------END CONSTRUCTORS-----------------
@@ -51,39 +42,36 @@ public class Factura implements DateInterface {
     //==================================================
     //----------------GETTERS Y SETTERS-----------------
     //==================================================
-
+    public String getNombre() { return nombre; }
+    public void setNombre(String nombre) { this.nombre = nombre; }
+    public String getNIF() { return NIF; }
+    public void setNIF(String NIF) { this.NIF = NIF; }
+    public Direccion getDireccion() { return direccion; }
+    public void setDireccion(Direccion direccion) { this.direccion = direccion; }
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+    public Date getFechaAlta() { return fechaAlta; }
+    public void setFechaAlta(Date fechaAlta) { this.fechaAlta = fechaAlta; }
     public Tarifa getTarifa() { return tarifa; }
     public void setTarifa(Tarifa tarifa) { this.tarifa = tarifa; }
-    public String getUniqueID() { return uniqueID; }
-    public void setUniqueID(String uniqueID) { this.uniqueID = uniqueID; }
-    public Date getFechaEmision() { return fechaEmision; }
-    public void setFechaEmision(Date fechaEmision) { this.fechaEmision = fechaEmision; }
-    public Periodo getPeriodo() { return periodo; }
-    public void setPeriodo(Periodo periodo) { this.periodo = periodo; }
-    public float getImporte() { return importe; }
-    public void setImporte(float importe) { this.importe = importe; }
-
     //==================================================
     //---------------END GETTERS Y SETTERS--------------
     //==================================================
-
 
     //==================================================
     //----------------------METHODS---------------------
     //==================================================
     @Override
     public String toString(){
-        return  "Id: " + this.uniqueID
-                + "\nTarifa: " + this.tarifa
-                + "\nFecha Emision: " + this.fechaEmision
-                + "\nPeriodo Facturacion: " + this.periodo
-                + "\nImporte: " + this.importe;
+        return "Nombre: " + nombre + "\nDNI: " + NIF + "\nDirección: "
+                + direccion + "\nEMail: " + email + "\nTarifa: "
+                + tarifa + "\nFecha de Alta: " + fechaAlta;
     }
-
     public Date getFecha() {
-        return this.fechaEmision;
+        return getFechaAlta();
     }
     //==================================================
     //--------------------END METHODS-------------------
     //==================================================
+
 }

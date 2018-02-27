@@ -1,6 +1,6 @@
-package modeloTest.llamada;
+package modelo.llamada;
 
-import modeloTest.utils.DateInterface;
+import modelo.utils.DateInterface;
 
 import java.util.Date;
 

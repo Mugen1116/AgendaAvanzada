@@ -1,4 +1,4 @@
-package modeloTest.cliente;
+package modelo.cliente;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

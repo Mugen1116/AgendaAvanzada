@@ -1,4 +1,4 @@
-package modeloTest.tarifa;
+package modelo.tarifa;
 
 public class Tarifa {
 

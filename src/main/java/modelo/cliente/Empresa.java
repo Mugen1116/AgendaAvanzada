@@ -1,4 +1,4 @@
-package modeloTest.cliente;
+package modelo.cliente;
 
 public class Empresa extends Cliente{
 
