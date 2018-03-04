@@ -26,6 +26,8 @@ public class Cliente implements DateInterface {
     //==================================================
     public Cliente(){
         super();
+        this.tarifa = new Tarifa();
+        this.fechaAlta = new Date();
     }
     public Cliente(String nombre, String NIF, Direccion direccion, String email, Date fechaAlta, Tarifa tarifa) {
         this.nombre = nombre;

@@ -19,6 +19,14 @@ public class Particular extends Cliente {
     public Particular(String apellidos) {
         this.apellidos = apellidos;
     }
+    public Particular ( Cliente other ){
+        this.setNombre( other.getNombre() );
+        this.setNIF( other.getNIF() );
+        this.setTarifa( other.getTarifa() );
+        this.setEmail( other.getEmail() );
+        this.setFechaAlta( other.getFechaAlta() );
+        this.setDireccion( other.getDireccion() );
+    }
     //==================================================
     //-----------------END CONSTRUCTORS-----------------
     //==================================================

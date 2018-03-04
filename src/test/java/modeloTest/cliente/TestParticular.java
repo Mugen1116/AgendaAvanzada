@@ -22,7 +22,7 @@ public class TestParticular {
     @Test
     public void ParticularesTest() {
 
-        System.out.println(cliente);
+        // System.out.println(cliente);
         /*System.out.println("Apellidos: " +  particular.getApellidos() );*/
         assertThat( cliente, notNullValue() );
 

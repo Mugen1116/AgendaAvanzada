@@ -72,6 +72,7 @@ public class ClienteControllerTest {
         prueba = ClienteNuevo();
         prueba.setNIF( dniPrueba );
         assertThat(controlador.altaCliente( prueba), is(false) );
+        System.out.println(controlador.listarClientes());
 
     }
 
