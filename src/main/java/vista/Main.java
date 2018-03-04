@@ -32,7 +32,7 @@ public class Main {
             switch ( sig ) {
                 case "C":
                     System.out.println("clientes");
-                    vc.Ejecuta();
+                    vc.ejecuta();
                     break;
 
                 case "L":
@@ -49,7 +49,6 @@ public class Main {
         System.out.println("==================================");
         System.out.println("==================================");
     }
-
 
 
     //=================================================

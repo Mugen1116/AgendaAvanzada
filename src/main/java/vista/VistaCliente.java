@@ -1,11 +1,14 @@
 package vista;
 
+import com.sun.deploy.util.SessionState;
 import controlador.cliente.ClienteController;
 import modelo.cliente.Cliente;
 import modelo.cliente.Empresa;
 import modelo.cliente.Particular;
 import modelo.direccion.Direccion;
+import modelo.tarifa.Tarifa;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class VistaCliente {
@@ -18,7 +21,7 @@ public class VistaCliente {
         clienteController = new ClienteController();
     }
 
-    public String MuestraOpciones(){
+    public String muestraOpciones(){
 
         String menu =   "N - Nuevo Cliente\n" +
                         "B - Borrar un Cliente\n" +
@@ -29,48 +32,102 @@ public class VistaCliente {
         return menu;
     }
 
-    public String RecogeRespuesta() {
+    public String recogeRespuesta() {
         System.out.printf("Opcion: ");
         String resp = sc.nextLine().toUpperCase();
         switch ( resp ) {
             case "N":
                 //Nuevo
-                this.AnyadirClienteVista();
+                this.anyadirClienteVista();
                 break;
             case "B":
                 //Borrar
+                this.borrarClienteVista();
                 break;
             case "T":
                 //Cambiar Tarifa
+                this.cambiarTarifaVista();
                 break;
             case "C":
                 //Mostrar cliente
+                this.mostrarClienteVista();
                 break;
 
             case "A":
-                this.MostrarClientesVista();
+                this.mostrarClientesVista();
                 //Mostrar todos los clientes
                 break;
 
             case "Q":
                 System.out.println("Cancelando");
-                System.out.println("--------------------------------");
                 break;
 
             default:
                 System.out.println("Entrada no válida");
                 break;
         }
+        System.out.printf("\n\n");
 
         return resp;
     }
 
-    private void MostrarClientesVista() {
-        System.out.println("Clientes: ");
-        System.out.println(clienteController.listarClientes());
+    private void cambiarTarifaVista() {
+        System.out.printf("NIF/DNI del cliente del que se quiere cambiar la tarifa: ");
+        String dni = sc.nextLine();
+        Cliente cliente = clienteController.getCliente( dni );
+        if ( cliente != null ) {
+            System.out.println("Tarifa actual del cliente: " + cliente.getTarifa() );
+            System.out.printf("Introduzca nueva tarifa (centimos/minuto) Ej: 0.10 : ");
+            float precio = Float.parseFloat( sc.nextLine() );
+            clienteController.cambiarTarifa(
+                                cliente, new Tarifa( precio )
+                                );
+        }
+        else
+            System.out.println("Error! No se encuentra el cliente introducido");
     }
 
-    public void AnyadirClienteVista(){
+    private void borrarClienteVista() {
+        System.out.printf("NIF/DNI del cliente que se quiere borrar: ");
+        String dni = sc.nextLine();
+        Cliente cliente = clienteController.getCliente( dni );
+        if ( cliente != null ) {
+           if ( clienteController.bajaCliente( cliente ) )
+               System.out.println("Cliente borrado correctamente");
+           else
+               System.out.println("Error al intentar borrar el cliente");
+        }
+        else {
+            System.out.println("Error! No se encuentra el cliente introducido.");
+        }
+    }
+
+    private void mostrarClienteVista() {
+        System.out.printf("NIF/DNI del cliente que se quiere mostrar: ");
+        String dni = sc.nextLine();
+        Cliente cliente = clienteController.getCliente( dni );
+
+        if ( cliente != null ){
+            System.out.println("Cliente: ");
+            System.out.println(cliente);
+        }
+        else{
+            System.out.println("Error! No se encuentra el cliente introducido.");
+        }
+
+    }
+
+    private void mostrarClientesVista() {
+        System.out.println("Clientes Registrados: ");
+        List<Cliente> clientes = clienteController.listarClientes();
+
+        if ( clientes.isEmpty() )
+            System.out.println( "No hay clientes registrados");
+        else
+            System.out.println( clientes );
+    }
+
+    public void anyadirClienteVista(){
         Cliente nuevo = new Cliente();
         System.out.println("Introduce los datos del nuevo cliente");
         System.out.printf(  "¿Es Empresa o Particular?" +
@@ -117,11 +174,11 @@ public class VistaCliente {
         System.out.println("Cliente insertado correctamente");
     }
 
-    public void Ejecuta() {
+    public void ejecuta() {
         System.out.println("-----------------------------------------------");
         System.out.println("-----------------------------------------------");
-        System.out.println( this.MuestraOpciones() );
-        this.RecogeRespuesta();
+        System.out.println( this.muestraOpciones() );
+        this.recogeRespuesta();
         System.out.println("-----------------------------------------------");
         System.out.println("-----------------------------------------------");
     }
