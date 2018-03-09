@@ -9,7 +9,12 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class ClienteController {
-    HashMap<String, Cliente> clientes = new HashMap<String, Cliente>();
+
+    private  HashMap<String, Cliente> clientes;
+
+    public ClienteController () {
+        this.clientes = new HashMap<String, Cliente>();
+    }
 
 
     //Añade un cliente

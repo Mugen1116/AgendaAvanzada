@@ -13,17 +13,36 @@ import java.util.Scanner;
 
 public class VistaCliente {
 
+    //==================================================
+    //-------------------ATRIBUTOS----------------------
+    //==================================================
     Scanner sc;
     ClienteController clienteController;
 
+    //==================================================
+    //-------------------END ATRIBUTOS------------------
+    //==================================================
+
+    //==================================================
+    //-------------------CONSTRUCTOR--------------------
+    //==================================================
     public VistaCliente( Scanner sc ){
         this.sc = sc;
         clienteController = new ClienteController();
     }
+    //==================================================
+    //-----------------END CONSTRUCTORS-----------------
+    //==================================================
 
+    //==================================================
+    //----------------------METHODS---------------------
+    //==================================================
+
+    //Se muestran las operaciones que se pueden hacer
     public String muestraOpciones(){
 
-        String menu =   "N - Nuevo Cliente\n" +
+        String menu =
+                        "N - Nuevo Cliente\n" +
                         "B - Borrar un Cliente\n" +
                         "T - Cambiar Tarifa Cliente\n" +
                         "C - Obtener datos de un Cliente\n" +
@@ -32,6 +51,8 @@ public class VistaCliente {
         return menu;
     }
 
+    //En funcion de lo introducido, se va a ejecutar un método u otro
+    //Capturamos la accion
     public String recogeRespuesta() {
         System.out.printf("Opcion: ");
         String resp = sc.nextLine().toUpperCase();
@@ -183,4 +204,7 @@ public class VistaCliente {
         System.out.println("-----------------------------------------------");
     }
 
+    //==================================================
+    //--------------------END METHODS-------------------
+    //==================================================
 }

@@ -1,5 +1,6 @@
 package modelo.factura;
 
+import modelo.cliente.Cliente;
 import modelo.tarifa.Tarifa;
 import modelo.utils.DateInterface;
 import modelo.utils.Periodo;
@@ -19,6 +20,7 @@ public class Factura implements DateInterface {
     private Date fechaEmision;
     private Periodo periodo;
     private float importe;
+    private Cliente cliente;
     //==================================================
     //-----------------END ATRIBUTOS--------------------
     //==================================================
@@ -29,7 +31,7 @@ public class Factura implements DateInterface {
     public Factura(){
         super();
         this.uniqueID = UUID.randomUUID().toString();
-        this.tarifa = new Tarifa();
+        /*this.tarifa = new Tarifa();*/
     }
     public Factura ( Periodo periodo, float importe){
         this.uniqueID = UUID.randomUUID().toString();
@@ -46,7 +48,6 @@ public class Factura implements DateInterface {
     //==================================================
     //----------------GETTERS Y SETTERS-----------------
     //==================================================
-
     public Tarifa getTarifa() { return tarifa; }
     public void setTarifa(Tarifa tarifa) { this.tarifa = tarifa; }
     public String getUniqueID() { return uniqueID; }
@@ -57,7 +58,8 @@ public class Factura implements DateInterface {
     public void setPeriodo(Periodo periodo) { this.periodo = periodo; }
     public float getImporte() { return importe; }
     public void setImporte(float importe) { this.importe = importe; }
-
+    public Cliente getCliente() { return cliente; }
+    public void setCliente(Cliente cliente) { this.cliente = cliente; }
     //==================================================
     //---------------END GETTERS Y SETTERS--------------
     //==================================================

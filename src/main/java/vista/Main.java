@@ -15,6 +15,7 @@ public class Main {
     static Scanner sc;
 
     static VistaCliente vc;
+    static VistaFactura vf;
 
 
 
@@ -31,11 +32,15 @@ public class Main {
             String sig = sc.nextLine().toUpperCase();
             switch ( sig ) {
                 case "C":
-                    System.out.println("clientes");
+                    System.out.println("Clientes");
                     vc.ejecuta();
                     break;
 
                 case "L":
+                    break;
+                case "F":
+                    System.out.println("Facturas");
+                    vf.ejecuta();
                     break;
                 case "Q":
                     exit = true;
