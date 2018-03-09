@@ -22,7 +22,7 @@ public class FacturaController {
     private LlamadaController llamadasController;
 
     public FacturaController( LlamadaController llamadasController ) {
-        this.facturas = new HashMap< String, Pair< Factura, Cliente > >();
+        this.facturas = new HashMap<>();
         this.llamadasController = llamadasController;
         //Esto ultimo lo necesitamos para poder recuperar el listado de llamadas
         //De un cliente que se de, para generar la Factura
@@ -49,7 +49,7 @@ public class FacturaController {
             //Si no está en el rango, no hacemos nada
         }
         factura.setImporte( importe );
-        facturas.put( factura.getUniqueID(), new Pair<Factura, Cliente> (factura, cliente) );
+        facturas.put( factura.getUniqueID(), new Pair<>(factura, cliente) );
 
         return factura;
     }
@@ -72,7 +72,7 @@ public class FacturaController {
      */
 
     public List<Factura> getFacturasCliente ( Cliente cliente ) {
-        List<Factura> listafacturas = new LinkedList<Factura>();
+        List<Factura> listafacturas = new LinkedList<>();
         for (Map.Entry<String, Pair<Factura, Cliente>> entry : facturas.entrySet() ){
             if ( entry.getValue().snd.equals(cliente) ) {
                 listafacturas.add( entry.getValue().fst);

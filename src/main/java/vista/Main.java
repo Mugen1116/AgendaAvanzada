@@ -1,6 +1,8 @@
 package vista;
 
 import controlador.cliente.ClienteController;
+import controlador.factura.FacturaController;
+import controlador.llamada.LlamadaController;
 import es.uji.belfern.generador.GeneradorDatosINE;
 import modelo.cliente.Cliente;
 
@@ -11,7 +13,6 @@ import java.util.Scanner;
 
 public class Main {
 
-    static ClienteController clienteController;
     static Scanner sc;
 
     static VistaCliente vc;
