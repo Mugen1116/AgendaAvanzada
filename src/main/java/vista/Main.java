@@ -16,6 +16,7 @@ public class Main {
     static Scanner sc;
 
     static VistaCliente vc;
+    static VistaLlamada vl;
     static VistaFactura vf;
 
 
@@ -63,6 +64,8 @@ public class Main {
     public static void main(String[] args){
         sc = new Scanner(System.in);
         vc = new VistaCliente( sc );
+        vl = new VistaLlamada( sc );
+        vf = new VistaFactura(sc, vl.getLlamadaController(), vc.getClienteController() );
         ControladorMenu();
 
 

@@ -7,6 +7,7 @@ import modelo.factura.Factura;
 import modelo.llamada.Llamada;
 import modelo.utils.Periodo;
 
+import java.time.ZoneId;
 import java.util.*;
 
 public class FacturaController {
@@ -40,8 +41,10 @@ public class FacturaController {
         float importe = 0f;
         List<Llamada> llamadas = llamadasController.listaLlamadas(cliente);
         for (Llamada llamada: llamadas ) {
-            if ( llamada.getFecha().compareTo( periodo.getInicio() ) >= 1
-                    && llamada.getFecha().compareTo( periodo.getFin() ) <= -1 ) {
+            Date inicioPeriodo = Date.from ( periodo.getInicio().atStartOfDay(ZoneId.systemDefault()).toInstant());
+            Date finPeriodo = Date.from ( periodo.getFin().atStartOfDay(ZoneId.systemDefault()).toInstant());
+            if ( llamada.getFecha().compareTo( inicioPeriodo ) >= 1
+                    && llamada.getFecha().compareTo( finPeriodo ) <= -1 ) {
                 importe += llamada.getDuracion() * cliente.getTarifa().getPrecio();
             }
             //Sumamos al importe la duración de la llamada multiplicado por la tarifa que tiene activa

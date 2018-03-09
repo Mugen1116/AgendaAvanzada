@@ -11,7 +11,7 @@ import modelo.tarifa.Tarifa;
 import java.util.List;
 import java.util.Scanner;
 
-public class VistaCliente {
+public class VistaCliente extends VistaMadre {
 
     //==================================================
     //-------------------ATRIBUTOS----------------------
@@ -39,6 +39,7 @@ public class VistaCliente {
     //==================================================
 
     //Se muestran las operaciones que se pueden hacer
+    @Override
     public String muestraOpciones(){
 
         String menu =
@@ -53,6 +54,7 @@ public class VistaCliente {
 
     //En funcion de lo introducido, se va a ejecutar un método u otro
     //Capturamos la accion
+    @Override
     public String recogeRespuesta() {
         System.out.printf("Opcion: ");
         String resp = sc.nextLine().toUpperCase();
@@ -148,7 +150,7 @@ public class VistaCliente {
             System.out.println( clientes );
     }
 
-    public void anyadirClienteVista(){
+    private void anyadirClienteVista(){
         Cliente nuevo = new Cliente();
         System.out.println("Introduce los datos del nuevo cliente");
         System.out.printf(  "¿Es Empresa o Particular?" +
@@ -195,15 +197,9 @@ public class VistaCliente {
         System.out.println("Cliente insertado correctamente");
     }
 
-    public void ejecuta() {
-        System.out.println("-----------------------------------------------");
-        System.out.println("-----------------------------------------------");
-        System.out.println( this.muestraOpciones() );
-        this.recogeRespuesta();
-        System.out.println("-----------------------------------------------");
-        System.out.println("-----------------------------------------------");
+    public ClienteController getClienteController() {
+        return clienteController;
     }
-
     //==================================================
     //--------------------END METHODS-------------------
     //==================================================

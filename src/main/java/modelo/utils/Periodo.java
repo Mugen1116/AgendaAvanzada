@@ -1,5 +1,6 @@
 package modelo.utils;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class Periodo {
@@ -7,8 +8,8 @@ public class Periodo {
     //==================================================
     //-------------------ATRIBUTOS----------------------
     //==================================================
-    private Date inicio;
-    private Date fin;
+    private LocalDate inicio;
+    private LocalDate fin;
     //==================================================
     //-------------------END ATRIBUTOS------------------
     //==================================================
@@ -19,7 +20,7 @@ public class Periodo {
     public Periodo(){
         super();
     }
-    public Periodo( Date inicio, Date fin ){
+    public Periodo( LocalDate inicio, LocalDate fin ){
 
         if ( inicio.compareTo(fin) == 1) {
             this.inicio = inicio;
@@ -38,10 +39,10 @@ public class Periodo {
     //----------------GETTERS Y SETTERS-----------------
     //==================================================
 
-    public Date getInicio() { return inicio; }
-    public void setInicio(Date inicio) { this.inicio = inicio; }
-    public Date getFin() { return fin; }
-    public void setFin(Date fin) { this.fin = fin; }
+    public LocalDate getInicio() { return inicio; }
+    public void setInicio( LocalDate inicio) { this.inicio = inicio; }
+    public LocalDate getFin() { return fin; }
+    public void setFin( LocalDate fin) { this.fin = fin; }
 
     //==================================================
     //---------------END GETTERS Y SETTERS--------------
