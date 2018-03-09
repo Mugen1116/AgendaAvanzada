@@ -6,7 +6,7 @@ public abstract class VistaMadre {
         System.out.println("-----------------------------------------------");
         System.out.println("-----------------------------------------------");
         System.out.println( muestraOpciones() );
-        recogeRespuesta()
+        recogeRespuesta();
         System.out.println("-----------------------------------------------");
         System.out.println("-----------------------------------------------");
     }
