@@ -25,6 +25,9 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class LlamadaControllerTest {
 
     private LlamadaController controlador;
+    private Cliente cliente;
+    private Cliente cliente2;
+
 
     @BeforeEach
     public void SetUp(){
@@ -36,8 +39,8 @@ public class LlamadaControllerTest {
         Date fechaAlta = new Date();
         Tarifa tarifa = new Tarifa(0.0f);
 
-        Cliente cliente = new Cliente(nombre, nif, direccion, email, fechaAlta, tarifa);
-        Cliente cliente2 = new Cliente(nombre, nif, direccion, email, fechaAlta, tarifa);
+        cliente = new Cliente(nombre, nif, direccion, email, fechaAlta, tarifa);
+        cliente2 = new Cliente(nombre, nif, direccion, email, fechaAlta, tarifa);
     }
 
     @AfterEach
@@ -46,15 +49,15 @@ public class LlamadaControllerTest {
     }
 
     @Test
-    public void altaLlamadaTest(Cliente cliente, Cliente cliente2){
+    public void altaLlamadaTest(){
         Llamada nueva = new Llamada();
 
         assertThat(controlador.altaLlamada(cliente, nueva), is(true));
-        assertThat(controlador.altaLlamada(cliente2, nueva), is(false));
+        assertThat(controlador.altaLlamada(cliente2, nueva), is(true));
     }
 
     @Test
-    public void listaLlamadasTest(Cliente cliente){
+    public void listaLlamadasTest(){
 
         LinkedList<Llamada> lista = new LinkedList<Llamada>();
         LinkedList<Llamada> lista2 = new LinkedList<Llamada>();
@@ -62,7 +65,7 @@ public class LlamadaControllerTest {
         lista.add(nueva);
         controlador.altaLlamada(cliente, nueva);
 
-        assertThat(controlador.listaLlamadas(cliente) == lista, is(true));
-        assertThat(controlador.listaLlamadas(cliente) == lista2, is (false));
+        assertThat(controlador.listaLlamadas(cliente).equals(lista), is(true));
+        assertThat(controlador.listaLlamadas(cliente).equals(lista2), is (false));
     }
 }
