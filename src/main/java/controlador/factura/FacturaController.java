@@ -40,16 +40,18 @@ public class FacturaController {
         //Ahora es necesario que recuperemos las llamadas del Cliente
         float importe = 0f;
         List<Llamada> llamadas = llamadasController.listaLlamadas(cliente);
-        for (Llamada llamada: llamadas ) {
-            Date inicioPeriodo = Date.from ( periodo.getInicio().atStartOfDay(ZoneId.systemDefault()).toInstant());
-            Date finPeriodo = Date.from ( periodo.getFin().atStartOfDay(ZoneId.systemDefault()).toInstant());
-            if ( llamada.getFecha().compareTo( inicioPeriodo ) >= 1
-                    && llamada.getFecha().compareTo( finPeriodo ) <= -1 ) {
-                importe += llamada.getDuracion() * cliente.getTarifa().getPrecio();
+        if ( llamadas != null ) {
+            for (Llamada llamada : llamadas) {
+                Date inicioPeriodo = Date.from(periodo.getInicio().atStartOfDay(ZoneId.systemDefault()).toInstant());
+                Date finPeriodo = Date.from(periodo.getFin().atStartOfDay(ZoneId.systemDefault()).toInstant());
+                if (llamada.getFecha().compareTo(inicioPeriodo) >= 1
+                        && llamada.getFecha().compareTo(finPeriodo) <= -1) {
+                    importe += llamada.getDuracion() * cliente.getTarifa().getPrecio();
+                }
+                //Sumamos al importe la duración de la llamada multiplicado por la tarifa que tiene activa
+                //Esto lo hacemos para todas las llamadas que estén dentro del periodo dado
+                //Si no está en el rango, no hacemos nada
             }
-            //Sumamos al importe la duración de la llamada multiplicado por la tarifa que tiene activa
-            //Esto lo hacemos para todas las llamadas que estén dentro del periodo dado
-            //Si no está en el rango, no hacemos nada
         }
         factura.setImporte( importe );
         facturas.put( factura.getUniqueID(), new Pair<>(factura, cliente) );
@@ -59,7 +61,10 @@ public class FacturaController {
 
     //Datos de una factura segun su codigo
     public Factura getFactura ( String codigo ){
-        return facturas.get( codigo ).fst;
+        if (facturas.containsKey( codigo) )
+            return facturas.get( codigo ).fst;
+        else
+            return null;
     }
 
     //
