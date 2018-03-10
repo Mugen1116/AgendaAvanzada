@@ -63,7 +63,7 @@ public class Main {
     public static void main(String[] args){
         sc = new Scanner(System.in);
         vc = new VistaCliente( sc );
-        vl = new VistaLlamada( sc );
+        vl = new VistaLlamada( sc, vc.getClienteController() );
         vf = new VistaFactura(sc, vl.getLlamadaController(), vc.getClienteController() );
         ControladorMenu();
 

@@ -52,7 +52,10 @@ public class ClienteController {
 
     //Devuelve los datos del cliente por su NIF
     public Cliente getCliente (String nif){
-        return clientes.get(nif);
+        if ( clientes.containsKey( nif ) )
+            return clientes.get(nif);
+        else
+            return null;
 
     }
 

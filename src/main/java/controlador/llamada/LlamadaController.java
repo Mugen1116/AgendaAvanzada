@@ -32,8 +32,10 @@ public class LlamadaController {
 
     //Listar las llamadas de un cliente
     public LinkedList<Llamada> listaLlamadas (Cliente cliente){
-
-        return llamadas.get(cliente);
+        if ( llamadas.containsKey(cliente) )
+            return llamadas.get(cliente);
+        else
+            return null;
 
     }
 
