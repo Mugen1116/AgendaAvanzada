@@ -12,7 +12,8 @@ public class ClienteController {
 
     private  HashMap<String, Cliente> clientes;
 
-    public ClienteController () {
+    //Constructor
+    public ClienteController() {
         this.clientes = new HashMap<String, Cliente>();
     }
 

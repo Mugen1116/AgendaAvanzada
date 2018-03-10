@@ -2,7 +2,7 @@ package vista;
 
 public abstract class VistaMadre {
 
-    public void ejecuta() {
+    void ejecuta() {
         System.out.println("-----------------------------------------------");
         System.out.println("-----------------------------------------------");
         System.out.println( muestraOpciones() );
@@ -11,7 +11,7 @@ public abstract class VistaMadre {
         System.out.println("-----------------------------------------------");
     }
 
-    public abstract String muestraOpciones() ;
+    abstract String muestraOpciones() ;
 
-    public abstract String recogeRespuesta();
+    abstract String recogeRespuesta();
 }

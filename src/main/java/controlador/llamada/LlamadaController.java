@@ -8,7 +8,11 @@ import java.util.LinkedList;
 
 public class LlamadaController {
 
-    HashMap<Cliente, LinkedList<Llamada>> llamadas = new HashMap<Cliente, LinkedList<Llamada>>();
+    private HashMap<Cliente, LinkedList<Llamada>> llamadas;
+
+    public LlamadaController() {
+        this.llamadas = new HashMap<>();
+    }
 
     //Alta de una llamada
     public boolean altaLlamada (Cliente cliente, Llamada nueva){

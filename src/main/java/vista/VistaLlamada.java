@@ -19,7 +19,7 @@ public class VistaLlamada extends VistaMadre {
     //==================================================
     //-------------------CONSTRUCTOR--------------------
     //==================================================
-    public VistaLlamada( Scanner sc){
+    VistaLlamada( Scanner sc){
         this.sc = sc;
         llamadaController = new LlamadaController();
     }
@@ -31,17 +31,17 @@ public class VistaLlamada extends VistaMadre {
     //----------------------METHODS---------------------
     //==================================================
 
-    public LlamadaController getLlamadaController() {
+    LlamadaController getLlamadaController() {
         return llamadaController;
     }
 
     @Override
-    public String muestraOpciones() {
+    String muestraOpciones() {
         return null;
     }
 
     @Override
-    public String recogeRespuesta() {
+    String recogeRespuesta() {
         return null;
     }
 

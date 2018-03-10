@@ -30,7 +30,7 @@ public class VistaFactura extends  VistaMadre {
     //-------------------CONSTRUCTOR--------------------
     //==================================================
 
-    public VistaFactura (Scanner sc , LlamadaController llamadas,
+    VistaFactura (Scanner sc , LlamadaController llamadas,
                          ClienteController clientes) {
         this.sc = sc;
         this.facturaController = new FacturaController(llamadas);
@@ -47,7 +47,7 @@ public class VistaFactura extends  VistaMadre {
 
     //Se muestran las operaciones que se pueden hacer
     @Override
-    public String muestraOpciones(){
+    String muestraOpciones(){
 
         String menu =
                 "E - Emitir Factura para un cliente\n" +
@@ -59,7 +59,7 @@ public class VistaFactura extends  VistaMadre {
     //En funcion de lo introducido, se va a ejecutar un método u otro
     //Capturamos la accion
     @Override
-    public String recogeRespuesta() {
+    String recogeRespuesta() {
         System.out.printf("Opción: ");
         String resp  = sc.nextLine().toUpperCase();
         switch ( resp ) {

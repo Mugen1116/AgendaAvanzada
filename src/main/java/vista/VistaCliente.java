@@ -26,7 +26,7 @@ public class VistaCliente extends VistaMadre {
     //==================================================
     //-------------------CONSTRUCTOR--------------------
     //==================================================
-    public VistaCliente( Scanner sc ){
+    VistaCliente( Scanner sc ){
         this.sc = sc;
         clienteController = new ClienteController();
     }
@@ -40,7 +40,7 @@ public class VistaCliente extends VistaMadre {
 
     //Se muestran las operaciones que se pueden hacer
     @Override
-    public String muestraOpciones(){
+    String muestraOpciones(){
 
         String menu =
                         "N - Nuevo Cliente\n" +
@@ -55,7 +55,7 @@ public class VistaCliente extends VistaMadre {
     //En funcion de lo introducido, se va a ejecutar un método u otro
     //Capturamos la accion
     @Override
-    public String recogeRespuesta() {
+    String recogeRespuesta() {
         System.out.printf("Opcion: ");
         String resp = sc.nextLine().toUpperCase();
         switch ( resp ) {
