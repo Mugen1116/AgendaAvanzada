@@ -1,6 +1,6 @@
 package controlador.factura;
 
-import com.sun.tools.javac.util.Pair;
+import modelo.utils.Pair;
 import controlador.llamada.LlamadaController;
 import modelo.cliente.Cliente;
 import modelo.factura.Factura;
