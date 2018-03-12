@@ -38,6 +38,8 @@ public class Main {
                     vc.ejecuta();
                     break;
                 case "L":
+                    System.out.println("Llamadas");
+                    vl.ejecuta();
                     break;
                 case "F":
                     System.out.println("Facturas");
