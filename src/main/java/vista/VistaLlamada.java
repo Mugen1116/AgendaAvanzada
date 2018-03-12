@@ -102,6 +102,7 @@ public class VistaLlamada extends VistaMadre {
             System.out.printf("¿Cuánto duró la llamada? (En Segundos)");
             float duracion = Float.parseFloat( sc.nextLine() );
             Llamada llamada = new Llamada( telefono, fecha, duracion);
+            llamadaController.altaLlamada( cliente, llamada);
             if ( llamada == null )
                 System.out.println("Ha ocurrido un error, vuelva a intentarlo");
 
