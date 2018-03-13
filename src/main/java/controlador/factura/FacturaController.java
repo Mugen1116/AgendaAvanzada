@@ -89,4 +89,25 @@ public class FacturaController {
 
         return listafacturas;
     }
+
+    //Devuelve las facturas situadas entre dos fechas
+    public List<Factura> situadosEntre(List<Factura> lista, Date fecha1, Date fecha2){
+
+        LinkedList<Factura> sublista = new LinkedList<Factura>();
+        Date fecha0;
+
+        for (Factura aux : lista){
+
+            fecha0 = aux.getFecha();
+
+            if (fecha0.compareTo(fecha1)>=0  && fecha0.compareTo(fecha2)<=0){
+
+                sublista.add(aux);
+
+            }
+
+        }
+
+        return sublista;
+    }
 }

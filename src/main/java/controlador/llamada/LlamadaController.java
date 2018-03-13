@@ -3,8 +3,10 @@ package controlador.llamada;
 import modelo.cliente.Cliente;
 import modelo.llamada.Llamada;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 
 public class LlamadaController {
 
@@ -39,4 +41,24 @@ public class LlamadaController {
 
     }
 
+    //Devuelve las Llamadas situadas entre dos fechas
+    public List<Llamada> situadosEntre(List<Llamada> lista, Date fecha1, Date fecha2){
+
+        LinkedList<Llamada> sublista = new LinkedList<Llamada>();
+        Date fecha0;
+
+        for (Llamada aux : lista){
+
+            fecha0 = aux.getFecha();
+
+            if (fecha0.compareTo(fecha1)>=0  && fecha0.compareTo(fecha2)<=0){
+
+                sublista.add(aux);
+
+            }
+
+        }
+
+        return sublista;
+    }
 }

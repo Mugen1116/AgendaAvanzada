@@ -3,10 +3,7 @@ package controlador.cliente;
 import modelo.cliente.Cliente;
 import modelo.tarifa.Tarifa;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class ClienteController {
 
@@ -65,4 +62,24 @@ public class ClienteController {
 
     }
 
+    //Devuelve los clientes dados de alta entre dos fechas
+    public List<Cliente> situadosEntre(List<Cliente> lista, Date fecha1, Date fecha2){
+
+        LinkedList<Cliente> sublista = new LinkedList<Cliente>();
+        Date fecha0;
+
+            for (Cliente aux : lista){
+
+                fecha0 = aux.getFecha();
+
+                if (fecha0.compareTo(fecha1)>=0  && fecha0.compareTo(fecha2)<=0){
+
+                    sublista.add(aux);
+
+                }
+
+            }
+
+        return sublista;
+    }
 }
