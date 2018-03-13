@@ -4,9 +4,10 @@ import modelo.direccion.Direccion;
 import modelo.tarifa.Tarifa;
 import modelo.utils.DateInterface;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Cliente implements DateInterface {
+public class Cliente implements DateInterface, Serializable {
 
     //==================================================
     //-------------------ATRIBUTOS----------------------

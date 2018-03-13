@@ -7,10 +7,11 @@ import modelo.factura.Factura;
 import modelo.llamada.Llamada;
 import modelo.utils.Periodo;
 
+import java.io.Serializable;
 import java.time.ZoneId;
 import java.util.*;
 
-public class FacturaController {
+public class FacturaController implements Serializable{
 
     /*
      * * Utilizamos Pair a modo de tupla para almacenar la factura y el cliente

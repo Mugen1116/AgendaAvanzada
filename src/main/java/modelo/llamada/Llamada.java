@@ -2,9 +2,10 @@ package modelo.llamada;
 
 import modelo.utils.DateInterface;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Llamada implements DateInterface {
+public class Llamada implements DateInterface, Serializable{
 
     //==================================================
     //-------------------ATRIBUTOS----------------------

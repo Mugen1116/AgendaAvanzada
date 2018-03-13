@@ -3,12 +3,13 @@ package controlador.llamada;
 import modelo.cliente.Cliente;
 import modelo.llamada.Llamada;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-public class LlamadaController {
+public class LlamadaController implements Serializable{
 
     private HashMap<Cliente, LinkedList<Llamada>> llamadas;
 

@@ -5,10 +5,11 @@ import modelo.tarifa.Tarifa;
 import modelo.utils.DateInterface;
 import modelo.utils.Periodo;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
 
-public class Factura implements DateInterface {
+public class Factura implements DateInterface, Serializable{
 
 
     //==================================================

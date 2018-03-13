@@ -3,9 +3,10 @@ package controlador.cliente;
 import modelo.cliente.Cliente;
 import modelo.tarifa.Tarifa;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class ClienteController {
+public class ClienteController implements Serializable{
 
     private  HashMap<String, Cliente> clientes;
 
