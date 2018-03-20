@@ -14,7 +14,7 @@ public class Cargar implements Serializable{
         FileInputStream fis = new FileInputStream("agenda.bin");
         ObjectInputStream ois = new ObjectInputStream(fis);
         agenda = (Agenda)ois.readObject();
-        ois.close;
+        ois.close();
 
     }catch(FileNotFoundException e){
         e.printStackTrace();
