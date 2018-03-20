@@ -2,6 +2,7 @@ package controlador.cliente;
 
 import modelo.cliente.Cliente;
 import modelo.tarifa.Tarifa;
+import modelo.conjuntos.GetConjunto;
 
 import java.io.Serializable;
 import java.util.*;
@@ -63,24 +64,4 @@ public class ClienteController implements Serializable{
 
     }
 
-    //Devuelve los clientes dados de alta entre dos fechas
-    public List<Cliente> situadosEntre(List<Cliente> lista, Date fecha1, Date fecha2){
-
-        LinkedList<Cliente> sublista = new LinkedList<Cliente>();
-        Date fecha0;
-
-            for (Cliente aux : lista){
-
-                fecha0 = aux.getFecha();
-
-                if (fecha0.compareTo(fecha1)>=0  && fecha0.compareTo(fecha2)<=0){
-
-                    sublista.add(aux);
-
-                }
-
-            }
-
-        return sublista;
-    }
 }
