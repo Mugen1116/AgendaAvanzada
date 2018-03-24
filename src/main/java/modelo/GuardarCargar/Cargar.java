@@ -1,24 +1,32 @@
 package modelo.GuardarCargar;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.ObjectInputStream;
-import java.io.Serializable;
+import modelo.agenda.Agenda;
+
+import java.io.*;
 
 public class Cargar implements Serializable{
 
-    private static final long serialVersionUID =
 
-    try {
+    private static final long serialVersionUID = 778548155941304199L;
 
-        FileInputStream fis = new FileInputStream("agenda.bin");
-        ObjectInputStream ois = new ObjectInputStream(fis);
-        agenda = (Agenda)ois.readObject();
-        ois.close();
+    public void Cargar ( String path ) {
+        try {
 
-    }catch(FileNotFoundException e){
-        e.printStackTrace();
+            FileInputStream fis = new FileInputStream( path );
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            Agenda agenda = (Agenda)ois.readObject();
+            ois.close();
+
+        }catch(FileNotFoundException e){
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
+
+
 
 
 }
