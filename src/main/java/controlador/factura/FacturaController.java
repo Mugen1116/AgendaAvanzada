@@ -1,5 +1,6 @@
 package controlador.factura;
 
+import modelo.conjuntos.GetConjunto;
 import modelo.utils.Pair;
 import controlador.llamada.LlamadaController;
 import modelo.cliente.Cliente;
@@ -89,6 +90,13 @@ public class FacturaController implements Serializable{
         }
 
         return listafacturas;
+    }
+
+    public List<Factura> facturasEntreFechas( Cliente cliente, Date una, Date otra ){
+
+        return new GetConjunto<Factura>().situadosEntre(
+                                        this.getFacturasCliente(cliente), una, otra
+                                        );
     }
 
 }

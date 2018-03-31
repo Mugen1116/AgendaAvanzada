@@ -4,6 +4,7 @@ import controlador.cliente.ClienteController;
 import modelo.cliente.Cliente;
 import modelo.direccion.Direccion;
 import modelo.tarifa.Tarifa;
+import modelo.utils.DateUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.Test;
 
 import es.uji.belfern.generador.GeneradorDatosINE;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -106,6 +108,41 @@ public class ClienteControllerTest {
         //Cambiar tarifa a cliente que no exista
 
         assertThat( controlador.cambiarTarifa( ClienteNuevo(), new Tarifa()), is(false));
+
+    }
+    @Test
+    public void EntreFechasTest(){
+        LocalDate fechaAlta = LocalDate.of( 2018, 1, 1);
+        LocalDate fechaAlta2 = LocalDate.of( 2018, 2, 12);
+
+        Cliente nuevo = ClienteNuevo();
+        nuevo.setFechaAlta( DateUtils.asDate(fechaAlta) );
+        controlador.altaCliente( nuevo );
+
+        Cliente nuevo2 = ClienteNuevo();
+        nuevo2.setFechaAlta( DateUtils.asDate(fechaAlta2) );
+        controlador.altaCliente( nuevo2 );
+
+
+        Date inicio = DateUtils.asDate( LocalDate.of(2017, 12, 30) );
+        Date fin = DateUtils.asDate( LocalDate.of(2018, 4, 1) );
+
+
+        //Ahora debería mostrar los dos clientes que se han creado, es decir
+        //La lista tendrá 2 elementos
+        assertThat( controlador.clientesEntreFechas(inicio, fin).size(), is(2) );
+
+        //Si probamos entre dos fechas que no coja ningun cliente
+        inicio = DateUtils.asDate( LocalDate.of(2018, 12, 30) );
+        fin = DateUtils.asDate( LocalDate.of(2019, 4, 1) );
+        assertThat(controlador.clientesEntreFechas( inicio, fin ).size() , is(0) );
+
+        //Que solo coja a un cliente
+        inicio = DateUtils.asDate( LocalDate.of(2018, 1, 30) );
+        fin = DateUtils.asDate( LocalDate.of(2019, 4, 1) );
+        assertThat(controlador.clientesEntreFechas( inicio, fin ).size() , is(1) );
+
+
 
     }
 

@@ -7,6 +7,10 @@ import java.util.*;
 //Devuelve un conjunto de objetos situados entre dos fechas
 public class GetConjunto<T extends DateInterface> {
 
+    public GetConjunto () {
+        super();
+    }
+
     public List<T> situadosEntre(List<T> lista, Date fecha1, Date fecha2){
 
         LinkedList<T> sublista = new LinkedList<T>();

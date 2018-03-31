@@ -1,6 +1,7 @@
 package controlador.llamada;
 
 import modelo.cliente.Cliente;
+import modelo.conjuntos.GetConjunto;
 import modelo.llamada.Llamada;
 
 import java.io.Serializable;
@@ -40,6 +41,12 @@ public class LlamadaController implements Serializable{
         else
             return null;
 
+    }
+
+    public List<Llamada> llamadasEntreFechas( Cliente cliente, Date una, Date otra){
+        return new GetConjunto<Llamada>().situadosEntre(
+                                            this.listaLlamadas(cliente), una, otra
+                                            );
     }
 
 }

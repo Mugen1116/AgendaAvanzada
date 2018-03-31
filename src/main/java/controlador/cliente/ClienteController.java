@@ -1,13 +1,13 @@
 package controlador.cliente;
 
 import modelo.cliente.Cliente;
-import modelo.tarifa.Tarifa;
 import modelo.conjuntos.GetConjunto;
+import modelo.tarifa.Tarifa;
 
 import java.io.Serializable;
 import java.util.*;
 
-public class ClienteController implements Serializable{
+public class ClienteController implements Serializable {
 
     private  HashMap<String, Cliente> clientes;
 
@@ -61,6 +61,17 @@ public class ClienteController implements Serializable{
     //Devuelve todos los clientes
     public List<Cliente> listarClientes (){
         return new LinkedList<Cliente>( clientes.values() );
+
+    }
+
+    //Devolver listado Clientes entre dos fechas
+    public List<Cliente> clientesEntreFechas( Date una, Date otra ) {
+
+        //Recuperamos todos los clientes disponibles en el mapa
+        //La devolverá vacía si no se encuentran clientes entre esas fechas
+        return new GetConjunto<Cliente>().situadosEntre(
+                                                    this.listarClientes(), una , otra
+                                                    );
 
     }
 
