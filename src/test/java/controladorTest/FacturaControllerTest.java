@@ -7,6 +7,7 @@ import modelo.direccion.Direccion;
 import modelo.factura.Factura;
 import modelo.llamada.Llamada;
 import modelo.tarifa.Tarifa;
+import modelo.utils.DateUtils;
 import modelo.utils.Periodo;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -106,5 +107,25 @@ public class FacturaControllerTest {
         assertThat( facturaController.getFactura("000"), is( (Object) null ) );
         Factura factura = facturaController.emitirFactura(periodo, clientePruebas);
         assertThat( facturaController.getFactura(factura.getUniqueID()), is( factura ) );
+    }
+    @Test
+    public void entreFechasTest() {
+        //Creamos dos facturas de un cliente y cambiamos la fecha de emisión para poder filtrar
+        facturaController.emitirFactura( periodo, clientePruebas );
+        facturaController.emitirFactura( periodo, clientePruebas );
+
+        Date desde = DateUtils.asDate( LocalDate.of(2017, 12, 30) );
+        Date hasta = DateUtils.asDate( LocalDate.of(2018, 4, 1) );
+
+        assertThat( facturaController.facturasEntreFechas( clientePruebas, desde, hasta).size() , is(2) );
+
+        //Filtramos en una fecha que no coge la fecha de emisión
+        desde = DateUtils.asDate( LocalDate.of(2019, 4, 1) );
+        hasta = DateUtils.asDate( LocalDate.of(2019, 4, 4) );
+
+        assertThat( facturaController.facturasEntreFechas( clientePruebas, desde, hasta).size() , is(0) );
+
+
+
     }
 }

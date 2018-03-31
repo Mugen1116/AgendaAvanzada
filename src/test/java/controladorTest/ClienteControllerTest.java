@@ -61,7 +61,7 @@ public class ClienteControllerTest {
     }
     //Insertar clientes repetidos
     @Test
-    public void InsertsTest(){
+    public void insertsTest(){
         //Insertar 10 clientes aleatorios
         for ( int i = 0; i < 10; i++ )
             assertThat( controlador.altaCliente( ClienteNuevo() ), is(true) );
@@ -83,7 +83,7 @@ public class ClienteControllerTest {
     //Luego otro de borrados hasta quedarse en 0, y borrar cuando no queden clientes
 
     @Test
-    public void DeleteTest(){
+    public void deleteTest(){
         //Primero insertar clientes
         for ( int i = 0; i < 10; i++ )
             assertThat( controlador.altaCliente( ClienteNuevo() ), is(true) );
@@ -101,7 +101,7 @@ public class ClienteControllerTest {
     }
 
     @Test
-    public void ChangeTarifaTest(){
+    public void changeTarifaTest(){
         Cliente nuevo = ClienteNuevo();
         assertThat( controlador.altaCliente( nuevo), is(true));
         assertThat( controlador.cambiarTarifa(nuevo, new Tarifa()), is(true));
@@ -111,7 +111,7 @@ public class ClienteControllerTest {
 
     }
     @Test
-    public void EntreFechasTest(){
+    public void entreFechasTest(){
         LocalDate fechaAlta = LocalDate.of( 2018, 1, 1);
         LocalDate fechaAlta2 = LocalDate.of( 2018, 2, 12);
 
