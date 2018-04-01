@@ -3,17 +3,23 @@ package modelo.agenda;
 import modelo.cliente.Cliente;
 import modelo.factura.Factura;
 import modelo.llamada.Llamada;
+import modelo.utils.Pair;
 
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
-public class Agenda {
+public class Agenda implements Serializable {
 
+    private static final long serialVersionUID = -4452685954943578315L;
     //==================================================
     //-------------------ATRIBUTOS----------------------
     //==================================================
-    private List<Cliente> clientes;
-    private List<Factura> facturas;
-    private List<Llamada> llamadas;
+    private HashMap<String, Cliente> clientes;
+    private HashMap<String, Pair< Factura, Cliente>> facturas;
+    private HashMap<Cliente, LinkedList<Llamada>> llamadas;
+
     //==================================================
     //-------------------END ATRIBUTOS------------------
     //==================================================
@@ -33,12 +39,13 @@ public class Agenda {
     //----------------GETTERS Y SETTERS-----------------
     //==================================================
 
-    public List<Cliente> getClientes() { return clientes; }
-    public void setClientes(List<Cliente> clientes) { this.clientes = clientes; }
-    public List<Factura> getFacturas() { return facturas; }
-    public void setFacturas(List<Factura> facturas) { this.facturas = facturas; }
-    public List<Llamada> getLlamadas() { return llamadas; }
-    public void setLlamadas(List<Llamada> llamadas) { this.llamadas = llamadas; }
+    public HashMap<String, Cliente> getClientes() { return clientes; }
+    public void setClientes(HashMap<String, Cliente> clientes) { this.clientes = clientes; }
+    public HashMap<String, Pair<Factura, Cliente>> getFacturas() { return facturas; }
+    public void setFacturas(HashMap<String, Pair<Factura, Cliente>> facturas) { this.facturas = facturas; }
+    public HashMap<Cliente, LinkedList<Llamada>> getLlamadas() { return llamadas; }
+    public void setLlamadas(HashMap<Cliente, LinkedList<Llamada>> llamadas) { this.llamadas = llamadas; }
+
     //==================================================
     //---------------END GETTERS Y SETTERS--------------
     //==================================================

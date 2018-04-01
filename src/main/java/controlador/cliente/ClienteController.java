@@ -11,6 +11,14 @@ public class ClienteController implements Serializable {
 
     private  HashMap<String, Cliente> clientes;
 
+    public HashMap<String, Cliente> getClientes() {
+        return clientes;
+    }
+
+    public void setClientes(HashMap<String, Cliente> clientes) {
+        this.clientes = clientes;
+    }
+
     //Constructor
     public ClienteController() {
         this.clientes = new HashMap<String, Cliente>();

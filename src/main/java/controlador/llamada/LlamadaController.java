@@ -18,6 +18,10 @@ public class LlamadaController implements Serializable{
         this.llamadas = new HashMap<>();
     }
 
+    //Getter and Setter
+    public HashMap<Cliente, LinkedList<Llamada>> getLlamadas() {  return llamadas; }
+    public void setLlamadas(HashMap<Cliente, LinkedList<Llamada>> llamadas) { this.llamadas = llamadas; }
+
     //Alta de una llamada
     public boolean altaLlamada (Cliente cliente, Llamada nueva){
         //Nunca se van a poder dar de alta con esta comprobación

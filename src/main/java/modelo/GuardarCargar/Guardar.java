@@ -9,7 +9,7 @@ public class Guardar implements Serializable{
 
     private static final long serialVersionUID = 6795577305527676665L;
 
-    public void Guardar ( String path, Agenda agenda ) {
+    public void guardar ( String path, Agenda agenda ) {
         try {
 
             FileOutputStream fos = new FileOutputStream( path );

@@ -145,6 +145,8 @@ public class VistaFactura extends  VistaMadre {
         else System.out.println("Error al emitir la factura, intentelo de nuevo");
     }
 
+    public FacturaController getFacturaController() { return facturaController; }
+
     //==================================================
     //--------------------END METHODS-------------------
     //==================================================

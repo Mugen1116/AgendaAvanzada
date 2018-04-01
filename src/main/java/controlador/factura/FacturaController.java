@@ -21,8 +21,13 @@ public class FacturaController implements Serializable{
      */
 
 
+
+
     private HashMap<String, Pair< Factura, Cliente> > facturas;
     private LlamadaController llamadasController;
+
+    public HashMap<String, Pair<Factura, Cliente>> getFacturas() { return facturas; }
+    public void setFacturas(HashMap<String, Pair<Factura, Cliente>> facturas) { this.facturas = facturas; }
 
     public FacturaController( LlamadaController llamadasController ) {
         this.facturas = new HashMap<>();
