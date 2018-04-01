@@ -5,6 +5,7 @@ import controlador.factura.FacturaController;
 import controlador.llamada.LlamadaController;
 import modelo.cliente.Cliente;
 import modelo.factura.Factura;
+import modelo.utils.DateUtils;
 import modelo.utils.Periodo;
 
 import java.time.LocalDate;
@@ -106,23 +107,10 @@ public class VistaFactura extends  VistaMadre {
     private void emitirFacturaVista() {
         System.out.println("Emitir nueva factura");
         System.out.println("Introduzca la fecha de inicio de facturación");
-        System.out.printf("Día: ");
-        int dia = Integer.parseInt( sc.nextLine() );
-        System.out.printf("Número de Mes(1-12): ");
-        int mes = Integer.parseInt( sc.nextLine() );
-        System.out.printf("Año (EJ: 2018): ");
-        int anyo = Integer.parseInt( sc.nextLine() );
-        //Año, Mes, Dia
-        LocalDate fechainicio = LocalDate.of( anyo, mes, dia);
+        LocalDate fechainicio  = DateUtils.asLocalDate( getFecha( sc ) );
         System.out.println("Introduzca la fecha de fin de facturación");
-        System.out.printf("Día: ");
-        dia = Integer.parseInt( sc.nextLine() );
-        System.out.printf("Número de Mes(1-12): ");
-        mes = Integer.parseInt( sc.nextLine() );
-        System.out.printf("Año (EJ: 2018): ");
-        anyo = Integer.parseInt( sc.nextLine() );
-        //Año, Mes, Dia
-        LocalDate fechafin = LocalDate.of( anyo, mes, dia);
+        LocalDate fechafin = DateUtils.asLocalDate( getFecha( sc ) );
+
         Periodo periodo = new Periodo( fechainicio , fechafin );
         System.out.println("Información del client");
         System.out.printf("NIF del cliente para facturar: ");

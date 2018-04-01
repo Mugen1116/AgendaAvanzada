@@ -1,13 +1,17 @@
 package vista;
 
 import com.sun.deploy.util.SessionState;
+import com.sun.tools.doclets.formats.html.SourceToHTMLConverter;
 import controlador.cliente.ClienteController;
 import modelo.cliente.Cliente;
 import modelo.cliente.Empresa;
 import modelo.cliente.Particular;
 import modelo.direccion.Direccion;
 import modelo.tarifa.Tarifa;
+import modelo.utils.DateUtils;
 
+import java.net.Inet4Address;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
@@ -49,6 +53,7 @@ public class VistaCliente extends VistaMadre {
                         "T - Cambiar Tarifa Cliente\n" +
                         "C - Obtener datos de un Cliente\n" +
                         "A - Obtener datos de todos los Clientes\n" +
+                        "L - Listar los clientes dados de alta entre dos fechas\n" +
                         "Q - Salir";
         return menu;
     }
@@ -82,9 +87,15 @@ public class VistaCliente extends VistaMadre {
                 //Mostrar todos los clientes
                 break;
 
+            case "L":
+                this.listarClientesFechasVista();
+                break;
+
             case "Q":
                 System.out.println("Cancelando");
                 break;
+
+
 
             default:
                 System.out.println("Entrada no válida");
@@ -93,6 +104,19 @@ public class VistaCliente extends VistaMadre {
         System.out.printf("\n\n");
 
         return resp;
+    }
+
+    private void listarClientesFechasVista() {
+        System.out.println("Seleccione las fechas entre las que se quiere filtrar");
+        System.out.println("Fecha de Inicio (Desde cuándo)");
+        Date inicio = getFecha( sc );
+        System.out.println("Fecha de Fin (Hasta cuándo)");
+        Date fin = getFecha( sc );
+        System.out.println("------------------------------");
+        for ( Cliente cliente : clienteController.clientesEntreFechas( inicio, fin ) ) {
+            System.out.println(cliente);
+            System.out.println("------------------------------");
+        }
     }
 
     private void cambiarTarifaVista() {
