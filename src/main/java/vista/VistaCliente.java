@@ -21,8 +21,8 @@ public class VistaCliente extends VistaMadre {
     //==================================================
     //-------------------ATRIBUTOS----------------------
     //==================================================
-    Scanner sc;
-    ClienteController clienteController;
+
+    //Heredados
 
     //==================================================
     //-------------------END ATRIBUTOS------------------
@@ -112,10 +112,16 @@ public class VistaCliente extends VistaMadre {
         Date inicio = getFecha( sc );
         System.out.println("Fecha de Fin (Hasta cuándo)");
         Date fin = getFecha( sc );
-        System.out.println("------------------------------");
-        for ( Cliente cliente : clienteController.clientesEntreFechas( inicio, fin ) ) {
-            System.out.println(cliente);
+        List<Cliente> clientes = clienteController.clientesEntreFechas( inicio, fin ) ;
+        if (clientes == null || clientes.size() == 0) {
+            System.out.println("No hay clientes dados de alta entre las fechas introducidas");
+        }
+        else {
             System.out.println("------------------------------");
+            for (Cliente cliente : clientes) {
+                System.out.println(cliente);
+                System.out.println("------------------------------");
+            }
         }
     }
 

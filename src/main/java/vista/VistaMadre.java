@@ -1,5 +1,7 @@
 package vista;
 
+import controlador.cliente.ClienteController;
+import modelo.cliente.Cliente;
 import modelo.utils.DateUtils;
 
 import java.time.LocalDate;
@@ -7,6 +9,16 @@ import java.util.Date;
 import java.util.Scanner;
 
 public abstract class VistaMadre {
+
+    //==================================================
+    //-------------------ATRIBUTOS----------------------
+    //==================================================
+    Scanner sc;
+    ClienteController clienteController;
+
+    //==================================================
+    //-------------------END ATRIBUTOS------------------
+    //==================================================
 
     void ejecuta() {
         System.out.println("-----------------------------------------------");
@@ -27,6 +39,14 @@ public abstract class VistaMadre {
         return  DateUtils.asDate( LocalDate.of(anyo, mes, dia) );
     }
 
+    Cliente getCliente(Scanner sc ) {
+        System.out.printf("NIF del cliente: ");
+        Cliente cliente = clienteController.getCliente( sc.nextLine() );
+        if ( cliente == null ){
+            System.out.println("No existe el cliente introduciendo, vuelva a intentarlo");
+        }
+        return cliente;
+    }
     abstract String muestraOpciones() ;
 
     abstract String recogeRespuesta();

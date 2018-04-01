@@ -19,9 +19,10 @@ public class VistaFactura extends  VistaMadre {
     //==================================================
     //-------------------ATRIBUTOS----------------------
     //==================================================
-    Scanner sc;
+
+    //Super
     FacturaController facturaController;
-    ClienteController clienteController;
+
 
     //==================================================
     //-------------------END ATRIBUTOS------------------
@@ -53,7 +54,8 @@ public class VistaFactura extends  VistaMadre {
         String menu =
                 "E - Emitir Factura para un cliente\n" +
                 "F - Obtener datos de una Factura\n" +
-                "A -  Ver Facturas de un Cliente\n" +
+                "A - Ver Facturas de un Cliente\n" +
+                "L - Listar Facturas de un Cliente emitidas entre dos fechas\n" +
                 "Q - Salir";
         return menu;
     }
@@ -73,6 +75,9 @@ public class VistaFactura extends  VistaMadre {
             case "A":
                 this.facturasClienteVista();
                 break;
+            case "L":
+                this.listaFacturasEntreFechasVista();
+                break;
             case "Q":
                 System.out.println("Cancelando");
                 break;
@@ -84,17 +89,35 @@ public class VistaFactura extends  VistaMadre {
         return resp;
     }
 
+    private void listaFacturasEntreFechasVista() {
+        System.out.println("Listar las facturas de un cliente emitidas entre dos fechas");
+        Cliente cliente = getCliente(sc);
+        System.out.println("Fecha inicio (Desde cuándo)");
+        Date inicio = getFecha( sc );
+        System.out.println("Fecha fin (Hasta cuándo)");
+        Date fin = getFecha( sc );
+        List<Factura> facturas = facturaController.facturasEntreFechas(cliente, inicio, fin);
+        listaFacturas( facturas );
+    }
+
     private void facturasClienteVista() {
         System.out.println("Listar todas las facturas de un cliente");
-        System.out.printf("NIF del cliente: ");
-        List<Factura> facturas = facturaController.getFacturasCliente(
-                                    clienteController.getCliente( sc.nextLine() )
-                                    );
-        for (Factura factura : facturas ){
-            System.out.println("...............................");
-            System.out.println( factura );
-            System.out.println("...............................");
+        List<Factura> facturas = facturaController.getFacturasCliente( getCliente(sc) );
+        listaFacturas( facturas );
+
+    }
+    private void listaFacturas( List<Factura> facturas ) {
+        if ( facturas == null || facturas.size() == 0){
+            System.out.println("No existen facturas asociadas con los datos introducidos");
         }
+        else {
+            for (Factura factura : facturas ){
+                System.out.println("--------------------------------");
+                System.out.println( factura );
+                System.out.println("--------------------------------");
+            }
+        }
+
     }
 
     private void datosFacturaVista() {
