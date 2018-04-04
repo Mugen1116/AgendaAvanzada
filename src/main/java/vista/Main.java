@@ -8,6 +8,7 @@ import modelo.GuardarCargar.Cargar;
 import modelo.GuardarCargar.Guardar;
 import modelo.agenda.Agenda;
 import modelo.cliente.Cliente;
+import modelo.excepciones.NoHayClientes;
 
 import java.util.Scanner;
 
@@ -24,7 +25,7 @@ public class Main {
 
 
 
-    public static void ControladorMenu(){
+    public static void ControladorMenu() throws NoHayClientes {
         boolean exit = false;
 
         while ( !exit ) {
@@ -84,7 +85,7 @@ public class Main {
     //=================================================
     //---------------------MAIN------------------------
     //=================================================
-    public static void main(String[] args){
+    public static void main(String[] args) throws NoHayClientes {
         Agenda agenda = load();
         sc = new Scanner(System.in);
         vc = new VistaCliente(sc);

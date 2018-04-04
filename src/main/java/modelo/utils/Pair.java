@@ -25,6 +25,8 @@ package modelo.utils;
  * questions.
  */
 
+import java.io.Serializable;
+
 /** A generic class for pairs.
  *
  *  <p><b>This is NOT part of any supported API.
@@ -32,8 +34,9 @@ package modelo.utils;
  *  This code and its internal interfaces are subject to change or
  *  deletion without notice.</b>
  */
-public class Pair<A, B> {
+public class Pair<A, B> implements Serializable {
 
+    private static final long serialVersionUID = 3077231725065550688L;
     public final A fst;
     public final B snd;
 

@@ -2,6 +2,10 @@ package controlador.llamada;
 
 import modelo.cliente.Cliente;
 import modelo.conjuntos.GetConjunto;
+import modelo.excepciones.ClienteNoExiste;
+import modelo.excepciones.FechaInvalida;
+import modelo.excepciones.NoHayLlamadasCliente;
+import modelo.excepciones.NoHayLlamadasEntreFechas;
 import modelo.llamada.Llamada;
 
 import java.io.Serializable;
@@ -12,6 +16,8 @@ import java.util.List;
 
 public class LlamadaController implements Serializable{
 
+
+    private static final long serialVersionUID = -6928292017310305627L;
     private HashMap<Cliente, LinkedList<Llamada>> llamadas;
 
     public LlamadaController() {
@@ -39,18 +45,30 @@ public class LlamadaController implements Serializable{
     }
 
     //Listar las llamadas de un cliente
-    public LinkedList<Llamada> listaLlamadas (Cliente cliente){
-        if ( llamadas.containsKey(cliente) )
-            return llamadas.get(cliente);
-        else
-            return null;
+    public List<Llamada> listaLlamadas (Cliente cliente) throws NoHayLlamadasCliente, ClienteNoExiste {
+        if ( llamadas.containsKey(cliente) ) {
+            List<Llamada> listaLlamadas = llamadas.get(cliente);
+            if ( listaLlamadas.isEmpty() )
+                throw new NoHayLlamadasCliente();
+            return listaLlamadas;
+        }
+        throw new ClienteNoExiste();
+
+
 
     }
 
-    public List<Llamada> llamadasEntreFechas( Cliente cliente, Date una, Date otra){
-        return new GetConjunto<Llamada>().situadosEntre(
-                                            this.listaLlamadas(cliente), una, otra
-                                            );
+    public List<Llamada> llamadasEntreFechas( Cliente cliente, Date una, Date otra) throws NoHayLlamadasCliente, FechaInvalida, NoHayLlamadasEntreFechas {
+        if( una.compareTo(otra) >= 1 ){
+            throw new FechaInvalida();
+        }
+        List<Llamada> listaLlamadas = llamadas.get(cliente);
+        if ( listaLlamadas.isEmpty() )
+            throw new NoHayLlamadasCliente();
+        List<Llamada> listaDevolver = new GetConjunto<Llamada>().situadosEntre( listaLlamadas, una, otra);
+        if ( listaDevolver.isEmpty() )
+            throw new NoHayLlamadasEntreFechas();
+        return listaDevolver;
     }
 
 }

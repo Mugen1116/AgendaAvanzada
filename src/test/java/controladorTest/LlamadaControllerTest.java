@@ -3,6 +3,10 @@ package controladorTest;
 import controlador.llamada.LlamadaController;
 import modelo.cliente.Cliente;
 import modelo.direccion.Direccion;
+import modelo.excepciones.ClienteNoExiste;
+import modelo.excepciones.FechaInvalida;
+import modelo.excepciones.NoHayLlamadasCliente;
+import modelo.excepciones.NoHayLlamadasEntreFechas;
 import modelo.llamada.Llamada;
 import modelo.tarifa.Tarifa;
 import modelo.utils.DateUtils;
@@ -67,8 +71,20 @@ public class LlamadaControllerTest {
         lista.add(nueva);
         controlador.altaLlamada(cliente, nueva);
 
-        assertThat(controlador.listaLlamadas(cliente).equals(lista), is(true));
-        assertThat(controlador.listaLlamadas(cliente).equals(lista2), is (false));
+        try {
+            assertThat(controlador.listaLlamadas(cliente).equals(lista), is(true));
+        } catch (NoHayLlamadasCliente noHayLlamadasCliente) {
+            noHayLlamadasCliente.printStackTrace();
+        } catch (ClienteNoExiste clienteNoExiste) {
+            clienteNoExiste.printStackTrace();
+        }
+        try {
+            assertThat(controlador.listaLlamadas(cliente).equals(lista2), is (false));
+        } catch (NoHayLlamadasCliente noHayLlamadasCliente) {
+            noHayLlamadasCliente.printStackTrace();
+        } catch (ClienteNoExiste clienteNoExiste) {
+            clienteNoExiste.printStackTrace();
+        }
     }
 
     @Test
@@ -88,17 +104,41 @@ public class LlamadaControllerTest {
         Date hasta = DateUtils.asDate( LocalDate.of(2018, 4, 1) );
 
         //Probamos a filtrar entre fechas que sean validas
-        assertThat( controlador.llamadasEntreFechas(cliente, desde, hasta).size() , is(2) );
+        try {
+            assertThat( controlador.llamadasEntreFechas(cliente, desde, hasta).size() , is(2) );
+        } catch (NoHayLlamadasCliente noHayLlamadasCliente) {
+            noHayLlamadasCliente.printStackTrace();
+        } catch (FechaInvalida fechaInvalida) {
+            fechaInvalida.printStackTrace();
+        } catch (NoHayLlamadasEntreFechas noHayLlamadasEntreFechas) {
+            noHayLlamadasEntreFechas.printStackTrace();
+        }
 
         //Probamos a coger una sola llamada
         desde = DateUtils.asDate( LocalDate.of(2018, 1, 15) );
         hasta = DateUtils.asDate( LocalDate.of(2018, 2, 1) );
-        assertThat( controlador.llamadasEntreFechas(cliente, desde, hasta).size() , is(1) );
+        try {
+            assertThat( controlador.llamadasEntreFechas(cliente, desde, hasta).size() , is(1) );
+        } catch (NoHayLlamadasCliente noHayLlamadasCliente) {
+            noHayLlamadasCliente.printStackTrace();
+        } catch (FechaInvalida fechaInvalida) {
+            fechaInvalida.printStackTrace();
+        } catch (NoHayLlamadasEntreFechas noHayLlamadasEntreFechas) {
+            noHayLlamadasEntreFechas.printStackTrace();
+        }
 
         //Probamos a no coger ninguna
         desde = DateUtils.asDate( LocalDate.of(2018, 3, 15) );
         hasta = DateUtils.asDate( LocalDate.of(2018, 4, 1) );
-        assertThat( controlador.llamadasEntreFechas(cliente, desde, hasta).size() , is(0) );
+        try {
+            assertThat( controlador.llamadasEntreFechas(cliente, desde, hasta).size() , is(0) );
+        } catch (NoHayLlamadasCliente noHayLlamadasCliente) {
+            noHayLlamadasCliente.printStackTrace();
+        } catch (FechaInvalida fechaInvalida) {
+            fechaInvalida.printStackTrace();
+        } catch (NoHayLlamadasEntreFechas noHayLlamadasEntreFechas) {
+            noHayLlamadasEntreFechas.printStackTrace();
+        }
 
     }
 }

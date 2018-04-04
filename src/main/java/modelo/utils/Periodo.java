@@ -1,15 +1,18 @@
 package modelo.utils;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Date;
 
-public class Periodo {
+public class Periodo implements Serializable {
+
 
     //==================================================
     //-------------------ATRIBUTOS----------------------
     //==================================================
     private LocalDate inicio;
     private LocalDate fin;
+    private static final long serialVersionUID = -8392447847953403241L;
     //==================================================
     //-------------------END ATRIBUTOS------------------
     //==================================================

@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 public class Tarifa implements Serializable{
 
+    private static final long serialVersionUID = 4178039098460695702L;
     private float precio;
 
     public Tarifa () {

@@ -4,6 +4,10 @@ import controlador.factura.FacturaController;
 import controlador.llamada.LlamadaController;
 import modelo.cliente.Cliente;
 import modelo.direccion.Direccion;
+import modelo.excepciones.ClienteNoExiste;
+import modelo.excepciones.NoExisteFactura;
+import modelo.excepciones.NoExistenFacturasDeCliente;
+import modelo.excepciones.NoHayLlamadasCliente;
 import modelo.factura.Factura;
 import modelo.llamada.Llamada;
 import modelo.tarifa.Tarifa;
@@ -76,7 +80,14 @@ public class FacturaControllerTest {
     @Test
     public void emitirFacturaTest() {
 
-        Factura factura =  facturaController.emitirFactura(periodo, clientePruebas) ;
+        Factura factura = null;
+        try {
+            factura = facturaController.emitirFactura(periodo, clientePruebas);
+        } catch (NoHayLlamadasCliente noHayLlamadasCliente) {
+            noHayLlamadasCliente.printStackTrace();
+        } catch (ClienteNoExiste clienteNoExiste) {
+            clienteNoExiste.printStackTrace();
+        }
         assertThat( factura, notNullValue() );
 
         String nombre = "Nombre";
@@ -89,42 +100,104 @@ public class FacturaControllerTest {
         Tarifa tarifa = new Tarifa(0.05f);
         Cliente clienteInexistente = new Cliente(nombre, nif, direccion, email, fechaAlta, tarifa);
 
-        Factura factura_2 = facturaController.emitirFactura( periodo, clienteInexistente);
+        Factura factura_2 = null;
+        try {
+            factura_2 = facturaController.emitirFactura( periodo, clienteInexistente);
+        } catch (NoHayLlamadasCliente noHayLlamadasCliente) {
+            noHayLlamadasCliente.printStackTrace();
+        } catch (ClienteNoExiste clienteNoExiste) {
+            clienteNoExiste.printStackTrace();
+        }
         assertThat( factura_2, notNullValue() );
     }
 
     @Test
     public void listarFacturasTest() {
-        List<Factura> lista = facturaController.getFacturasCliente(clientePruebas);
+        List<Factura> lista = null;
+        try {
+            lista = facturaController.getFacturasCliente(clientePruebas);
+        } catch (NoExistenFacturasDeCliente noExistenFacturasDeCliente) {
+            noExistenFacturasDeCliente.printStackTrace();
+        }
         assertThat( lista.isEmpty(), is(true) );
-        facturaController.emitirFactura( periodo, clientePruebas);
-        facturaController.emitirFactura( periodo, clientePruebas);
-        assertThat( facturaController.getFacturasCliente(clientePruebas).size(), is(2));
+        try {
+            facturaController.emitirFactura( periodo, clientePruebas);
+        } catch (NoHayLlamadasCliente noHayLlamadasCliente) {
+            noHayLlamadasCliente.printStackTrace();
+        } catch (ClienteNoExiste clienteNoExiste) {
+            clienteNoExiste.printStackTrace();
+        }
+        try {
+            facturaController.emitirFactura( periodo, clientePruebas);
+        } catch (NoHayLlamadasCliente noHayLlamadasCliente) {
+            noHayLlamadasCliente.printStackTrace();
+        } catch (ClienteNoExiste clienteNoExiste) {
+            clienteNoExiste.printStackTrace();
+        }
+        try {
+            assertThat( facturaController.getFacturasCliente(clientePruebas).size(), is(2));
+        } catch (NoExistenFacturasDeCliente noExistenFacturasDeCliente) {
+            noExistenFacturasDeCliente.printStackTrace();
+        }
     }
 
     @Test
     public void getFacturaTest() {
-        assertThat( facturaController.getFactura("000"), is( (Object) null ) );
-        Factura factura = facturaController.emitirFactura(periodo, clientePruebas);
-        assertThat( facturaController.getFactura(factura.getUniqueID()), is( factura ) );
+        try {
+            assertThat( facturaController.getFactura("000"), is( (Object) null ) );
+        } catch (NoExisteFactura noExisteFactura) {
+            noExisteFactura.printStackTrace();
+        }
+        Factura factura = null;
+        try {
+            factura = facturaController.emitirFactura(periodo, clientePruebas);
+        } catch (NoHayLlamadasCliente noHayLlamadasCliente) {
+            noHayLlamadasCliente.printStackTrace();
+        } catch (ClienteNoExiste clienteNoExiste) {
+            clienteNoExiste.printStackTrace();
+        }
+        try {
+            assertThat( facturaController.getFactura(factura.getUniqueID()), is( factura ) );
+        } catch (NoExisteFactura noExisteFactura) {
+            noExisteFactura.printStackTrace();
+        }
     }
     @Test
     public void entreFechasTest() {
         //Creamos dos facturas de un cliente y cambiamos la fecha de emisión para poder filtrar
-        facturaController.emitirFactura( periodo, clientePruebas );
-        facturaController.emitirFactura( periodo, clientePruebas );
+        try {
+            facturaController.emitirFactura( periodo, clientePruebas );
+        } catch (NoHayLlamadasCliente noHayLlamadasCliente) {
+            noHayLlamadasCliente.printStackTrace();
+        } catch (ClienteNoExiste clienteNoExiste) {
+            clienteNoExiste.printStackTrace();
+        }
+        try {
+            facturaController.emitirFactura( periodo, clientePruebas );
+        } catch (NoHayLlamadasCliente noHayLlamadasCliente) {
+            noHayLlamadasCliente.printStackTrace();
+        } catch (ClienteNoExiste clienteNoExiste) {
+            clienteNoExiste.printStackTrace();
+        }
 
         Date desde = DateUtils.asDate( LocalDate.of(2017, 12, 30) );
         Date hasta = DateUtils.asDate( LocalDate.of(2018, 4, 1) );
 
-        assertThat( facturaController.facturasEntreFechas( clientePruebas, desde, hasta).size() , is(2) );
+        try {
+            assertThat( facturaController.facturasEntreFechas( clientePruebas, desde, hasta).size() , is(2) );
+        } catch (NoExistenFacturasDeCliente noExistenFacturasDeCliente) {
+            noExistenFacturasDeCliente.printStackTrace();
+        }
 
         //Filtramos en una fecha que no coge la fecha de emisión
         desde = DateUtils.asDate( LocalDate.of(2019, 4, 1) );
         hasta = DateUtils.asDate( LocalDate.of(2019, 4, 4) );
 
-        assertThat( facturaController.facturasEntreFechas( clientePruebas, desde, hasta).size() , is(0) );
-
+        try {
+            assertThat( facturaController.facturasEntreFechas( clientePruebas, desde, hasta).size() , is(0) );
+        } catch (NoExistenFacturasDeCliente noExistenFacturasDeCliente) {
+            noExistenFacturasDeCliente.printStackTrace();
+        }
 
 
     }

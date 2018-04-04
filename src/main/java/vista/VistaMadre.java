@@ -2,6 +2,8 @@ package vista;
 
 import controlador.cliente.ClienteController;
 import modelo.cliente.Cliente;
+import modelo.excepciones.ClienteNoExiste;
+import modelo.excepciones.NoHayClientes;
 import modelo.utils.DateUtils;
 
 import java.time.LocalDate;
@@ -24,7 +26,13 @@ public abstract class VistaMadre {
         System.out.println("-----------------------------------------------");
         System.out.println("-----------------------------------------------");
         System.out.println( muestraOpciones() );
-        recogeRespuesta();
+        try {
+            recogeRespuesta();
+        } catch (ClienteNoExiste clienteNoExiste) {
+            clienteNoExiste.printStackTrace();
+        } catch (NoHayClientes noHayClientes) {
+            noHayClientes.printStackTrace();
+        }
         System.out.println("-----------------------------------------------");
         System.out.println("-----------------------------------------------");
     }
@@ -41,13 +49,15 @@ public abstract class VistaMadre {
 
     Cliente getCliente(Scanner sc ) {
         System.out.printf("NIF del cliente: ");
-        Cliente cliente = clienteController.getCliente( sc.nextLine() );
-        if ( cliente == null ){
-            System.out.println("No existe el cliente introduciendo, vuelva a intentarlo");
+        Cliente cliente = null;
+        try {
+            cliente = clienteController.getCliente( sc.nextLine() );
+        } catch (ClienteNoExiste clienteNoExiste) {
+            System.err.println( clienteNoExiste.getMessage() );
         }
         return cliente;
     }
     abstract String muestraOpciones() ;
 
-    abstract String recogeRespuesta();
+    abstract String recogeRespuesta() throws NoHayClientes, ClienteNoExiste;
 }

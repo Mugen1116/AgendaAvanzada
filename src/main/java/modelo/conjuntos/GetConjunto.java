@@ -1,11 +1,14 @@
 package modelo.conjuntos;
 import modelo.utils.DateInterface;
 
+import java.io.Serializable;
 import java.util.*;
 
 
 //Devuelve un conjunto de objetos situados entre dos fechas
-public class GetConjunto<T extends DateInterface> {
+public class GetConjunto<T extends DateInterface> implements Serializable {
+
+    private static final long serialVersionUID = -98556438460403684L;
 
     public GetConjunto () {
         super();

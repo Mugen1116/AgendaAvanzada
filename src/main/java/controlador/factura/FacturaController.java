@@ -1,6 +1,10 @@
 package controlador.factura;
 
 import modelo.conjuntos.GetConjunto;
+import modelo.excepciones.ClienteNoExiste;
+import modelo.excepciones.NoExisteFactura;
+import modelo.excepciones.NoExistenFacturasDeCliente;
+import modelo.excepciones.NoHayLlamadasCliente;
 import modelo.utils.Pair;
 import controlador.llamada.LlamadaController;
 import modelo.cliente.Cliente;
@@ -14,6 +18,7 @@ import java.util.*;
 
 public class FacturaController implements Serializable{
 
+
     /*
      * * Utilizamos Pair a modo de tupla para almacenar la factura y el cliente
      * * fst Factura
@@ -22,7 +27,7 @@ public class FacturaController implements Serializable{
 
 
 
-
+    private static final long serialVersionUID = 1052731895718682574L;
     private HashMap<String, Pair< Factura, Cliente> > facturas;
     private LlamadaController llamadasController;
 
@@ -38,7 +43,7 @@ public class FacturaController implements Serializable{
 
     //Emitir Factura para un clienteen funcion a sus Llamadas
     //Devuelve el importe de la factura
-    public Factura emitirFactura(Periodo periodo, Cliente cliente){
+    public Factura emitirFactura(Periodo periodo, Cliente cliente) throws NoHayLlamadasCliente, ClienteNoExiste {
         Factura factura = new Factura();
         factura.setPeriodo( periodo );
         factura.setTarifa( cliente.getTarifa() );
@@ -67,11 +72,12 @@ public class FacturaController implements Serializable{
     }
 
     //Datos de una factura segun su codigo
-    public Factura getFactura ( String codigo ){
+    public Factura getFactura ( String codigo ) throws NoExisteFactura {
         if (facturas.containsKey( codigo) )
             return facturas.get( codigo ).fst;
-        else
-            return null;
+        else {
+            throw new NoExisteFactura();
+        }
     }
 
     //
@@ -86,7 +92,7 @@ public class FacturaController implements Serializable{
      * * En este momento el método hará una busqueda secuencial
      */
 
-    public List<Factura> getFacturasCliente ( Cliente cliente ) {
+    public List<Factura> getFacturasCliente ( Cliente cliente ) throws NoExistenFacturasDeCliente {
         List<Factura> listafacturas = new LinkedList<>();
         for (Map.Entry<String, Pair<Factura, Cliente>> entry : facturas.entrySet() ){
             if ( entry.getValue().snd.equals(cliente) ) {
@@ -94,10 +100,14 @@ public class FacturaController implements Serializable{
             }
         }
 
+        if ( listafacturas.isEmpty() ){
+            throw new NoExistenFacturasDeCliente();
+        }
+
         return listafacturas;
     }
 
-    public List<Factura> facturasEntreFechas( Cliente cliente, Date una, Date otra ){
+    public List<Factura> facturasEntreFechas( Cliente cliente, Date una, Date otra ) throws NoExistenFacturasDeCliente {
 
         return new GetConjunto<Factura>().situadosEntre(
                                         this.getFacturasCliente(cliente), una, otra

@@ -3,9 +3,14 @@ package vista;
 import controlador.cliente.ClienteController;
 import controlador.llamada.LlamadaController;
 import modelo.cliente.Cliente;
+import modelo.excepciones.ClienteNoExiste;
+import modelo.excepciones.FechaInvalida;
+import modelo.excepciones.NoHayLlamadasCliente;
+import modelo.excepciones.NoHayLlamadasEntreFechas;
 import modelo.llamada.Llamada;
 import modelo.utils.DateUtils;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
@@ -13,7 +18,8 @@ import java.util.List;
 import java.util.Scanner;
 
 
-public class VistaLlamada extends VistaMadre {
+public class VistaLlamada extends VistaMadre implements Serializable {
+    private static final long serialVersionUID = 681701765107216920L;
 
 
     //==================================================
@@ -89,8 +95,17 @@ public class VistaLlamada extends VistaMadre {
             Date inicio = getFecha( sc );
             System.out.println("Fecha fin (Hasta cuándo)");
             Date fin = getFecha( sc );
-            List<Llamada> llamadas = llamadaController.llamadasEntreFechas( cliente, inicio, fin);
-            this.listaLlamadas( llamadas );
+            try {
+                List<Llamada> llamadas = llamadaController.llamadasEntreFechas(cliente, inicio, fin);
+                this.listaLlamadas(llamadas);
+            }
+            catch( NoHayLlamadasEntreFechas e) {
+                System.err.println( e.getMessage() );
+            } catch (NoHayLlamadasCliente noHayLlamadasCliente) {
+                System.err.println( noHayLlamadasCliente.getMessage());
+            } catch (FechaInvalida fechaInvalida) {
+                System.err.println( fechaInvalida.getMessage() );
+            }
         }
     }
 
@@ -117,23 +132,27 @@ public class VistaLlamada extends VistaMadre {
     private void listaLlamadasVista(){
         System.out.println("Listado de llamadas de un cliente");
         Cliente cliente = getCliente( sc );
-        if ( cliente != null ){
-            List<Llamada> llamadas = llamadaController.listaLlamadas( cliente);
-            this.listaLlamadas( llamadas );
+        List<Llamada> llamadas = null;
+        try {
+            llamadas = llamadaController.listaLlamadas( cliente);
+        } catch (NoHayLlamadasCliente noHayLlamadasCliente) {
+            System.err.println( noHayLlamadasCliente.getMessage() );
+        } catch (ClienteNoExiste e) {
+            System.err.println( e.getMessage() );
         }
+        this.listaLlamadas( llamadas );
+
 
     }
     private void listaLlamadas ( List<Llamada> llamadas){
-        if ( llamadas == null || llamadas.size() == 0 )
-            System.out.println("Este cliente no tiene llamadas hechas con los datos introducidos");
-        else {
-            System.out.println("Llamadas realizadas: ");
+
+        System.out.println("Llamadas realizadas: ");
+        System.out.println("-------------------------------");
+        for (Llamada llamada : llamadas ){
+            System.out.println(llamada);
             System.out.println("-------------------------------");
-            for (Llamada llamada : llamadas ){
-                System.out.println(llamada);
-                System.out.println("-------------------------------");
-            }
         }
+
     }
 
 

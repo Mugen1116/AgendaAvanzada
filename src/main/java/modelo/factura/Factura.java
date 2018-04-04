@@ -12,6 +12,7 @@ import java.util.UUID;
 public class Factura implements DateInterface, Serializable{
 
 
+
     //==================================================
     //-------------------ATRIBUTOS----------------------
     //==================================================
@@ -22,6 +23,7 @@ public class Factura implements DateInterface, Serializable{
     private Periodo periodo;
     private float importe;
     private Cliente cliente;
+    private static final long serialVersionUID = -3270809948983768958L;
     //==================================================
     //-----------------END ATRIBUTOS--------------------
     //==================================================
