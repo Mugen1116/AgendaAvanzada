@@ -1,15 +1,13 @@
 package modelo.tarifa;
 
+import modelo.llamada.Llamada;
+
 import java.io.Serializable;
 
-public class Tarifa implements Serializable{
+public abstract class Tarifa implements Serializable{
 
     private static final long serialVersionUID = 4178039098460695702L;
     private float precio;
-
-    public Tarifa () {
-        this.precio =  0.05f;
-    }
 
     public Tarifa ( float precio ) {
         this.precio = precio;
@@ -18,9 +16,7 @@ public class Tarifa implements Serializable{
         return precio;
     }
 
-    public void setPrecio(float precio) {
-        this.precio = precio;
-    }
+    public abstract float getPrecioLlamada(Llamada llamada);
 
     @Override
     public String toString () {

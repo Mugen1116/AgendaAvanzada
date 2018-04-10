@@ -2,6 +2,7 @@ package modelo.cliente;
 
 import modelo.direccion.Direccion;
 import modelo.tarifa.Tarifa;
+import modelo.tarifa.TarifaBasica;
 import modelo.utils.DateInterface;
 
 import java.io.Serializable;
@@ -29,7 +30,7 @@ public class Cliente implements DateInterface, Serializable {
     //==================================================
     public Cliente(){
         super();
-        this.tarifa = new Tarifa();
+        this.tarifa = new TarifaBasica();
         this.fechaAlta = new Date();
     }
     public Cliente(String nombre, String NIF, Direccion direccion, String email, Date fechaAlta, Tarifa tarifa) {
