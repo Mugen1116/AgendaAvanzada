@@ -3,12 +3,14 @@ package modelo.direccion;
 import java.io.Serializable;
 
 public class Direccion implements Serializable{
+
     //==================================================
     //-------------------ATRIBUTOS----------------------
     //==================================================
     private int codigoPostal;
     private String provincia;
     private String poblacion;
+    private static final long serialVersionUID = 7809069911800211254L;
     //==================================================
     //-------------------END ATRIBUTOS------------------
     //==================================================

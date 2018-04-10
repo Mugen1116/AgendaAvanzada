@@ -4,7 +4,11 @@ import controlador.cliente.ClienteController;
 import controlador.factura.FacturaController;
 import controlador.llamada.LlamadaController;
 import es.uji.belfern.generador.GeneradorDatosINE;
+import modelo.GuardarCargar.Cargar;
+import modelo.GuardarCargar.Guardar;
+import modelo.agenda.Agenda;
 import modelo.cliente.Cliente;
+import modelo.excepciones.NoHayClientes;
 
 import java.util.Scanner;
 
@@ -21,7 +25,7 @@ public class Main {
 
 
 
-    public static void ControladorMenu(){
+    public static void ControladorMenu() throws NoHayClientes {
         boolean exit = false;
 
         while ( !exit ) {
@@ -46,6 +50,9 @@ public class Main {
                     vf.ejecuta();
                     break;
                 case "Q":
+                    //Guardando
+                    save();
+                    System.out.println("Guardando información...");
                     exit = true;
                     break;
                 default:
@@ -58,15 +65,37 @@ public class Main {
         System.out.println("==================================");
     }
 
-
+    private static void save() {
+        System.out.println("Se va a guardar la información.");
+        System.out.println("Archivo actual: \"Agenda.bin\"");
+        String archivo = "Agenda.bin";
+        Guardar guardar = new Guardar();
+        Agenda agenda = new Agenda();
+        agenda.setClientes( vc.getClienteController().getClientes() );
+        agenda.setFacturas( vf.getFacturaController().getFacturas() );
+        agenda.setLlamadas( vl.getLlamadaController().getLlamadas() );
+        guardar.guardar( archivo, agenda );
+    }
+    private static Agenda load() {
+        System.out.println("Cargando datos.");
+        Cargar cargar = new Cargar();
+        Agenda agenda = cargar.cargar( "Agenda.bin");
+        return agenda;
+    }
     //=================================================
     //---------------------MAIN------------------------
     //=================================================
-    public static void main(String[] args){
+    public static void main(String[] args) throws NoHayClientes {
+        Agenda agenda = load();
         sc = new Scanner(System.in);
-        vc = new VistaCliente( sc );
-        vl = new VistaLlamada( sc, vc.getClienteController() );
-        vf = new VistaFactura(sc, vl.getLlamadaController(), vc.getClienteController() );
+        vc = new VistaCliente(sc);
+        vl = new VistaLlamada(sc, vc.getClienteController());
+        vf = new VistaFactura(sc, vl.getLlamadaController(), vc.getClienteController());
+        if ( agenda != null ){
+            vc.getClienteController().setClientes( agenda.getClientes() );
+            vl.getLlamadaController().setLlamadas( agenda.getLlamadas() );
+            vf.getFacturaController().setFacturas( agenda.getFacturas() );
+        }
         ControladorMenu();
 
 

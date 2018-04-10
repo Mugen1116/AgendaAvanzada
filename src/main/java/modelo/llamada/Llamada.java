@@ -7,12 +7,14 @@ import java.util.Date;
 
 public class Llamada implements DateInterface, Serializable{
 
+
     //==================================================
     //-------------------ATRIBUTOS----------------------
     //==================================================
     private int telefonoLlamado;
     private Date diaHora;
     private float duracion;
+    private static final long serialVersionUID = -3560771105228664011L;
     //==================================================
     //-------------------END ATRIBUTOS------------------
     //==================================================

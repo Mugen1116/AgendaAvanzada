@@ -4,7 +4,12 @@ import controlador.cliente.ClienteController;
 import controlador.factura.FacturaController;
 import controlador.llamada.LlamadaController;
 import modelo.cliente.Cliente;
+import modelo.excepciones.ClienteNoExiste;
+import modelo.excepciones.NoExisteFactura;
+import modelo.excepciones.NoExistenFacturasDeCliente;
+import modelo.excepciones.NoHayLlamadasCliente;
 import modelo.factura.Factura;
+import modelo.utils.DateUtils;
 import modelo.utils.Periodo;
 
 import java.time.LocalDate;
@@ -18,9 +23,10 @@ public class VistaFactura extends  VistaMadre {
     //==================================================
     //-------------------ATRIBUTOS----------------------
     //==================================================
-    Scanner sc;
+
+    //Super
     FacturaController facturaController;
-    ClienteController clienteController;
+
 
     //==================================================
     //-------------------END ATRIBUTOS------------------
@@ -52,7 +58,8 @@ public class VistaFactura extends  VistaMadre {
         String menu =
                 "E - Emitir Factura para un cliente\n" +
                 "F - Obtener datos de una Factura\n" +
-                "A -  Ver Facturas de un Cliente\n" +
+                "A - Ver Facturas de un Cliente\n" +
+                "L - Listar Facturas de un Cliente emitidas entre dos fechas\n" +
                 "Q - Salir";
         return menu;
     }
@@ -72,6 +79,9 @@ public class VistaFactura extends  VistaMadre {
             case "A":
                 this.facturasClienteVista();
                 break;
+            case "L":
+                this.listaFacturasEntreFechasVista();
+                break;
             case "Q":
                 System.out.println("Cancelando");
                 break;
@@ -83,56 +93,91 @@ public class VistaFactura extends  VistaMadre {
         return resp;
     }
 
+    private void listaFacturasEntreFechasVista() {
+        System.out.println("Listar las facturas de un cliente emitidas entre dos fechas");
+        Cliente cliente = getCliente(sc);
+        System.out.println("Fecha inicio (Desde cuándo)");
+        Date inicio = getFecha( sc );
+        System.out.println("Fecha fin (Hasta cuándo)");
+        Date fin = getFecha( sc );
+        List<Factura> facturas = null;
+        try {
+            facturas = facturaController.facturasEntreFechas(cliente, inicio, fin);
+        } catch (NoExistenFacturasDeCliente e) {
+            System.err.println( e.getMessage() );
+        }
+        listaFacturas( facturas );
+    }
+
     private void facturasClienteVista() {
         System.out.println("Listar todas las facturas de un cliente");
-        System.out.printf("NIF del cliente: ");
-        List<Factura> facturas = facturaController.getFacturasCliente(
-                                    clienteController.getCliente( sc.nextLine() )
-                                    );
-        for (Factura factura : facturas ){
-            System.out.println("...............................");
-            System.out.println( factura );
-            System.out.println("...............................");
+        try {
+            List<Factura> facturas = facturaController.getFacturasCliente(getCliente(sc));
+            listaFacturas(facturas);
         }
+        catch( NoExistenFacturasDeCliente e ){
+            System.err.println( e.getMessage() );
+        }
+
+    }
+    private void listaFacturas( List<Factura> facturas ) {
+        if ( facturas == null || facturas.size() == 0){
+            System.out.println("No existen facturas asociadas con los datos introducidos");
+        }
+        else {
+            for (Factura factura : facturas ){
+                System.out.println("--------------------------------");
+                System.out.println( factura );
+                System.out.println("--------------------------------");
+            }
+        }
+
     }
 
     private void datosFacturaVista() {
         System.out.println("Obtener información de una Factura");
         System.out.printf("Introduzca el identificador de la factura a consultar: ");
-        Factura factura = facturaController.getFactura( sc.nextLine() );
-        System.out.println(factura);
+        try {
+            Factura factura = facturaController.getFactura( sc.nextLine() );
+            System.out.println(factura);
+        }
+        catch ( NoExisteFactura e ){
+            System.err.println( e.getMessage() );
+        }
+
     }
 
     private void emitirFacturaVista() {
         System.out.println("Emitir nueva factura");
         System.out.println("Introduzca la fecha de inicio de facturación");
-        System.out.printf("Día: ");
-        int dia = Integer.parseInt( sc.nextLine() );
-        System.out.printf("Número de Mes(1-12): ");
-        int mes = Integer.parseInt( sc.nextLine() );
-        System.out.printf("Año (EJ: 2018): ");
-        int anyo = Integer.parseInt( sc.nextLine() );
-        //Año, Mes, Dia
-        LocalDate fechainicio = LocalDate.of( anyo, mes, dia);
+        LocalDate fechainicio  = DateUtils.asLocalDate( getFecha( sc ) );
         System.out.println("Introduzca la fecha de fin de facturación");
-        System.out.printf("Día: ");
-        dia = Integer.parseInt( sc.nextLine() );
-        System.out.printf("Número de Mes(1-12): ");
-        mes = Integer.parseInt( sc.nextLine() );
-        System.out.printf("Año (EJ: 2018): ");
-        anyo = Integer.parseInt( sc.nextLine() );
-        //Año, Mes, Dia
-        LocalDate fechafin = LocalDate.of( anyo, mes, dia);
+        LocalDate fechafin = DateUtils.asLocalDate( getFecha( sc ) );
+
         Periodo periodo = new Periodo( fechainicio , fechafin );
         System.out.println("Información del client");
         System.out.printf("NIF del cliente para facturar: ");
-        Cliente cliente = clienteController.getCliente( sc.nextLine() );
+        Cliente cliente = null;
+        try {
+            cliente = clienteController.getCliente( sc.nextLine() );
+        } catch (ClienteNoExiste e) {
+            System.err.println( e.getMessage() );
+        }
         System.out.println("Emitiendo factura...");
-        Factura exito = facturaController.emitirFactura( periodo, cliente );
+        Factura exito = null;
+        try {
+            exito = facturaController.emitirFactura( periodo, cliente );
+        } catch (NoHayLlamadasCliente noHayLlamadasCliente) {
+            noHayLlamadasCliente.printStackTrace();
+        } catch (ClienteNoExiste clienteNoExiste) {
+            System.err.println( clienteNoExiste.getMessage() );
+        }
         if (exito != null )
             System.out.println("Factura emitida con éxito, ID: " + exito.getUniqueID() );
         else System.out.println("Error al emitir la factura, intentelo de nuevo");
     }
+
+    public FacturaController getFacturaController() { return facturaController; }
 
     //==================================================
     //--------------------END METHODS-------------------

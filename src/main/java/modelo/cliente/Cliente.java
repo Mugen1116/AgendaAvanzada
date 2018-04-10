@@ -9,9 +9,11 @@ import java.util.Date;
 
 public class Cliente implements DateInterface, Serializable {
 
+
     //==================================================
     //-------------------ATRIBUTOS----------------------
     //==================================================
+    private static final long serialVersionUID = 7296563457500384738L;
     private String nombre;
     private String NIF;
     private Direccion direccion;

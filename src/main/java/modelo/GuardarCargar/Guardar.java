@@ -1,26 +1,29 @@
 package modelo.GuardarCargar;
 
-import controlador.cliente.ClienteController;
+import modelo.agenda.Agenda;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
+import java.io.*;
 
 public class Guardar implements Serializable{
 
-    private static final long serialVersionUID = ;
+    private static final long serialVersionUID = 6795577305527676665L;
 
-    try {
+    public void guardar ( String path, Agenda agenda ) {
+        try {
 
-        FileOutputStream fos = new FileOutputStream("agenda.bin");
-        ObjectOutputStream oos = new ObjectOutputStream(fos);
-        oos.writeObject(agenda);
-        oos.close();
+            FileOutputStream fos = new FileOutputStream( path );
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(agenda);
+            oos.close();
 
-    } catch (FileNotFoundException e) {
-        e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+
+
 
 
 
