@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 public class Cargar implements Serializable{
 
-    private static final long serialVersionUID =
+    private static final long serialVersionUID = ;
 
     try {
 

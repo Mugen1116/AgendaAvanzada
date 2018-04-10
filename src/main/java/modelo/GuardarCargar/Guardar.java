@@ -1,5 +1,7 @@
 package modelo.GuardarCargar;
 
+import controlador.cliente.ClienteController;
+
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
@@ -7,7 +9,7 @@ import java.io.Serializable;
 
 public class Guardar implements Serializable{
 
-    private static final long serialVersionUID =
+    private static final long serialVersionUID = ;
 
     try {
 
