@@ -18,4 +18,8 @@ public abstract class TarifaDecorada extends Tarifa implements Serializable {
       return this.tarifa;
   }
 
+    @Override
+    public String toString() {
+      return tarifa.toString();
+    }
 }
