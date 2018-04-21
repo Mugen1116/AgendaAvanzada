@@ -1,7 +1,7 @@
 package vista;
 
 import com.sun.deploy.util.SessionState;
-import com.sun.tools.doclets.formats.html.SourceToHTMLConverter;
+//import com.sun.tools.doclets.formats.html.SourceToHTMLConverter;
 import controlador.cliente.ClienteController;
 import modelo.cliente.Cliente;
 import modelo.cliente.Empresa;
@@ -13,6 +13,7 @@ import modelo.utils.DateUtils;
 
 import java.net.Inet4Address;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
@@ -110,9 +111,9 @@ public class VistaCliente extends VistaMadre {
     private void listarClientesFechasVista() {
         System.out.println("Seleccione las fechas entre las que se quiere filtrar");
         System.out.println("Fecha de Inicio (Desde cuándo)");
-        Date inicio = getFecha( sc );
+        LocalDateTime inicio = getFecha( sc );
         System.out.println("Fecha de Fin (Hasta cuándo)");
-        Date fin = getFecha( sc );
+        LocalDateTime fin = getFecha( sc );
         try {
             List<Cliente> clientes = clienteController.clientesEntreFechas(inicio, fin);
             System.out.println("------------------------------");
@@ -140,9 +141,9 @@ public class VistaCliente extends VistaMadre {
             System.out.println("Tarifa actual del cliente: " + cliente.getTarifa() );
             System.out.printf("Introduzca nueva tarifa (centimos/minuto) Ej: 0.10 : ");
             float precio = Float.parseFloat( sc.nextLine() );
-            clienteController.cambiarTarifa(
-                                cliente, new Tarifa( precio )
-                                );
+//            clienteController.cambiarTarifa(
+//                                cliente, new Tarifa( precio )
+//                                );
         }
         catch(ClienteNoExiste e) {
                 System.err.println( e.getMessage() );

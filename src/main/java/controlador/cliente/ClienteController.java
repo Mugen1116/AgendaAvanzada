@@ -6,6 +6,7 @@ import modelo.excepciones.*;
 import modelo.tarifa.Tarifa;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.*;
 
 public class ClienteController implements Serializable {
@@ -74,7 +75,7 @@ public class ClienteController implements Serializable {
     }
 
     //Devolver listado Clientes entre dos fechas
-    public List<Cliente> clientesEntreFechas( Date una, Date otra ) throws FechaInvalida, NoHayClientes, NoHayClientesEntreFechas {
+    public List<Cliente> clientesEntreFechas(LocalDateTime una, LocalDateTime otra ) throws FechaInvalida, NoHayClientes, NoHayClientesEntreFechas {
 
         //Recuperamos todos los clientes disponibles en el mapa
         //La devolverá vacía si no se encuentran clientes entre esas fechas

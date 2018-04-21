@@ -2,10 +2,12 @@ package modelo.factura;
 
 import modelo.cliente.Cliente;
 import modelo.tarifa.Tarifa;
+import modelo.tarifa.TarifaBasica;
 import modelo.utils.DateInterface;
 import modelo.utils.Periodo;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.UUID;
 
@@ -19,7 +21,7 @@ public class Factura implements DateInterface, Serializable{
     private Tarifa tarifa;
     //Si se cambia la tarifa se aplica en la siguiente tarifa
     private String uniqueID;
-    private Date fechaEmision;
+    private LocalDateTime fechaEmision;
     private Periodo periodo;
     private float importe;
     private Cliente cliente;
@@ -38,8 +40,8 @@ public class Factura implements DateInterface, Serializable{
     }
     public Factura ( Periodo periodo, float importe){
         this.uniqueID = UUID.randomUUID().toString();
-        this.tarifa = new Tarifa();
-        this.fechaEmision = new Date();
+        this.tarifa = new TarifaBasica();
+        this.fechaEmision = LocalDateTime.now();
         this.periodo = periodo;
         this.importe = importe;
 
@@ -55,8 +57,8 @@ public class Factura implements DateInterface, Serializable{
     public void setTarifa(Tarifa tarifa) { this.tarifa = tarifa; }
     public String getUniqueID() { return uniqueID; }
     public void setUniqueID(String uniqueID) { this.uniqueID = uniqueID; }
-    public Date getFechaEmision() { return fechaEmision; }
-    public void setFechaEmision(Date fechaEmision) { this.fechaEmision = fechaEmision; }
+    public LocalDateTime getFechaEmision() { return fechaEmision; }
+    public void setFechaEmision(LocalDateTime fechaEmision) { this.fechaEmision = fechaEmision; }
     public Periodo getPeriodo() { return periodo; }
     public void setPeriodo(Periodo periodo) { this.periodo = periodo; }
     public float getImporte() { return importe; }
@@ -80,7 +82,7 @@ public class Factura implements DateInterface, Serializable{
                 + "\nImporte: " + this.importe;
     }
 
-    public Date getFecha() {
+    public LocalDateTime getFecha() {
         return this.fechaEmision;
     }
     //==================================================

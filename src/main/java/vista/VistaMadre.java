@@ -7,6 +7,8 @@ import modelo.excepciones.NoHayClientes;
 import modelo.utils.DateUtils;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.Scanner;
 
@@ -37,14 +39,33 @@ public abstract class VistaMadre {
         System.out.println("-----------------------------------------------");
     }
 
-    Date getFecha( Scanner sc ) {
+
+    LocalDateTime getFecha( Scanner sc ) {
         System.out.printf("Día: ");
         int dia = Integer.parseInt( sc.nextLine() );
         System.out.printf("Número de Mes(1-12): ");
         int mes = Integer.parseInt( sc.nextLine() );
         System.out.printf("Año (EJ: 2018): ");
         int anyo = Integer.parseInt( sc.nextLine() );
-        return  DateUtils.asDate( LocalDate.of(anyo, mes, dia) );
+        LocalDate date = LocalDate.of(anyo, mes, dia);
+        LocalTime time = LocalTime.of(0,0);
+        return LocalDateTime.of( date, time);
+        //return  DateUtils.asDate( LocalDate.of(anyo, mes, dia) );
+    }
+
+    LocalDateTime getFechaDiaHora ( Scanner sc ) {
+
+        LocalDate date = getFecha( sc ).toLocalDate();
+        System.out.println("Hora: ");
+        int hour = Integer.parseInt( sc.nextLine() );
+        System.out.println("Minuto: ");
+        int minut = Integer.parseInt( sc.nextLine() );
+        LocalTime time = LocalTime.of( hour, minut);
+
+        return LocalDateTime.of( date, time);
+
+
+
     }
 
     Cliente getCliente(Scanner sc ) {

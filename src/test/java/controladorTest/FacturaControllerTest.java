@@ -11,6 +11,7 @@ import modelo.excepciones.NoHayLlamadasCliente;
 import modelo.factura.Factura;
 import modelo.llamada.Llamada;
 import modelo.tarifa.Tarifa;
+import modelo.tarifa.TarifaBasica;
 import modelo.utils.DateUtils;
 import modelo.utils.Periodo;
 import org.junit.jupiter.api.AfterEach;
@@ -18,13 +19,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.IsNull.notNullValue;
+import static org.hamcrest.core.IsNull.*;
 
 public class FacturaControllerTest {
 
@@ -41,10 +43,8 @@ public class FacturaControllerTest {
         String nif = "00000000A";
         Direccion direccion = new Direccion();
         String email = "email@email.com";
-        LocalDate alta = LocalDate.of( 2018, 1, 1);
-        Date date = Date.from(alta.atStartOfDay(ZoneId.systemDefault()).toInstant());
-        Date fechaAlta = date;
-        Tarifa tarifa = new Tarifa(0.05f);
+        LocalDateTime fechaAlta = LocalDateTime.of( 2018, 1, 1, 0, 0);
+        Tarifa tarifa = new TarifaBasica();
         clientePruebas = new Cliente(nombre, nif, direccion, email, fechaAlta, tarifa);
 
         llamadaController = new LlamadaController();
@@ -61,8 +61,8 @@ public class FacturaControllerTest {
         nueva.setDuracion( 5f );
         llamadaController.altaLlamada( clientePruebas, nueva);
 
-        LocalDate inicio = LocalDate.of(2018, 1, 1);
-        LocalDate fin = LocalDate.of(2018, 6, 1);
+        LocalDateTime inicio = LocalDateTime.of(2018, 1, 1, 0, 0);
+        LocalDateTime fin = LocalDateTime.of(2018, 6, 1, 0, 0);
         periodo = new Periodo();
         periodo.setInicio(inicio);
         periodo.setFin(fin);
@@ -94,10 +94,8 @@ public class FacturaControllerTest {
         String nif = "00000000B";
         Direccion direccion = new Direccion();
         String email = "email@email.com";
-        LocalDate alta = LocalDate.of( 2018, 1, 1);
-        Date date = Date.from(alta.atStartOfDay(ZoneId.systemDefault()).toInstant());
-        Date fechaAlta = date;
-        Tarifa tarifa = new Tarifa(0.05f);
+        LocalDateTime fechaAlta = LocalDateTime.of( 2018, 1, 1, 0, 0);
+        Tarifa tarifa = new TarifaBasica();
         Cliente clienteInexistente = new Cliente(nombre, nif, direccion, email, fechaAlta, tarifa);
 
         Factura factura_2 = null;
@@ -106,9 +104,11 @@ public class FacturaControllerTest {
         } catch (NoHayLlamadasCliente noHayLlamadasCliente) {
             noHayLlamadasCliente.printStackTrace();
         } catch (ClienteNoExiste clienteNoExiste) {
-            clienteNoExiste.printStackTrace();
+            System.err.println( clienteNoExiste.getMessage() );
+
         }
-        assertThat( factura_2, notNullValue() );
+        //No se puede emitir una factura a un cliente que no está en la base de datos
+        assertThat( factura_2, nullValue() );
     }
 
     @Test
@@ -117,9 +117,10 @@ public class FacturaControllerTest {
         try {
             lista = facturaController.getFacturasCliente(clientePruebas);
         } catch (NoExistenFacturasDeCliente noExistenFacturasDeCliente) {
-            noExistenFacturasDeCliente.printStackTrace();
+            System.err.println( noExistenFacturasDeCliente.getMessage() );
+
         }
-        assertThat( lista.isEmpty(), is(true) );
+        assertThat( lista, nullValue() );
         try {
             facturaController.emitirFactura( periodo, clientePruebas);
         } catch (NoHayLlamadasCliente noHayLlamadasCliente) {
@@ -137,7 +138,7 @@ public class FacturaControllerTest {
         try {
             assertThat( facturaController.getFacturasCliente(clientePruebas).size(), is(2));
         } catch (NoExistenFacturasDeCliente noExistenFacturasDeCliente) {
-            noExistenFacturasDeCliente.printStackTrace();
+            System.err.println( noExistenFacturasDeCliente.getMessage() );
         }
     }
 
@@ -146,7 +147,7 @@ public class FacturaControllerTest {
         try {
             assertThat( facturaController.getFactura("000"), is( (Object) null ) );
         } catch (NoExisteFactura noExisteFactura) {
-            noExisteFactura.printStackTrace();
+            System.err.println( noExisteFactura.getMessage());
         }
         Factura factura = null;
         try {
@@ -180,8 +181,8 @@ public class FacturaControllerTest {
             clienteNoExiste.printStackTrace();
         }
 
-        Date desde = DateUtils.asDate( LocalDate.of(2017, 12, 30) );
-        Date hasta = DateUtils.asDate( LocalDate.of(2018, 4, 1) );
+        LocalDateTime desde = LocalDateTime.of(2017, 12, 30,0,0) ;
+        LocalDateTime hasta = LocalDateTime.of(2018, 8, 1,0,0) ;
 
         try {
             assertThat( facturaController.facturasEntreFechas( clientePruebas, desde, hasta).size() , is(2) );
@@ -190,8 +191,8 @@ public class FacturaControllerTest {
         }
 
         //Filtramos en una fecha que no coge la fecha de emisión
-        desde = DateUtils.asDate( LocalDate.of(2019, 4, 1) );
-        hasta = DateUtils.asDate( LocalDate.of(2019, 4, 4) );
+        desde = LocalDateTime.of(2019, 4, 1,0,0) ;
+        hasta = LocalDateTime.of(2019, 4, 4,0,0) ;
 
         try {
             assertThat( facturaController.facturasEntreFechas( clientePruebas, desde, hasta).size() , is(0) );

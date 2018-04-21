@@ -12,6 +12,7 @@ import modelo.utils.DateUtils;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
@@ -92,9 +93,9 @@ public class VistaLlamada extends VistaMadre implements Serializable {
         Cliente cliente = getCliente( sc );
         if ( cliente != null ) {
             System.out.println("Fecha inicio (Desde cuándo)");
-            Date inicio = getFecha( sc );
+            LocalDateTime inicio = getFecha( sc );
             System.out.println("Fecha fin (Hasta cuándo)");
-            Date fin = getFecha( sc );
+            LocalDateTime fin = getFecha( sc );
             try {
                 List<Llamada> llamadas = llamadaController.llamadasEntreFechas(cliente, inicio, fin);
                 this.listaLlamadas(llamadas);
@@ -118,7 +119,7 @@ public class VistaLlamada extends VistaMadre implements Serializable {
             System.out.printf("Teléfono al que se ha llamado: ");
             int telefono = Integer.parseInt( sc.nextLine() );
             System.out.println("Cuando se ha hecho la llamada");
-            Date fecha = getFecha( sc );
+            LocalDateTime fecha = getFechaDiaHora( sc );
             System.out.printf("¿Cuánto duró la llamada? (En Segundos)");
             float duracion = Float.parseFloat( sc.nextLine() );
             Llamada llamada = new Llamada( telefono, fecha, duracion);

@@ -5,6 +5,7 @@ import modelo.excepciones.ClienteNoExiste;
 import modelo.excepciones.NoExisteFactura;
 import modelo.excepciones.NoExistenFacturasDeCliente;
 import modelo.excepciones.NoHayLlamadasCliente;
+import modelo.utils.DateUtils;
 import modelo.utils.Pair;
 import controlador.llamada.LlamadaController;
 import modelo.cliente.Cliente;
@@ -13,6 +14,8 @@ import modelo.llamada.Llamada;
 import modelo.utils.Periodo;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
 
@@ -47,15 +50,18 @@ public class FacturaController implements Serializable{
         Factura factura = new Factura();
         factura.setPeriodo( periodo );
         factura.setTarifa( cliente.getTarifa() );
-        factura.setFechaEmision( new Date());
+        factura.setFechaEmision( LocalDateTime.now() );
 
         //Ahora es necesario que recuperemos las llamadas del Cliente
         float importe = 0f;
         List<Llamada> llamadas = llamadasController.listaLlamadas(cliente);
         if ( llamadas != null ) {
             for (Llamada llamada : llamadas) {
-                Date inicioPeriodo = Date.from(periodo.getInicio().atStartOfDay(ZoneId.systemDefault()).toInstant());
-                Date finPeriodo = Date.from(periodo.getFin().atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+                //Date inicioPeriodo = Date.from(periodo.getInicio().toLocalDate().atStartOfDay(ZoneId.systemDefault()).toInstant());
+                LocalDateTime inicioPeriodo =  periodo.getInicio() ;
+                //Date finPeriodo = Date.from(periodo.getFin().toLocalDate().atStartOfDay(ZoneId.systemDefault()).toInstant());
+                LocalDateTime finPeriodo = periodo.getFin();
                 if (llamada.getFecha().compareTo(inicioPeriodo) >= 1
                         && llamada.getFecha().compareTo(finPeriodo) <= -1) {
                     importe += llamada.getDuracion() * cliente.getTarifa().getPrecio();
@@ -107,7 +113,7 @@ public class FacturaController implements Serializable{
         return listafacturas;
     }
 
-    public List<Factura> facturasEntreFechas( Cliente cliente, Date una, Date otra ) throws NoExistenFacturasDeCliente {
+    public List<Factura> facturasEntreFechas(Cliente cliente, LocalDateTime una, LocalDateTime otra ) throws NoExistenFacturasDeCliente {
 
         return new GetConjunto<Factura>().situadosEntre(
                                         this.getFacturasCliente(cliente), una, otra
