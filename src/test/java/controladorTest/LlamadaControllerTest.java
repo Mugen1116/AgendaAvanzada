@@ -18,6 +18,7 @@ import org.junit.jupiter.api.Test;
 import es.uji.belfern.generador.GeneradorDatosINE;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Date;
 import java.util.LinkedList;
@@ -43,10 +44,10 @@ public class LlamadaControllerTest {
         Direccion direccion = new Direccion();
         String email = "email";
         Date fechaAlta = new Date();
-        Tarifa tarifa = new Tarifa(0.0f);
+        /*Tarifa tarifa = new Tarifa(0.0f);
 
         cliente = new Cliente(nombre, nif, direccion, email, fechaAlta, tarifa);
-        cliente2 = new Cliente(nombre, nif, direccion, email, fechaAlta, tarifa);
+        cliente2 = new Cliente(nombre, nif, direccion, email, fechaAlta, tarifa);*/
     }
 
     @AfterEach
@@ -92,16 +93,17 @@ public class LlamadaControllerTest {
 
         //Registraremos dos llamadas para probar
         Llamada llamada = new Llamada();
-        llamada.setDiaHora( DateUtils.asDate( LocalDate.of(2018, 1, 30) ) );
+        LocalDateTime date = LocalDateTime.of(2018, 1, 30, 12, 50);
+        llamada.setDiaHora( date );
         controlador.altaLlamada( cliente, llamada );
 
         Llamada llamada2 = new Llamada();
-        llamada2.setDiaHora( DateUtils.asDate( LocalDate.of(2018, 2, 20) ) );
+        llamada2.setDiaHora(  LocalDateTime.of(2018, 1, 30, 22, 50) );
         controlador.altaLlamada( cliente, llamada2  );
 
         //Llamadas realizadas entre dos fechas
-        Date desde = DateUtils.asDate( LocalDate.of(2017, 12, 30) );
-        Date hasta = DateUtils.asDate( LocalDate.of(2018, 4, 1) );
+        LocalDateTime desde = LocalDateTime.of(2017, 12, 30, 0, 0) ;
+        LocalDateTime hasta = LocalDateTime.of(2018, 4, 1, 0, 0 ) ;
 
         //Probamos a filtrar entre fechas que sean validas
         try {
@@ -115,8 +117,8 @@ public class LlamadaControllerTest {
         }
 
         //Probamos a coger una sola llamada
-        desde = DateUtils.asDate( LocalDate.of(2018, 1, 15) );
-        hasta = DateUtils.asDate( LocalDate.of(2018, 2, 1) );
+        desde =  LocalDateTime.of(2018, 1, 15, 0 ,0 ) ;
+        hasta =  LocalDateTime.of(2018, 1, 30, 22 , 0) ;
         try {
             assertThat( controlador.llamadasEntreFechas(cliente, desde, hasta).size() , is(1) );
         } catch (NoHayLlamadasCliente noHayLlamadasCliente) {
@@ -128,8 +130,8 @@ public class LlamadaControllerTest {
         }
 
         //Probamos a no coger ninguna
-        desde = DateUtils.asDate( LocalDate.of(2018, 3, 15) );
-        hasta = DateUtils.asDate( LocalDate.of(2018, 4, 1) );
+        desde =  LocalDateTime.of(2018, 3, 15, 0 ,0 ) ;
+        hasta =  LocalDateTime.of(2018, 4, 1, 0 , 0) ;
         try {
             assertThat( controlador.llamadasEntreFechas(cliente, desde, hasta).size() , is(0) );
         } catch (NoHayLlamadasCliente noHayLlamadasCliente) {
@@ -137,7 +139,8 @@ public class LlamadaControllerTest {
         } catch (FechaInvalida fechaInvalida) {
             fechaInvalida.printStackTrace();
         } catch (NoHayLlamadasEntreFechas noHayLlamadasEntreFechas) {
-            noHayLlamadasEntreFechas.printStackTrace();
+            System.err.println(noHayLlamadasEntreFechas.getMessage());
+
         }
 
     }

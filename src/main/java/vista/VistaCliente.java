@@ -1,18 +1,20 @@
 package vista;
 
 import com.sun.deploy.util.SessionState;
-import com.sun.tools.doclets.formats.html.SourceToHTMLConverter;
+//import com.sun.tools.doclets.formats.html.SourceToHTMLConverter;
 import controlador.cliente.ClienteController;
 import modelo.cliente.Cliente;
 import modelo.cliente.Empresa;
 import modelo.cliente.Particular;
 import modelo.direccion.Direccion;
 import modelo.excepciones.*;
+import modelo.factoria.FactoriaObjetos;
 import modelo.tarifa.Tarifa;
 import modelo.utils.DateUtils;
 
 import java.net.Inet4Address;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
@@ -110,9 +112,9 @@ public class VistaCliente extends VistaMadre {
     private void listarClientesFechasVista() {
         System.out.println("Seleccione las fechas entre las que se quiere filtrar");
         System.out.println("Fecha de Inicio (Desde cuándo)");
-        Date inicio = getFecha( sc );
+        LocalDateTime inicio = getFecha( sc );
         System.out.println("Fecha de Fin (Hasta cuándo)");
-        Date fin = getFecha( sc );
+        LocalDateTime fin = getFecha( sc );
         try {
             List<Cliente> clientes = clienteController.clientesEntreFechas(inicio, fin);
             System.out.println("------------------------------");
@@ -138,11 +140,30 @@ public class VistaCliente extends VistaMadre {
         try {
             Cliente cliente = clienteController.getCliente( dni );
             System.out.println("Tarifa actual del cliente: " + cliente.getTarifa() );
-            System.out.printf("Introduzca nueva tarifa (centimos/minuto) Ej: 0.10 : ");
-            float precio = Float.parseFloat( sc.nextLine() );
-            clienteController.cambiarTarifa(
-                                cliente, new Tarifa( precio )
-                                );
+            System.out.println("Elija la nueva que quiere contratar: ");
+            System.out.println("T: - Tarifa de Tardes, 5 céntimos/minutos en llamadas de 16:00 a 20:00 horas");
+            System.out.println("D: - Tarifa de Domingos, gratis llamadas realizadas en domingo");
+            System.out.println("A: - Contratar las dos tarifas anteriores al mismo tiempo");
+            String opcion = sc.nextLine().toUpperCase();
+            switch ( opcion ) {
+                case "T":
+                    clienteController.cambiarTarifa( cliente,FactoriaObjetos.TARDES );
+                    break;
+                case "D":
+                    clienteController.cambiarTarifa( cliente,FactoriaObjetos.DOMINGOS );
+                    break;
+                case "A":
+                    clienteController.cambiarTarifa(cliente, FactoriaObjetos.TARDES_Y_DOMINGOS) ;
+                    break;
+                default:
+                    System.out.println("Error, opción no válida");
+
+            }
+            System.out.println("Cambiado correctamente.");
+//            float precio = Float.parseFloat( sc.nextLine() );
+//            clienteController.cambiarTarifa(
+//                                cliente, new Tarifa( precio )
+//                                );
         }
         catch(ClienteNoExiste e) {
                 System.err.println( e.getMessage() );

@@ -6,6 +6,10 @@ public class Empresa extends Cliente{
         super();
     }
 
+    public String getTipo() {
+        return "Empresa";
+    }
+
     public Empresa ( Cliente other ){
         this.setNombre( other.getNombre() );
         this.setNIF( other.getNIF() );

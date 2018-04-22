@@ -3,9 +3,11 @@ package controlador.cliente;
 import modelo.cliente.Cliente;
 import modelo.conjuntos.GetConjunto;
 import modelo.excepciones.*;
+import modelo.factoria.FactoriaObjetos;
 import modelo.tarifa.Tarifa;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.*;
 
 public class ClienteController implements Serializable {
@@ -48,9 +50,12 @@ public class ClienteController implements Serializable {
     }
 
     //Cambia la tarifa de un cliente
-    public boolean cambiarTarifa (Cliente cliente, Tarifa nueva){
+    public boolean cambiarTarifa (Cliente cliente, int tipoTarifa ){
         if (clientes.containsKey(cliente.getNIF())){
-            clientes.get(cliente.getNIF()).setTarifa(nueva);
+            Cliente clienteRegistrado = clientes.get(cliente.getNIF() );
+            //Switch
+            FactoriaObjetos fabrica = new FactoriaObjetos();
+            clienteRegistrado.setTarifa( fabrica.creaTarifa(tipoTarifa) );
             return true;
         }
         return false;
@@ -74,7 +79,7 @@ public class ClienteController implements Serializable {
     }
 
     //Devolver listado Clientes entre dos fechas
-    public List<Cliente> clientesEntreFechas( Date una, Date otra ) throws FechaInvalida, NoHayClientes, NoHayClientesEntreFechas {
+    public List<Cliente> clientesEntreFechas(LocalDateTime una, LocalDateTime otra ) throws FechaInvalida, NoHayClientes, NoHayClientesEntreFechas {
 
         //Recuperamos todos los clientes disponibles en el mapa
         //La devolverá vacía si no se encuentran clientes entre esas fechas

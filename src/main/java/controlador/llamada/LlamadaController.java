@@ -9,6 +9,8 @@ import modelo.excepciones.NoHayLlamadasEntreFechas;
 import modelo.llamada.Llamada;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -58,7 +60,7 @@ public class LlamadaController implements Serializable{
 
     }
 
-    public List<Llamada> llamadasEntreFechas( Cliente cliente, Date una, Date otra) throws NoHayLlamadasCliente, FechaInvalida, NoHayLlamadasEntreFechas {
+    public List<Llamada> llamadasEntreFechas(Cliente cliente, LocalDateTime una, LocalDateTime otra) throws NoHayLlamadasCliente, FechaInvalida, NoHayLlamadasEntreFechas {
         if( una.compareTo(otra) >= 1 ){
             throw new FechaInvalida();
         }

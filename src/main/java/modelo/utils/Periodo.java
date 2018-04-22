@@ -2,6 +2,7 @@ package modelo.utils;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class Periodo implements Serializable {
@@ -10,8 +11,8 @@ public class Periodo implements Serializable {
     //==================================================
     //-------------------ATRIBUTOS----------------------
     //==================================================
-    private LocalDate inicio;
-    private LocalDate fin;
+    private LocalDateTime inicio;
+    private LocalDateTime fin;
     private static final long serialVersionUID = -8392447847953403241L;
     //==================================================
     //-------------------END ATRIBUTOS------------------
@@ -23,7 +24,7 @@ public class Periodo implements Serializable {
     public Periodo(){
         super();
     }
-    public Periodo( LocalDate inicio, LocalDate fin ){
+    public Periodo( LocalDateTime inicio, LocalDateTime fin ){
 
         if ( inicio.compareTo(fin) == 1) {
             this.inicio = inicio;
@@ -42,10 +43,10 @@ public class Periodo implements Serializable {
     //----------------GETTERS Y SETTERS-----------------
     //==================================================
 
-    public LocalDate getInicio() { return inicio; }
-    public void setInicio( LocalDate inicio) { this.inicio = inicio; }
-    public LocalDate getFin() { return fin; }
-    public void setFin( LocalDate fin) { this.fin = fin; }
+    public LocalDateTime getInicio() { return inicio; }
+    public void setInicio( LocalDateTime inicio) { this.inicio = inicio; }
+    public LocalDateTime getFin() { return fin; }
+    public void setFin( LocalDateTime fin) { this.fin = fin; }
 
     //==================================================
     //---------------END GETTERS Y SETTERS--------------

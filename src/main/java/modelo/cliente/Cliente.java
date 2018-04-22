@@ -6,6 +6,7 @@ import modelo.tarifa.TarifaBasica;
 import modelo.utils.DateInterface;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class Cliente implements DateInterface, Serializable {
@@ -19,7 +20,7 @@ public class Cliente implements DateInterface, Serializable {
     private String NIF;
     private Direccion direccion;
     private String email;
-    private Date fechaAlta;
+    private LocalDateTime fechaAlta;
     private Tarifa tarifa;
     //==================================================
     //-------------------END ATRIBUTOS------------------
@@ -31,9 +32,9 @@ public class Cliente implements DateInterface, Serializable {
     public Cliente(){
         super();
         this.tarifa = new TarifaBasica();
-        this.fechaAlta = new Date();
+        this.fechaAlta = LocalDateTime.now();
     }
-    public Cliente(String nombre, String NIF, Direccion direccion, String email, Date fechaAlta, Tarifa tarifa) {
+    public Cliente(String nombre, String NIF, Direccion direccion, String email, LocalDateTime fechaAlta, Tarifa tarifa) {
         this.nombre = nombre;
         this.NIF = NIF;
         this.direccion = direccion;
@@ -56,8 +57,8 @@ public class Cliente implements DateInterface, Serializable {
     public void setDireccion(Direccion direccion) { this.direccion = direccion; }
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
-    public Date getFechaAlta() { return fechaAlta; }
-    public void setFechaAlta(Date fechaAlta) { this.fechaAlta = fechaAlta; }
+    public LocalDateTime getFechaAlta() { return fechaAlta; }
+    public void setFechaAlta(LocalDateTime fechaAlta) { this.fechaAlta = fechaAlta; }
     public Tarifa getTarifa() { return tarifa; }
     public void setTarifa(Tarifa tarifa) { this.tarifa = tarifa; }
     //==================================================
@@ -73,8 +74,11 @@ public class Cliente implements DateInterface, Serializable {
                 + direccion + "\nEMail: " + email + "\nTarifa: "
                 + tarifa + "\nFecha de Alta: " + fechaAlta;
     }
-    public Date getFecha() {
+    public LocalDateTime getFecha() {
         return getFechaAlta();
+    }
+    public String getTipo() {
+        return "Generico";
     }
     //==================================================
     //--------------------END METHODS-------------------

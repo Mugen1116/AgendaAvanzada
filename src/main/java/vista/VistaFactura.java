@@ -13,6 +13,7 @@ import modelo.utils.DateUtils;
 import modelo.utils.Periodo;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -97,9 +98,9 @@ public class VistaFactura extends  VistaMadre {
         System.out.println("Listar las facturas de un cliente emitidas entre dos fechas");
         Cliente cliente = getCliente(sc);
         System.out.println("Fecha inicio (Desde cuándo)");
-        Date inicio = getFecha( sc );
+        LocalDateTime inicio = getFecha( sc );
         System.out.println("Fecha fin (Hasta cuándo)");
-        Date fin = getFecha( sc );
+        LocalDateTime fin = getFecha( sc );
         List<Factura> facturas = null;
         try {
             facturas = facturaController.facturasEntreFechas(cliente, inicio, fin);
@@ -150,9 +151,9 @@ public class VistaFactura extends  VistaMadre {
     private void emitirFacturaVista() {
         System.out.println("Emitir nueva factura");
         System.out.println("Introduzca la fecha de inicio de facturación");
-        LocalDate fechainicio  = DateUtils.asLocalDate( getFecha( sc ) );
+        LocalDateTime fechainicio  = getFecha( sc ) ;
         System.out.println("Introduzca la fecha de fin de facturación");
-        LocalDate fechafin = DateUtils.asLocalDate( getFecha( sc ) );
+        LocalDateTime fechafin =  getFecha( sc ) ;
 
         Periodo periodo = new Periodo( fechainicio , fechafin );
         System.out.println("Información del client");
