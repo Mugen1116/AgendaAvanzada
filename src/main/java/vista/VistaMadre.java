@@ -46,6 +46,11 @@ public abstract class VistaMadre {
         int anyo = Integer.parseInt( sc.nextLine() );
         return  DateUtils.asDate( LocalDate.of(anyo, mes, dia) );
     }
+    Date getFechaConHora ( Scanner sc ) {
+        //Revisar
+
+        return new Date();
+    }
 
     Cliente getCliente(Scanner sc ) {
         System.out.printf("NIF del cliente: ");
