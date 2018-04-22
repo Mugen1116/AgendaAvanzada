@@ -52,6 +52,10 @@ public class Particular extends Cliente {
                 + super.getDireccion() + "\nEMail: " + super.getEmail() + "\nTarifa: "
                 + super.getTarifa() + "\nFecha de Alta: " + super.getFechaAlta();
     }
+
+    public String getTipo() {
+        return "Particular";
+    }
     //==================================================
     //--------------------END METHODS-------------------
     //==================================================

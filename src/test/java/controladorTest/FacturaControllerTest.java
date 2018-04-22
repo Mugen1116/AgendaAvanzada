@@ -14,7 +14,7 @@ import modelo.tarifa.Tarifa;
 import modelo.tarifa.TarifaBasica;
 import modelo.tarifa.TarifaDomingos;
 import modelo.tarifa.TarifaTardes;
-import modelo.utils.DateUtils;
+import modelo.factoria.FactoriaObjetos;
 import modelo.utils.Periodo;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -36,6 +36,10 @@ public class FacturaControllerTest {
     private Cliente clientePruebas;
     private LlamadaController llamadaController;
     private Periodo periodo;
+    private FactoriaObjetos factoria;
+
+
+
     //Para poder tener las Llamadas y facturar
 
     //Antes de cada test, creamos unas cuantas llamadas
@@ -69,6 +73,8 @@ public class FacturaControllerTest {
         periodo = new Periodo();
         periodo.setInicio(inicio);
         periodo.setFin(fin);
+
+        factoria = new FactoriaObjetos();
 
     }
 
@@ -254,13 +260,13 @@ public class FacturaControllerTest {
             List<Factura> facturas = facturaController.getFacturasCliente( clientePruebas) ;
             for( Factura fac  : facturas ){
                 switch ( fac.getTarifa().toString() ) {
-                    case "Tarifa base de 15 cts/min":
+                    case ClienteControllerTest.BASICA:
                         assertThat(fac.getImporte(), is( 6.75f) );
                         break;
-                    case "Tarifa base de 15 cts/min  + Tarifa de tardes, de 16:00 a 20:00 horas a 0.05 centimos/min":
+                    case ClienteControllerTest.TARDES:
                         assertThat( fac.getImporte(), is( 2.25f) );
                         break;
-                    case "Tarifa base de 15 cts/min  + Tarifa de tardes, de 16:00 a 20:00 horas a 0.05 centimos/min + Tarifa de domingos gratis":
+                    case ClienteControllerTest.TARDES_Y_DOMINGOS:
                         assertThat( fac.getImporte(), is( 0.0f));
                         break;
                 }
@@ -269,6 +275,6 @@ public class FacturaControllerTest {
             System.err.println( noExistenFacturasDeCliente.getMessage());
         }
 
-
     }
+
 }

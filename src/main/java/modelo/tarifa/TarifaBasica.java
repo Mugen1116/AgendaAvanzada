@@ -20,6 +20,6 @@ public class TarifaBasica extends Tarifa {
     }
     @Override
     public String toString(){
-        return "Tarifa base de 15 cts/min ";
+        return "Tarifa base de 15 cts/min";
     }
 }

@@ -77,6 +77,9 @@ public class Cliente implements DateInterface, Serializable {
     public LocalDateTime getFecha() {
         return getFechaAlta();
     }
+    public String getTipo() {
+        return "Generico";
+    }
     //==================================================
     //--------------------END METHODS-------------------
     //==================================================

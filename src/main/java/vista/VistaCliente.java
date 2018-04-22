@@ -8,6 +8,7 @@ import modelo.cliente.Empresa;
 import modelo.cliente.Particular;
 import modelo.direccion.Direccion;
 import modelo.excepciones.*;
+import modelo.factoria.FactoriaObjetos;
 import modelo.tarifa.Tarifa;
 import modelo.utils.DateUtils;
 
@@ -139,8 +140,26 @@ public class VistaCliente extends VistaMadre {
         try {
             Cliente cliente = clienteController.getCliente( dni );
             System.out.println("Tarifa actual del cliente: " + cliente.getTarifa() );
-            System.out.printf("Introduzca nueva tarifa (centimos/minuto) Ej: 0.10 : ");
-            float precio = Float.parseFloat( sc.nextLine() );
+            System.out.println("Elija la nueva que quiere contratar: ");
+            System.out.println("T: - Tarifa de Tardes, 5 céntimos/minutos en llamadas de 16:00 a 20:00 horas");
+            System.out.println("D: - Tarifa de Domingos, gratis llamadas realizadas en domingo");
+            System.out.println("A: - Contratar las dos tarifas anteriores al mismo tiempo");
+            String opcion = sc.nextLine().toUpperCase();
+            switch ( opcion ) {
+                case "T":
+                    clienteController.cambiarTarifa( cliente,FactoriaObjetos.TARDES );
+                    break;
+                case "D":
+                    clienteController.cambiarTarifa( cliente,FactoriaObjetos.DOMINGOS );
+                    break;
+                case "A":
+                    clienteController.cambiarTarifa(cliente, FactoriaObjetos.TARDES_Y_DOMINGOS) ;
+                    break;
+                default:
+                    System.out.println("Error, opción no válida");
+
+            }
+//            float precio = Float.parseFloat( sc.nextLine() );
 //            clienteController.cambiarTarifa(
 //                                cliente, new Tarifa( precio )
 //                                );
