@@ -12,6 +12,8 @@ import modelo.factura.Factura;
 import modelo.llamada.Llamada;
 import modelo.tarifa.Tarifa;
 import modelo.tarifa.TarifaBasica;
+import modelo.tarifa.TarifaDomingos;
+import modelo.tarifa.TarifaTardes;
 import modelo.utils.DateUtils;
 import modelo.utils.Periodo;
 import org.junit.jupiter.api.AfterEach;
@@ -52,6 +54,7 @@ public class FacturaControllerTest {
         //Llenar con unas cuantas llamadas el controlador de llamadas
 
         Llamada nueva = new Llamada();
+        nueva.setDiaHora( LocalDateTime.of(2018, 4, 22, 17, 30) );
         nueva.setDuracion( 10f );
         llamadaController.altaLlamada( clientePruebas, nueva);
         nueva = new Llamada();
@@ -198,6 +201,72 @@ public class FacturaControllerTest {
             assertThat( facturaController.facturasEntreFechas( clientePruebas, desde, hasta).size() , is(0) );
         } catch (NoExistenFacturasDeCliente noExistenFacturasDeCliente) {
             noExistenFacturasDeCliente.printStackTrace();
+        }
+
+
+    }
+
+    @Test
+    public void calculaPreciosTest(){
+        //Tenemos que calcular primero el precio de una factura al cliente de pruebas, con la tarifa base
+        //Existe una llamada hecha el domingo 22 de abril a als 17:30
+
+        LocalDateTime desde = LocalDateTime.of(2018, 4, 21,0,0) ;
+        periodo.setInicio( desde );
+        LocalDateTime hasta = LocalDateTime.of(2018, 4, 23,0,0) ;
+        periodo.setFin( hasta );
+
+        try {
+            facturaController.emitirFactura( periodo, clientePruebas );
+        } catch (NoHayLlamadasCliente noHayLlamadasCliente) {
+            System.err.println( noHayLlamadasCliente.getMessage());
+        } catch (ClienteNoExiste clienteNoExiste) {
+            System.err.println( clienteNoExiste.getMessage() );
+        }
+
+        clientePruebas.setTarifa( new TarifaTardes( clientePruebas.getTarifa(), 0.05f) );
+        try {
+            facturaController.emitirFactura( periodo, clientePruebas );
+        } catch (NoHayLlamadasCliente noHayLlamadasCliente) {
+            System.err.println( noHayLlamadasCliente.getMessage());
+        } catch (ClienteNoExiste clienteNoExiste) {
+            System.err.println(clienteNoExiste.getMessage());
+        }
+
+
+        //Ahora una factura con la tarifa de domingos
+        clientePruebas.setTarifa( new TarifaDomingos( clientePruebas.getTarifa(), 0.0f) );
+        try {
+            facturaController.emitirFactura( periodo, clientePruebas );
+        } catch (NoHayLlamadasCliente noHayLlamadasCliente) {
+            System.err.println( noHayLlamadasCliente.getMessage());
+        } catch (ClienteNoExiste clienteNoExiste) {
+            System.err.println(clienteNoExiste.getMessage());
+        }
+
+
+        //POr ultimo haremos los matches
+        //Hay 3 llamadas, de 10, 30 y 5 minutos, y todas están a la misma fecha y hora, por simplicidad para las pruebas
+        // 10*0.05 + 30*0.05 + 5*0.05 = 0.5 + 1.5 + 0.25 = 2.25 (Tardes)
+        // 10*0.15 + 30*0.15 + 5*0.15 = 1.5 + 4.5 + 0.75 = 6.75 (Basica)
+        // * *0 = 0 (Gratis)
+        try {
+            List<Factura> facturas = facturaController.getFacturasCliente( clientePruebas) ;
+            for( Factura fac  : facturas ){
+                switch ( fac.getTarifa().toString() ) {
+                    case "Tarifa base de 15 cts/min":
+                        assertThat(fac.getImporte(), is( 6.75f) );
+                        break;
+                    case "Tarifa base de 15 cts/min  + Tarifa de tardes, de 16:00 a 20:00 horas a 0.05 centimos/min":
+                        assertThat( fac.getImporte(), is( 2.25f) );
+                        break;
+                    case "Tarifa base de 15 cts/min  + Tarifa de tardes, de 16:00 a 20:00 horas a 0.05 centimos/min + Tarifa de domingos gratis":
+                        assertThat( fac.getImporte(), is( 0.0f));
+                        break;
+                }
+            }
+        } catch (NoExistenFacturasDeCliente noExistenFacturasDeCliente) {
+            System.err.println( noExistenFacturasDeCliente.getMessage());
         }
 
 

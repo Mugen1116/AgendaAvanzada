@@ -120,7 +120,7 @@ public class VistaLlamada extends VistaMadre implements Serializable {
             int telefono = Integer.parseInt( sc.nextLine() );
             System.out.println("Cuando se ha hecho la llamada");
             LocalDateTime fecha = getFechaDiaHora( sc );
-            System.out.printf("¿Cuánto duró la llamada? (En Segundos)");
+            System.out.printf("¿Cuánto duró la llamada? (En minutos)");
             float duracion = Float.parseFloat( sc.nextLine() );
             Llamada llamada = new Llamada( telefono, fecha, duracion);
             llamadaController.altaLlamada( cliente, llamada);
