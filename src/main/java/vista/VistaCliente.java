@@ -159,6 +159,7 @@ public class VistaCliente extends VistaMadre {
                     System.out.println("Error, opción no válida");
 
             }
+            System.out.println("Cambiado correctamente.");
 //            float precio = Float.parseFloat( sc.nextLine() );
 //            clienteController.cambiarTarifa(
 //                                cliente, new Tarifa( precio )
