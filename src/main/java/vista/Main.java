@@ -85,19 +85,24 @@ public class Main {
     //=================================================
     //---------------------MAIN------------------------
     //=================================================
-    public static void main(String[] args) throws NoHayClientes {
-        Agenda agenda = load();
-        sc = new Scanner(System.in);
-        vc = new VistaCliente(sc);
-        vl = new VistaLlamada(sc, vc.getClienteController());
-        vf = new VistaFactura(sc, vl.getLlamadaController(), vc.getClienteController());
-        if ( agenda != null ){
-            vc.getClienteController().setClientes( agenda.getClientes() );
-            vl.getLlamadaController().setLlamadas( agenda.getLlamadas() );
-            vf.getFacturaController().setFacturas( agenda.getFacturas() );
-        }
-        ControladorMenu();
 
+    //Lo comento para probar
+//    public static void main(String[] args) throws NoHayClientes {
+//        Agenda agenda = load();
+//        sc = new Scanner(System.in);
+//        vc = new VistaCliente(sc);
+//        vl = new VistaLlamada(sc, vc.getClienteController());
+//        vf = new VistaFactura(sc, vl.getLlamadaController(), vc.getClienteController());
+//        if ( agenda != null ){
+//            vc.getClienteController().setClientes( agenda.getClientes() );
+//            vl.getLlamadaController().setLlamadas( agenda.getLlamadas() );
+//            vf.getFacturaController().setFacturas( agenda.getFacturas() );
+//        }
+//        ControladorMenu();
+//    }
 
+    public static void main(String[] args) {
+        VistaGrafica vista = new VistaGrafica();
+        vista.ejecutar();
     }
 }
