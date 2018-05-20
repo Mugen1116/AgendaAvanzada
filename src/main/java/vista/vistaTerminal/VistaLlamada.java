@@ -1,4 +1,4 @@
-package vista;
+package vista.vistaTerminal;
 
 import controlador.cliente.ClienteController;
 import controlador.llamada.LlamadaController;
@@ -8,13 +8,9 @@ import modelo.excepciones.FechaInvalida;
 import modelo.excepciones.NoHayLlamadasCliente;
 import modelo.excepciones.NoHayLlamadasEntreFechas;
 import modelo.llamada.Llamada;
-import modelo.utils.DateUtils;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
@@ -36,7 +32,7 @@ public class VistaLlamada extends VistaMadre implements Serializable {
     //==================================================
     //-------------------CONSTRUCTOR--------------------
     //==================================================
-    VistaLlamada( Scanner sc, ClienteController clientes){
+    public VistaLlamada( Scanner sc, ClienteController clientes){
         this.sc = sc;
         this.llamadaController = new LlamadaController();
         this.clienteController = clientes;
@@ -49,12 +45,12 @@ public class VistaLlamada extends VistaMadre implements Serializable {
     //----------------------METHODS---------------------
     //==================================================
 
-    LlamadaController getLlamadaController() {
+    public LlamadaController getLlamadaController() {
         return llamadaController;
     }
 
     @Override
-    String muestraOpciones() {
+    public String muestraOpciones() {
         String menu =
                 "A - Alta nueva llamada a un cliente\n" +
                 "L - Listar todas las llamadas de un cliente\n" +
@@ -64,7 +60,7 @@ public class VistaLlamada extends VistaMadre implements Serializable {
     }
 
     @Override
-    String recogeRespuesta() {
+    public String recogeRespuesta() {
         System.out.printf("Opción: ");
         String resp  = sc.nextLine().toUpperCase();
         switch ( resp ) {

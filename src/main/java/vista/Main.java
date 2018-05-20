@@ -1,14 +1,14 @@
 package vista;
 
-import controlador.cliente.ClienteController;
-import controlador.factura.FacturaController;
-import controlador.llamada.LlamadaController;
-import es.uji.belfern.generador.GeneradorDatosINE;
 import modelo.GuardarCargar.Cargar;
 import modelo.GuardarCargar.Guardar;
 import modelo.agenda.Agenda;
-import modelo.cliente.Cliente;
 import modelo.excepciones.NoHayClientes;
+import vista.vistaGrafica.VistaGrafica;
+import vista.vistaGrafica.VistaGraficaMadre;
+import vista.vistaTerminal.VistaCliente;
+import vista.vistaTerminal.VistaFactura;
+import vista.vistaTerminal.VistaLlamada;
 
 import java.util.Scanner;
 

@@ -1,4 +1,4 @@
-package vista;
+package vista.vistaGrafica;
 
 import modelo.cliente.Cliente;
 import modelo.cliente.Empresa;
@@ -48,7 +48,7 @@ public class VistaGrafica extends VistaGraficaMadre {
 
         JPanel panelPrincipal = new JPanel();
         JLabel foto = new JLabel();
-        foto.setIcon(new ImageIcon("imagenInicio.JPG"));
+        foto.setIcon(new ImageIcon("./fotos/imagenInicio.JPG"));
 
         JButton guardar = new JButton("Guardar datos");
         //guardar.actioListener
@@ -94,7 +94,7 @@ public class VistaGrafica extends VistaGraficaMadre {
 
         final JPanel panelImagenCliente = new JPanel();
         JLabel fotoCliente = new JLabel();
-        fotoCliente.setIcon(new ImageIcon("clientes.jpg"));
+        fotoCliente.setIcon(new ImageIcon("./fotos/clientes.jpg"));
         panelImagenCliente.add(fotoCliente);
 
 
@@ -611,7 +611,7 @@ public class VistaGrafica extends VistaGraficaMadre {
 
         final JPanel panelImagenLlamada = new JPanel();
         JLabel fotoLlamada = new JLabel();
-        fotoLlamada.setIcon(new ImageIcon("llamadas.jpg"));
+        fotoLlamada.setIcon(new ImageIcon("./fotos/llamadas.jpg"));
         panelImagenLlamada.add(fotoLlamada);
 
         GridBagConstraints gbcLlam = new GridBagConstraints(
@@ -913,7 +913,7 @@ public class VistaGrafica extends VistaGraficaMadre {
 
         final JPanel panelImagenFactura = new JPanel();
         JLabel fotoFactura = new JLabel();
-        fotoFactura.setIcon(new ImageIcon("facturas.jpg"));
+        fotoFactura.setIcon(new ImageIcon("./fotos/facturas.jpg"));
         panelImagenFactura.add(fotoFactura);
 
 

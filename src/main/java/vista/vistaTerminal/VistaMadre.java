@@ -1,4 +1,4 @@
-package vista;
+package vista.vistaTerminal;
 
 import controlador.cliente.ClienteController;
 import modelo.cliente.Cliente;
@@ -24,7 +24,7 @@ public abstract class VistaMadre {
     //-------------------END ATRIBUTOS------------------
     //==================================================
 
-    void ejecuta() {
+    public void ejecuta() {
         System.out.println("-----------------------------------------------");
         System.out.println("-----------------------------------------------");
         System.out.println( muestraOpciones() );
@@ -40,7 +40,7 @@ public abstract class VistaMadre {
     }
 
 
-    LocalDateTime getFecha( Scanner sc ) {
+    public LocalDateTime getFecha( Scanner sc ) {
         System.out.printf("Día: ");
         int dia = Integer.parseInt( sc.nextLine() );
         System.out.printf("Número de Mes(1-12): ");
@@ -53,7 +53,7 @@ public abstract class VistaMadre {
         //return  DateUtils.asDate( LocalDate.of(anyo, mes, dia) );
     }
 
-    LocalDateTime getFechaDiaHora ( Scanner sc ) {
+    public LocalDateTime getFechaDiaHora ( Scanner sc ) {
 
         LocalDate date = getFecha( sc ).toLocalDate();
         System.out.println("Hora: ");
@@ -68,7 +68,7 @@ public abstract class VistaMadre {
 
     }
 
-    Cliente getCliente(Scanner sc ) {
+    public Cliente getCliente(Scanner sc ) {
         System.out.printf("NIF del cliente: ");
         Cliente cliente = null;
         try {
@@ -78,7 +78,7 @@ public abstract class VistaMadre {
         }
         return cliente;
     }
-    abstract String muestraOpciones() ;
+    public abstract String muestraOpciones() ;
 
-    abstract String recogeRespuesta() throws NoHayClientes, ClienteNoExiste;
+    public abstract String recogeRespuesta() throws NoHayClientes, ClienteNoExiste;
 }

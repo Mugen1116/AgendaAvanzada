@@ -1,4 +1,4 @@
-package vista;
+package vista.vistaTerminal;
 
 import controlador.cliente.ClienteController;
 import controlador.factura.FacturaController;
@@ -9,13 +9,9 @@ import modelo.excepciones.NoExisteFactura;
 import modelo.excepciones.NoExistenFacturasDeCliente;
 import modelo.excepciones.NoHayLlamadasCliente;
 import modelo.factura.Factura;
-import modelo.utils.DateUtils;
 import modelo.utils.Periodo;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
@@ -37,7 +33,7 @@ public class VistaFactura extends  VistaMadre {
     //-------------------CONSTRUCTOR--------------------
     //==================================================
 
-    VistaFactura (Scanner sc , LlamadaController llamadas,
+   public VistaFactura (Scanner sc , LlamadaController llamadas,
                          ClienteController clientes) {
         this.sc = sc;
         this.facturaController = new FacturaController(llamadas);
@@ -54,7 +50,7 @@ public class VistaFactura extends  VistaMadre {
 
     //Se muestran las operaciones que se pueden hacer
     @Override
-    String muestraOpciones(){
+    public String muestraOpciones(){
 
         String menu =
                 "E - Emitir Factura para un cliente\n" +
@@ -67,7 +63,7 @@ public class VistaFactura extends  VistaMadre {
     //En funcion de lo introducido, se va a ejecutar un método u otro
     //Capturamos la accion
     @Override
-    String recogeRespuesta() {
+    public String recogeRespuesta() {
         System.out.printf("Opción: ");
         String resp  = sc.nextLine().toUpperCase();
         switch ( resp ) {

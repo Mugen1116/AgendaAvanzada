@@ -1,4 +1,4 @@
-package vista;
+package vista.vistaGrafica;
 
 import controlador.cliente.ClienteController;
 import controlador.factura.FacturaController;

@@ -1,6 +1,5 @@
-package vista;
+package vista.vistaTerminal;
 
-import com.sun.deploy.util.SessionState;
 //import com.sun.tools.doclets.formats.html.SourceToHTMLConverter;
 import controlador.cliente.ClienteController;
 import modelo.cliente.Cliente;
@@ -9,14 +8,9 @@ import modelo.cliente.Particular;
 import modelo.direccion.Direccion;
 import modelo.excepciones.*;
 import modelo.factoria.FactoriaObjetos;
-import modelo.tarifa.Tarifa;
-import modelo.utils.DateUtils;
 
-import java.net.Inet4Address;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.List;
+        import java.time.LocalDateTime;
+        import java.util.List;
 import java.util.Scanner;
 
 public class VistaCliente extends VistaMadre {
@@ -34,7 +28,7 @@ public class VistaCliente extends VistaMadre {
     //==================================================
     //-------------------CONSTRUCTOR--------------------
     //==================================================
-    VistaCliente( Scanner sc ){
+    public VistaCliente( Scanner sc ){
         this.sc = sc;
         clienteController = new ClienteController();
     }
@@ -48,7 +42,7 @@ public class VistaCliente extends VistaMadre {
 
     //Se muestran las operaciones que se pueden hacer
     @Override
-    String muestraOpciones(){
+    public String muestraOpciones(){
 
         String menu =
                         "N - Nuevo Cliente\n" +
@@ -64,7 +58,7 @@ public class VistaCliente extends VistaMadre {
     //En funcion de lo introducido, se va a ejecutar un método u otro
     //Capturamos la accion
     @Override
-    String recogeRespuesta() {
+    public String recogeRespuesta() {
         System.out.printf("Opcion: ");
         String resp = sc.nextLine().toUpperCase();
         switch ( resp ) {
