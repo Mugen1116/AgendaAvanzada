@@ -65,7 +65,7 @@ public class Main {
         System.out.println("==================================");
     }
 
-    private static void save() {
+    public static void save() {
         System.out.println("Se va a guardar la información.");
         System.out.println("Archivo actual: \"Agenda.bin\"");
         String archivo = "Agenda.bin";
@@ -87,22 +87,36 @@ public class Main {
     //=================================================
 
     //Lo comento para probar
-//    public static void main(String[] args) throws NoHayClientes {
-//        Agenda agenda = load();
-//        sc = new Scanner(System.in);
-//        vc = new VistaCliente(sc);
-//        vl = new VistaLlamada(sc, vc.getClienteController());
-//        vf = new VistaFactura(sc, vl.getLlamadaController(), vc.getClienteController());
-//        if ( agenda != null ){
-//            vc.getClienteController().setClientes( agenda.getClientes() );
-//            vl.getLlamadaController().setLlamadas( agenda.getLlamadas() );
-//            vf.getFacturaController().setFacturas( agenda.getFacturas() );
-//        }
-//        ControladorMenu();
-//    }
+
+/*
+    public static void main(String[] args) throws NoHayClientes {
+        Agenda agenda = load();
+        sc = new Scanner(System.in);
+        vc = new VistaCliente(sc);
+        vl = new VistaLlamada(sc, vc.getClienteController());
+        vf = new VistaFactura(sc, vl.getLlamadaController(), vc.getClienteController());
+        if ( agenda != null ){
+            vc.getClienteController().setClientes( agenda.getClientes() );
+            vl.getLlamadaController().setLlamadas( agenda.getLlamadas() );
+            vf.getFacturaController().setFacturas( agenda.getFacturas() );
+        }
+        ControladorMenu();
+    }
+*/
+
+
 
     public static void main(String[] args) {
-        VistaGrafica vista = new VistaGrafica();
+        Agenda agenda = load();
+        VistaGraficaMadre vista = new VistaGrafica();
+        if ( agenda != null ) {
+
+            vista.getClienteController().setClientes( agenda.getClientes() );
+            vista.getLlamadaController().setLlamadas( agenda.getLlamadas() );
+            vista.getFacturaController().setFacturas( agenda.getFacturas() );
+
+        }
         vista.ejecutar();
     }
+
 }

@@ -49,6 +49,18 @@ public class ClienteController implements Serializable {
         throw new ClienteNoExiste();
     }
 
+    public Cliente bajaClienteNIF( String NIF )throws NoHayClientes, ClienteNoExiste {
+        Cliente cliente = getCliente( NIF );
+        if (clientes.isEmpty()) {
+            throw new NoHayClientes();
+        }
+        if (clientes.containsKey(cliente.getNIF())) {
+            clientes.remove(cliente.getNIF());
+            return cliente;
+        }
+        throw new ClienteNoExiste();
+    }
+
     //Cambia la tarifa de un cliente
     public boolean cambiarTarifa (Cliente cliente, int tipoTarifa ){
         if (clientes.containsKey(cliente.getNIF())){
