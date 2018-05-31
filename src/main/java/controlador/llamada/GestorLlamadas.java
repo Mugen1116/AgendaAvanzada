@@ -16,13 +16,13 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-public class LlamadaController implements Serializable{
+public class GestorLlamadas implements Serializable{
 
 
     private static final long serialVersionUID = -6928292017310305627L;
     private HashMap<Cliente, LinkedList<Llamada>> llamadas;
 
-    public LlamadaController() {
+    public GestorLlamadas() {
         this.llamadas = new HashMap<>();
     }
 

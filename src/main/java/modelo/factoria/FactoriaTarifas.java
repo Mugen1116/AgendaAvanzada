@@ -8,40 +8,25 @@ import modelo.tarifa.TarifaBasica;
 import modelo.tarifa.TarifaDomingos;
 import modelo.tarifa.TarifaTardes;
 
-public class FactoriaObjetos implements FactoriaInterface {
+public class FactoriaTarifas implements FactoriaTarifasInterface {
 
-    @Override
-    public Cliente creaCliente(int tipoCliente) {
-        Cliente cliente = null;
-        switch ( tipoCliente ){
-            case FactoriaInterface.PARTICULAR :
-                cliente = new Particular();
-                break;
-            case FactoriaInterface.EMPRESA :
-                cliente = new Empresa();
-                break;
-            default:
-                cliente = new Particular();
-                break;
-        }
-        return cliente;
-    }
+
 
     @Override
     public Tarifa creaTarifa(int tipoTarifa) {
         Tarifa tarifa = null;
 
         switch ( tipoTarifa ){
-            case FactoriaInterface.BASICA:
+            case FactoriaTarifasInterface.BASICA:
                 tarifa = new TarifaBasica();
                 break;
-            case FactoriaInterface.TARDES:
+            case FactoriaTarifasInterface.TARDES:
                 tarifa = new TarifaTardes( new TarifaBasica(), 0.05f);
                 break;
-            case FactoriaObjetos.DOMINGOS:
+            case FactoriaTarifas.DOMINGOS:
                 tarifa = new TarifaDomingos( new TarifaBasica(), 0f);
                 break;
-            case FactoriaObjetos.TARDES_Y_DOMINGOS:
+            case FactoriaTarifas.TARDES_Y_DOMINGOS:
                 tarifa = new TarifaDomingos( new TarifaTardes( new TarifaBasica(), 0.05f), 0f);
                 break;
             default:

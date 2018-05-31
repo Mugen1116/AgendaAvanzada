@@ -1,13 +1,13 @@
 package vista.vistaTerminal;
 
 //import com.sun.tools.doclets.formats.html.SourceToHTMLConverter;
-import controlador.cliente.ClienteController;
+import controlador.cliente.GestorClientes;
 import modelo.cliente.Cliente;
 import modelo.cliente.Empresa;
 import modelo.cliente.Particular;
 import modelo.direccion.Direccion;
 import modelo.excepciones.*;
-import modelo.factoria.FactoriaObjetos;
+import modelo.factoria.FactoriaTarifas;
 
         import java.time.LocalDateTime;
         import java.util.List;
@@ -30,7 +30,7 @@ public class VistaCliente extends VistaMadre {
     //==================================================
     public VistaCliente( Scanner sc ){
         this.sc = sc;
-        clienteController = new ClienteController();
+        gestorClientes = new GestorClientes();
     }
     //==================================================
     //-----------------END CONSTRUCTORS-----------------
@@ -110,7 +110,7 @@ public class VistaCliente extends VistaMadre {
         System.out.println("Fecha de Fin (Hasta cuándo)");
         LocalDateTime fin = getFecha( sc );
         try {
-            List<Cliente> clientes = clienteController.clientesEntreFechas(inicio, fin);
+            List<Cliente> clientes = gestorClientes.clientesEntreFechas(inicio, fin);
             System.out.println("------------------------------");
             for (Cliente cliente : clientes) {
                 System.out.println(cliente);
@@ -132,7 +132,7 @@ public class VistaCliente extends VistaMadre {
         System.out.printf("NIF/DNI del cliente del que se quiere cambiar la tarifa: ");
         String dni = sc.nextLine();
         try {
-            Cliente cliente = clienteController.getCliente( dni );
+            Cliente cliente = gestorClientes.getCliente( dni );
             System.out.println("Tarifa actual del cliente: " + cliente.getTarifa() );
             System.out.println("Elija la nueva que quiere contratar: ");
             System.out.println("T: - Tarifa de Tardes, 5 céntimos/minutos en llamadas de 16:00 a 20:00 horas");
@@ -141,13 +141,13 @@ public class VistaCliente extends VistaMadre {
             String opcion = sc.nextLine().toUpperCase();
             switch ( opcion ) {
                 case "T":
-                    clienteController.cambiarTarifa( cliente,FactoriaObjetos.TARDES );
+                    gestorClientes.cambiarTarifa( cliente,FactoriaTarifas.TARDES );
                     break;
                 case "D":
-                    clienteController.cambiarTarifa( cliente,FactoriaObjetos.DOMINGOS );
+                    gestorClientes.cambiarTarifa( cliente,FactoriaTarifas.DOMINGOS );
                     break;
                 case "A":
-                    clienteController.cambiarTarifa(cliente, FactoriaObjetos.TARDES_Y_DOMINGOS) ;
+                    gestorClientes.cambiarTarifa(cliente, FactoriaTarifas.TARDES_Y_DOMINGOS) ;
                     break;
                 default:
                     System.out.println("Error, opción no válida");
@@ -155,7 +155,7 @@ public class VistaCliente extends VistaMadre {
             }
             System.out.println("Cambiado correctamente.");
 //            float precio = Float.parseFloat( sc.nextLine() );
-//            clienteController.cambiarTarifa(
+//            gestorClientes.cambiarTarifa(
 //                                cliente, new Tarifa( precio )
 //                                );
         }
@@ -168,8 +168,8 @@ public class VistaCliente extends VistaMadre {
         System.out.printf("NIF/DNI del cliente que se quiere borrar: ");
         String dni = sc.nextLine();
         try {
-            Cliente cliente = clienteController.getCliente( dni );
-            if ( clienteController.bajaCliente( cliente ) )
+            Cliente cliente = gestorClientes.getCliente( dni );
+            if ( gestorClientes.bajaCliente( cliente ) )
                 System.out.println("Cliente borrado correctamente");
             else
                 System.err.println("Error al intentar borrar el cliente");
@@ -186,7 +186,7 @@ public class VistaCliente extends VistaMadre {
         System.out.printf("NIF/DNI del cliente que se quiere mostrar: ");
         String dni = sc.nextLine();
         try {
-            Cliente cliente = clienteController.getCliente( dni );
+            Cliente cliente = gestorClientes.getCliente( dni );
             System.out.println("Cliente: ");
             System.out.println(cliente);
         }
@@ -199,7 +199,7 @@ public class VistaCliente extends VistaMadre {
     private void mostrarClientesVista() {
         System.out.println("Clientes Registrados: ");
         try {
-            List<Cliente> clientes = clienteController.listarClientes();
+            List<Cliente> clientes = gestorClientes.listarClientes();
             System.out.println(clientes);
         }
         catch (NoHayClientes e){
@@ -246,7 +246,7 @@ public class VistaCliente extends VistaMadre {
             Particular part = new Particular( nuevo );
             part.setApellidos( apell );
             try {
-                clienteController.altaCliente( part );
+                gestorClientes.altaCliente( part );
             } catch (ClienteExistente e) {
                 System.err.println( e.getMessage() );
             }
@@ -254,7 +254,7 @@ public class VistaCliente extends VistaMadre {
         else {
             Empresa empresa = new Empresa( nuevo );
             try {
-                clienteController.altaCliente( empresa );
+                gestorClientes.altaCliente( empresa );
             } catch (ClienteExistente e) {
                 System.err.println( e.getMessage() );
             }
@@ -262,8 +262,8 @@ public class VistaCliente extends VistaMadre {
         System.out.println("Cliente insertado correctamente");
     }
 
-    public ClienteController getClienteController() {
-        return clienteController;
+    public GestorClientes getClienteController() {
+        return gestorClientes;
     }
     //==================================================
     //--------------------END METHODS-------------------

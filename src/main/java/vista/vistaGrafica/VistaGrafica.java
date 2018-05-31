@@ -5,7 +5,8 @@ import modelo.cliente.Empresa;
 import modelo.cliente.Particular;
 import modelo.direccion.Direccion;
 import modelo.excepciones.*;
-import modelo.factoria.FactoriaObjetos;
+import modelo.factoria.FactoriaClientes;
+import modelo.factoria.FactoriaTarifas;
 import modelo.llamada.Llamada;
 import modelo.utils.Periodo;
 
@@ -482,14 +483,17 @@ public class VistaGrafica extends VistaGraficaMadre {
             nuevo.setDireccion( dir );
             try {
                 if ( particular.isSelected() ) {
-                    Particular part = new Particular( nuevo );
+                    //Particular part = new Particular( nuevo );
+                    Particular part = (Particular) factoriaClientes.creaCliente(FactoriaClientes.PARTICULAR, nuevo);
                     part.setApellidos( apellido.getText() );
-                    clienteController.altaCliente( part );
+
+                    gestorClientes.altaCliente( part );
                     addClient( modeloClientes,  part );
                 }
                 else{
+                    //Empresa empr = fac
                     Empresa empr = new Empresa( nuevo );
-                    clienteController.altaCliente( empr );
+                    gestorClientes.altaCliente( empr );
                     addClient( modeloClientes, empr );
 
                 }
@@ -505,7 +509,7 @@ public class VistaGrafica extends VistaGraficaMadre {
 
         aceptarBorrarCliente.addActionListener( e-> {
             try {
-                clienteController.bajaClienteNIF( nifB.getText() );
+                gestorClientes.bajaClienteNIF( nifB.getText() );
                 updateTableClientes( modeloClientes );
                 botonMostrarCliente.doClick();
             } catch (NoHayClientes noHayClientes) {
@@ -528,17 +532,17 @@ public class VistaGrafica extends VistaGraficaMadre {
         aceptarCambiarTarifa.addActionListener( e-> {
 
             try {
-                Cliente cliente = clienteController.getCliente(niftarifa.getText());
+                Cliente cliente = gestorClientes.getCliente(niftarifa.getText());
                 // SELECTOR OPCIONES
                 //if ( tarifaDomingos.isSelected() )
                 if (tarifaTardes.isSelected() && tarifaDomingos.isSelected()) {
-                    clienteController.cambiarTarifa(cliente, FactoriaObjetos.TARDES_Y_DOMINGOS);
+                    gestorClientes.cambiarTarifa(cliente, FactoriaTarifas.TARDES_Y_DOMINGOS);
                 }
                 else if ( tarifaTardes.isSelected() ){
-                    clienteController.cambiarTarifa( cliente, FactoriaObjetos.TARDES);
+                    gestorClientes.cambiarTarifa( cliente, FactoriaTarifas.TARDES);
                 }
                 else if ( tarifaDomingos.isSelected() ){
-                    clienteController.cambiarTarifa( cliente, FactoriaObjetos.DOMINGOS);
+                    gestorClientes.cambiarTarifa( cliente, FactoriaTarifas.DOMINGOS);
                 }
                 //else *No ejecutamos nada*
             } catch (ClienteNoExiste clienteNoExiste) {
@@ -831,7 +835,7 @@ public class VistaGrafica extends VistaGraficaMadre {
         //********************************************
         aceptarAltaLlamada.addActionListener( l -> {
             try {
-                Cliente cliente = clienteController.getCliente( nifAltaLlamada.getText() );
+                Cliente cliente = gestorClientes.getCliente( nifAltaLlamada.getText() );
                 //Coger fecha
                 LocalDateTime fecha = dameFecha(
                                             new String[] {
@@ -843,7 +847,7 @@ public class VistaGrafica extends VistaGraficaMadre {
                 float tiempoLlamada = Float.parseFloat( duracion.getText() );
                 int telefonoLlamada = Integer.parseInt( telefonoNuevo.getText() );
                 Llamada llamada = new Llamada( telefonoLlamada, fecha, tiempoLlamada );
-                llamadaController.altaLlamada( cliente, llamada );
+                gestorLlamadas.altaLlamada( cliente, llamada );
                 botonLlamadasCliente.doClick();
 
             } catch (ClienteNoExiste clienteNoExiste) {
@@ -853,7 +857,7 @@ public class VistaGrafica extends VistaGraficaMadre {
 
         aceptarLlamadasCliente.addActionListener( l -> {
             try{
-                Cliente cliente = clienteController.getCliente( nifCliLlam.getText() );
+                Cliente cliente = gestorClientes.getCliente( nifCliLlam.getText() );
                 llamadasCliente( modeloLlamadasCliente, cliente);
 
             } catch (ClienteNoExiste clienteNoExiste) {
@@ -865,7 +869,7 @@ public class VistaGrafica extends VistaGraficaMadre {
 
         aceptarLlamadasFechas.addActionListener( l ->{
             try{
-                Cliente cliente  = clienteController.getCliente( nifLlamFechas.getText() );
+                Cliente cliente  = gestorClientes.getCliente( nifLlamFechas.getText() );
                 String[] fechas3 = { dia3.getText(), mes3.getText(), anyo3.getText() };
                 LocalDateTime inicioLlamada = dameFecha( fechas3 );
                 String[] fechas4 = { dia4.getText(), mes4.getText(), anyo4.getText() };
@@ -1093,7 +1097,7 @@ public class VistaGrafica extends VistaGraficaMadre {
         aceptarFacturasFechas.addActionListener( l -> {
             flushModel( modeloFacturasFechas );
             try {
-                Cliente cliente = clienteController.getCliente( nifFacFechas.getText() );
+                Cliente cliente = gestorClientes.getCliente( nifFacFechas.getText() );
                 String[] fechasFF = { diaFF.getText(), mesFF.getText(), anyoFF.getText() };
                 LocalDateTime inicioFactura = dameFecha( fechasFF );
                 String[] fechasFF2 = { diaFF2.getText(), mesFF2.getText(), anyoFF2.getText() };
@@ -1114,7 +1118,7 @@ public class VistaGrafica extends VistaGraficaMadre {
         });
         aceptarEmitirFactura.addActionListener( l->{
             try{
-                Cliente cliente = clienteController.getCliente( nifEmitirFactura.getText());
+                Cliente cliente = gestorClientes.getCliente( nifEmitirFactura.getText());
                 LocalDateTime inicioFacturacion = dameFecha(
                         new String[] {
                               diaE.getText(),
@@ -1130,7 +1134,7 @@ public class VistaGrafica extends VistaGraficaMadre {
                         }
                 );
                 Periodo periodo = new Periodo(inicioFacturacion, finFacturacion);
-                facturaController.emitirFactura(periodo, cliente);
+                gestorFacturas.emitirFactura(periodo, cliente);
 
                 //Si sale bien, se va al panel de buscar facturas
                 botonConsultarFactura.doClick();

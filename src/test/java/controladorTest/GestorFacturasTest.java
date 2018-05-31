@@ -1,7 +1,7 @@
 package controladorTest;
 
-import controlador.factura.FacturaController;
-import controlador.llamada.LlamadaController;
+import controlador.factura.GestorFacturas;
+import controlador.llamada.GestorLlamadas;
 import modelo.cliente.Cliente;
 import modelo.direccion.Direccion;
 import modelo.excepciones.ClienteNoExiste;
@@ -14,30 +14,25 @@ import modelo.tarifa.Tarifa;
 import modelo.tarifa.TarifaBasica;
 import modelo.tarifa.TarifaDomingos;
 import modelo.tarifa.TarifaTardes;
-import modelo.factoria.FactoriaObjetos;
+import modelo.factoria.FactoriaTarifas;
 import modelo.utils.Periodo;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Date;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsNull.*;
 
-public class FacturaControllerTest {
+public class GestorFacturasTest extends TestPadre {
 
-    private FacturaController facturaController;
+    private GestorFacturas gestorFacturas;
     private Cliente clientePruebas;
-    private LlamadaController llamadaController;
+    private GestorLlamadas gestorLlamadas;
     private Periodo periodo;
-    private FactoriaObjetos factoria;
-
 
 
     //Para poder tener las Llamadas y facturar
@@ -45,44 +40,36 @@ public class FacturaControllerTest {
     //Antes de cada test, creamos unas cuantas llamadas
     @BeforeEach
     public void SetUp() {
-        String nombre = "Nombre";
-        String nif = "00000000A";
-        Direccion direccion = new Direccion();
-        String email = "email@email.com";
-        LocalDateTime fechaAlta = LocalDateTime.of( 2018, 1, 1, 0, 0);
-        Tarifa tarifa = new TarifaBasica();
-        clientePruebas = new Cliente(nombre, nif, direccion, email, fechaAlta, tarifa);
 
-        llamadaController = new LlamadaController();
-        facturaController = new FacturaController( llamadaController );
+        clientePruebas = creaClientePruebas();
+        clientePruebas.setNIF( "00000000A" );
+        clientePruebas.setFechaAlta( LocalDateTime.of( 2018, 1, 1, 0, 0) );
+
+
+        gestorLlamadas = new GestorLlamadas();
+        gestorFacturas = new GestorFacturas(gestorLlamadas);
         //Llenar con unas cuantas llamadas el controlador de llamadas
 
         Llamada nueva = new Llamada();
         nueva.setDiaHora( LocalDateTime.of(2018, 4, 22, 17, 30) );
         nueva.setDuracion( 10f );
-        llamadaController.altaLlamada( clientePruebas, nueva);
+        gestorLlamadas.altaLlamada( clientePruebas, nueva);
         nueva = new Llamada();
         nueva.setDuracion(30f);
-        llamadaController.altaLlamada( clientePruebas, nueva);
+        gestorLlamadas.altaLlamada( clientePruebas, nueva);
         nueva = new Llamada();
         nueva.setDuracion( 5f );
-        llamadaController.altaLlamada( clientePruebas, nueva);
+        gestorLlamadas.altaLlamada( clientePruebas, nueva);
 
-        LocalDateTime inicio = LocalDateTime.of(2018, 1, 1, 0, 0);
-        LocalDateTime fin = LocalDateTime.of(2018, 6, 1, 0, 0);
-        periodo = new Periodo();
-        periodo.setInicio(inicio);
-        periodo.setFin(fin);
-
-        factoria = new FactoriaObjetos();
-
+        periodo = iniciaPeriodo();
+        factoriaTarifas = new FactoriaTarifas();
     }
 
     @AfterEach
     public void TearDown() {
         clientePruebas = null;
-        llamadaController = null;
-        facturaController = null;
+        gestorLlamadas = null;
+        gestorFacturas = null;
 
     }
 
@@ -91,7 +78,7 @@ public class FacturaControllerTest {
 
         Factura factura = null;
         try {
-            factura = facturaController.emitirFactura(periodo, clientePruebas);
+            factura = gestorFacturas.emitirFactura(periodo, clientePruebas);
         } catch (NoHayLlamadasCliente noHayLlamadasCliente) {
             noHayLlamadasCliente.printStackTrace();
         } catch (ClienteNoExiste clienteNoExiste) {
@@ -99,17 +86,13 @@ public class FacturaControllerTest {
         }
         assertThat( factura, notNullValue() );
 
-        String nombre = "Nombre";
-        String nif = "00000000B";
-        Direccion direccion = new Direccion();
-        String email = "email@email.com";
-        LocalDateTime fechaAlta = LocalDateTime.of( 2018, 1, 1, 0, 0);
-        Tarifa tarifa = new TarifaBasica();
-        Cliente clienteInexistente = new Cliente(nombre, nif, direccion, email, fechaAlta, tarifa);
+        Cliente clienteInexistente = creaClientePruebas();
+        clienteInexistente.setNIF( "00000000B" );
+        clienteInexistente.setFechaAlta( LocalDateTime.of( 2018, 1, 1, 0, 0) );
 
         Factura factura_2 = null;
         try {
-            factura_2 = facturaController.emitirFactura( periodo, clienteInexistente);
+            factura_2 = gestorFacturas.emitirFactura( periodo, clienteInexistente);
         } catch (NoHayLlamadasCliente noHayLlamadasCliente) {
             noHayLlamadasCliente.printStackTrace();
         } catch (ClienteNoExiste clienteNoExiste) {
@@ -124,28 +107,28 @@ public class FacturaControllerTest {
     public void listarFacturasTest() {
         List<Factura> lista = null;
         try {
-            lista = facturaController.getFacturasCliente(clientePruebas);
+            lista = gestorFacturas.getFacturasCliente(clientePruebas);
         } catch (NoExistenFacturasDeCliente noExistenFacturasDeCliente) {
             System.err.println( noExistenFacturasDeCliente.getMessage() );
 
         }
         assertThat( lista, nullValue() );
         try {
-            facturaController.emitirFactura( periodo, clientePruebas);
+            gestorFacturas.emitirFactura( periodo, clientePruebas);
         } catch (NoHayLlamadasCliente noHayLlamadasCliente) {
             noHayLlamadasCliente.printStackTrace();
         } catch (ClienteNoExiste clienteNoExiste) {
             clienteNoExiste.printStackTrace();
         }
         try {
-            facturaController.emitirFactura( periodo, clientePruebas);
+            gestorFacturas.emitirFactura( periodo, clientePruebas);
         } catch (NoHayLlamadasCliente noHayLlamadasCliente) {
             noHayLlamadasCliente.printStackTrace();
         } catch (ClienteNoExiste clienteNoExiste) {
             clienteNoExiste.printStackTrace();
         }
         try {
-            assertThat( facturaController.getFacturasCliente(clientePruebas).size(), is(2));
+            assertThat( gestorFacturas.getFacturasCliente(clientePruebas).size(), is(2));
         } catch (NoExistenFacturasDeCliente noExistenFacturasDeCliente) {
             System.err.println( noExistenFacturasDeCliente.getMessage() );
         }
@@ -154,20 +137,20 @@ public class FacturaControllerTest {
     @Test
     public void getFacturaTest() {
         try {
-            assertThat( facturaController.getFactura("000"), is( (Object) null ) );
+            assertThat( gestorFacturas.getFactura("000"), is( (Object) null ) );
         } catch (NoExisteFactura noExisteFactura) {
             System.err.println( noExisteFactura.getMessage());
         }
         Factura factura = null;
         try {
-            factura = facturaController.emitirFactura(periodo, clientePruebas);
+            factura = gestorFacturas.emitirFactura(periodo, clientePruebas);
         } catch (NoHayLlamadasCliente noHayLlamadasCliente) {
             noHayLlamadasCliente.printStackTrace();
         } catch (ClienteNoExiste clienteNoExiste) {
             clienteNoExiste.printStackTrace();
         }
         try {
-            assertThat( facturaController.getFactura(factura.getUniqueID()), is( factura ) );
+            assertThat( gestorFacturas.getFactura(factura.getUniqueID()), is( factura ) );
         } catch (NoExisteFactura noExisteFactura) {
             noExisteFactura.printStackTrace();
         }
@@ -176,14 +159,14 @@ public class FacturaControllerTest {
     public void entreFechasTest() {
         //Creamos dos facturas de un cliente y cambiamos la fecha de emisión para poder filtrar
         try {
-            facturaController.emitirFactura( periodo, clientePruebas );
+            gestorFacturas.emitirFactura( periodo, clientePruebas );
         } catch (NoHayLlamadasCliente noHayLlamadasCliente) {
             noHayLlamadasCliente.printStackTrace();
         } catch (ClienteNoExiste clienteNoExiste) {
             clienteNoExiste.printStackTrace();
         }
         try {
-            facturaController.emitirFactura( periodo, clientePruebas );
+            gestorFacturas.emitirFactura( periodo, clientePruebas );
         } catch (NoHayLlamadasCliente noHayLlamadasCliente) {
             noHayLlamadasCliente.printStackTrace();
         } catch (ClienteNoExiste clienteNoExiste) {
@@ -194,7 +177,7 @@ public class FacturaControllerTest {
         LocalDateTime hasta = LocalDateTime.of(2018, 8, 1,0,0) ;
 
         try {
-            assertThat( facturaController.facturasEntreFechas( clientePruebas, desde, hasta).size() , is(2) );
+            assertThat( gestorFacturas.facturasEntreFechas( clientePruebas, desde, hasta).size() , is(2) );
         } catch (NoExistenFacturasDeCliente noExistenFacturasDeCliente) {
             noExistenFacturasDeCliente.printStackTrace();
         }
@@ -204,7 +187,7 @@ public class FacturaControllerTest {
         hasta = LocalDateTime.of(2019, 4, 4,0,0) ;
 
         try {
-            assertThat( facturaController.facturasEntreFechas( clientePruebas, desde, hasta).size() , is(0) );
+            assertThat( gestorFacturas.facturasEntreFechas( clientePruebas, desde, hasta).size() , is(0) );
         } catch (NoExistenFacturasDeCliente noExistenFacturasDeCliente) {
             noExistenFacturasDeCliente.printStackTrace();
         }
@@ -215,15 +198,16 @@ public class FacturaControllerTest {
     @Test
     public void calculaPreciosTest(){
         //Tenemos que calcular primero el precio de una factura al cliente de pruebas, con la tarifa base
-        //Existe una llamada hecha el domingo 22 de abril a als 17:30
-
+        //Existe una llamada hecha el domingo 22 de abril a las 17:30
+        Periodo periodo = new Periodo();
         LocalDateTime desde = LocalDateTime.of(2018, 4, 21,0,0) ;
         periodo.setInicio( desde );
         LocalDateTime hasta = LocalDateTime.of(2018, 4, 23,0,0) ;
         periodo.setFin( hasta );
+        Cliente clientePruebas = creaClientePruebas();
 
         try {
-            facturaController.emitirFactura( periodo, clientePruebas );
+            gestorFacturas.emitirFactura( periodo, clientePruebas );
         } catch (NoHayLlamadasCliente noHayLlamadasCliente) {
             System.err.println( noHayLlamadasCliente.getMessage());
         } catch (ClienteNoExiste clienteNoExiste) {
@@ -232,7 +216,7 @@ public class FacturaControllerTest {
 
         clientePruebas.setTarifa( new TarifaTardes( clientePruebas.getTarifa(), 0.05f) );
         try {
-            facturaController.emitirFactura( periodo, clientePruebas );
+            gestorFacturas.emitirFactura( periodo, clientePruebas );
         } catch (NoHayLlamadasCliente noHayLlamadasCliente) {
             System.err.println( noHayLlamadasCliente.getMessage());
         } catch (ClienteNoExiste clienteNoExiste) {
@@ -243,13 +227,12 @@ public class FacturaControllerTest {
         //Ahora una factura con la tarifa de domingos
         clientePruebas.setTarifa( new TarifaDomingos( clientePruebas.getTarifa(), 0.0f) );
         try {
-            facturaController.emitirFactura( periodo, clientePruebas );
+            gestorFacturas.emitirFactura( periodo, clientePruebas );
         } catch (NoHayLlamadasCliente noHayLlamadasCliente) {
             System.err.println( noHayLlamadasCliente.getMessage());
         } catch (ClienteNoExiste clienteNoExiste) {
             System.err.println(clienteNoExiste.getMessage());
         }
-
 
         //POr ultimo haremos los matches
         //Hay 3 llamadas, de 10, 30 y 5 minutos, y todas están a la misma fecha y hora, por simplicidad para las pruebas
@@ -257,16 +240,16 @@ public class FacturaControllerTest {
         // 10*0.15 + 30*0.15 + 5*0.15 = 1.5 + 4.5 + 0.75 = 6.75 (Basica)
         // * *0 = 0 (Gratis)
         try {
-            List<Factura> facturas = facturaController.getFacturasCliente( clientePruebas) ;
+            List<Factura> facturas = gestorFacturas.getFacturasCliente( clientePruebas) ;
             for( Factura fac  : facturas ){
                 switch ( fac.getTarifa().toString() ) {
-                    case ClienteControllerTest.BASICA:
+                    case PatronesTest.BASICA:
                         assertThat(fac.getImporte(), is( 6.75f) );
                         break;
-                    case ClienteControllerTest.TARDES:
+                    case PatronesTest.TARDES:
                         assertThat( fac.getImporte(), is( 2.25f) );
                         break;
-                    case ClienteControllerTest.TARDES_Y_DOMINGOS:
+                    case PatronesTest.TARDES_Y_DOMINGOS:
                         assertThat( fac.getImporte(), is( 0.0f));
                         break;
                 }
@@ -276,5 +259,7 @@ public class FacturaControllerTest {
         }
 
     }
+
+
 
 }

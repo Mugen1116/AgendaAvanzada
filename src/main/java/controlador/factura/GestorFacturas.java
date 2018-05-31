@@ -1,25 +1,22 @@
 package controlador.factura;
 
+import controlador.llamada.GestorLlamadas;
 import modelo.conjuntos.GetConjunto;
 import modelo.excepciones.ClienteNoExiste;
 import modelo.excepciones.NoExisteFactura;
 import modelo.excepciones.NoExistenFacturasDeCliente;
 import modelo.excepciones.NoHayLlamadasCliente;
-import modelo.utils.DateUtils;
 import modelo.utils.Pair;
-import controlador.llamada.LlamadaController;
 import modelo.cliente.Cliente;
 import modelo.factura.Factura;
 import modelo.llamada.Llamada;
 import modelo.utils.Periodo;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.*;
 
-public class FacturaController implements Serializable{
+public class GestorFacturas implements Serializable{
 
 
     /*
@@ -32,12 +29,12 @@ public class FacturaController implements Serializable{
 
     private static final long serialVersionUID = 1052731895718682574L;
     private HashMap<String, Pair< Factura, Cliente> > facturas;
-    private LlamadaController llamadasController;
+    private GestorLlamadas llamadasController;
 
     public HashMap<String, Pair<Factura, Cliente>> getFacturas() { return facturas; }
     public void setFacturas(HashMap<String, Pair<Factura, Cliente>> facturas) { this.facturas = facturas; }
 
-    public FacturaController( LlamadaController llamadasController ) {
+    public GestorFacturas(GestorLlamadas llamadasController ) {
         this.facturas = new HashMap<>();
         this.llamadasController = llamadasController;
         //Esto ultimo lo necesitamos para poder recuperar el listado de llamadas

@@ -1,38 +1,38 @@
 package vista.vistaGrafica;
 
-import controlador.cliente.ClienteController;
-import controlador.factura.FacturaController;
-import controlador.llamada.LlamadaController;
+import controlador.cliente.GestorClientes;
+import controlador.factura.GestorFacturas;
+import controlador.llamada.GestorLlamadas;
 import modelo.GuardarCargar.Guardar;
 import modelo.agenda.Agenda;
 import modelo.cliente.Cliente;
 import modelo.excepciones.*;
+import modelo.factoria.FactoriaClientes;
 import modelo.factura.Factura;
 import modelo.llamada.Llamada;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.text.html.HTMLDocument;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class VistaGraficaMadre {
 
 
-
-    ClienteController clienteController;
-    FacturaController facturaController;
-    LlamadaController llamadaController;
+    FactoriaClientes factoriaClientes;
+    GestorClientes gestorClientes;
+    GestorFacturas gestorFacturas;
+    GestorLlamadas gestorLlamadas;
 
 
     public VistaGraficaMadre( ){
 
-        clienteController = new ClienteController();
-        llamadaController = new LlamadaController();
-        facturaController = new FacturaController( llamadaController );
+        gestorClientes = new GestorClientes();
+        gestorLlamadas = new GestorLlamadas();
+        gestorFacturas = new GestorFacturas(gestorLlamadas);
+
 
     }
 
@@ -56,7 +56,7 @@ public abstract class VistaGraficaMadre {
     //------------------------------------------------------------------
     public String[][] llenaClientes () {
 
-        HashMap<String, Cliente> mapa = clienteController.getClientes();
+        HashMap<String, Cliente> mapa = gestorClientes.getClientes();
         Set claves = mapa.keySet();
         String[][] lista = new String[mapa.size()][6];
         //Iterador
@@ -94,17 +94,10 @@ public abstract class VistaGraficaMadre {
 
     }
     //------------------------------------------------------------------
-    //3.- Eliminar Cliente
-    //------------------------------------------------------------------
-    public void removeClient ( DefaultTableModel modelo, Cliente client ){
-        //TODO Mejorar eficiencia, es Lenta hacer un bucle si hay miles de usuarios
-
-    }
-    //------------------------------------------------------------------
-    //4.- Actualizar Tabla  Clientes
+    //3.- Actualizar Tabla  Clientes
     //------------------------------------------------------------------
     public  void updateTableClientes(DefaultTableModel modelo ) {
-        HashMap<String, Cliente> mapa = clienteController.getClientes();
+        HashMap<String, Cliente> mapa = gestorClientes.getClientes();
         Set claves = mapa.keySet();
         String[][] lista = new String[mapa.size()][6];
         //Iterador
@@ -128,13 +121,13 @@ public abstract class VistaGraficaMadre {
         }
     }
     //------------------------------------------------------------------
-    //5.- Buscar Cliente
+    //4.- Buscar Cliente
     //------------------------------------------------------------------
     public void buscarCliente( DefaultTableModel modelo, String nif ) throws ClienteNoExiste {
         flushModel( modelo );
 
         //Cuando tengas el cliente añadirlo
-        Cliente client = clienteController.getCliente( nif );
+        Cliente client = gestorClientes.getCliente( nif );
         Object[] nuevoCliente  =   {
                 client.getNombre(),
                 client.getNIF(),
@@ -147,11 +140,11 @@ public abstract class VistaGraficaMadre {
 
     }
     //------------------------------------------------------------------
-    //6.- Clientes Entre Fechas
+    //5.- Clientes Entre Fechas
     //------------------------------------------------------------------
     public void clientesFechas ( DefaultTableModel modelo, LocalDateTime inicio, LocalDateTime fin ) throws NoHayClientesEntreFechas, FechaInvalida, NoHayClientes {
         flushModel( modelo );
-        List<Cliente> clientes = clienteController.clientesEntreFechas(inicio, fin );
+        List<Cliente> clientes = gestorClientes.clientesEntreFechas(inicio, fin );
         for ( Cliente client : clientes ){
             Object[] nuevoCliente  =   {
                     client.getNombre(),
@@ -165,33 +158,33 @@ public abstract class VistaGraficaMadre {
         }
     }
     //------------------------------------------------------------------
-    //7.- Actualiza Tabla Llamadas
+    //6.- Actualiza Tabla Llamadas
     //------------------------------------------------------------------
     public void llamadasCliente (DefaultTableModel modelo, Cliente cliente ) throws NoHayLlamadasCliente, ClienteNoExiste {
         flushModel( modelo );
-        List<Llamada> llamadas = llamadaController.listaLlamadas( cliente );
+        List<Llamada> llamadas = gestorLlamadas.listaLlamadas( cliente );
         fillTableLlamadas( modelo, llamadas);
     }
     //------------------------------------------------------------------
-    //8.- Llamadas entre Fechas
+    //7.- Llamadas entre Fechas
     //------------------------------------------------------------------
     public void llamadasFechas ( DefaultTableModel modelo, LocalDateTime inicio, LocalDateTime fin, Cliente cliente  ) throws NoHayLlamadasCliente, FechaInvalida, NoHayLlamadasEntreFechas {
         flushModel( modelo );
-        List<Llamada> llamadas = llamadaController.llamadasEntreFechas(cliente, inicio, fin);
+        List<Llamada> llamadas = gestorLlamadas.llamadasEntreFechas(cliente, inicio, fin);
         fillTableLlamadas( modelo, llamadas);
     }
     //------------------------------------------------------------------
-    //9.- Facturas entre Fechas
+    //8.- Facturas entre Fechas
     //------------------------------------------------------------------
     public void facturasFechas ( DefaultTableModel modelo, LocalDateTime inicio, LocalDateTime fin, Cliente cliente ) throws NoExistenFacturasDeCliente {
         flushModel( modelo );
-        List<Factura> facturas = facturaController.facturasEntreFechas(cliente, inicio, fin );
+        List<Factura> facturas = gestorFacturas.facturasEntreFechas(cliente, inicio, fin );
         fillTableFacturas( modelo, facturas );
     }
-    //10. Factura con codigo de factura
+    //9. Factura con codigo de factura
     public void facturaCodigo ( DefaultTableModel modelo, String codigo ) throws NoExisteFactura {
         flushModel( modelo);
-        Factura factura = facturaController.getFactura( codigo );
+        Factura factura = gestorFacturas.getFactura( codigo );
         Object[] nuevaFactura = {
                 factura.getUniqueID(),
                 factura.getTarifa().toString(),
@@ -258,9 +251,9 @@ public abstract class VistaGraficaMadre {
         String archivo = "Agenda.bin";
         Guardar guardar = new Guardar();
         Agenda agenda = new Agenda();
-        agenda.setClientes( clienteController.getClientes() );
-        agenda.setFacturas( facturaController.getFacturas() );
-        agenda.setLlamadas( llamadaController.getLlamadas() );
+        agenda.setClientes( gestorClientes.getClientes() );
+        agenda.setFacturas( gestorFacturas.getFacturas() );
+        agenda.setLlamadas( gestorLlamadas.getLlamadas() );
         guardar.guardar( archivo, agenda );
     }
 
@@ -269,27 +262,27 @@ public abstract class VistaGraficaMadre {
     //==================================================================
     //-----------------------GETTERS AND SETTERS------------------------
     //==================================================================
-    public void setClienteController(ClienteController clienteController) {
-        this.clienteController = clienteController;
+    public void setGestorClientes(GestorClientes gestorClientes) {
+        this.gestorClientes = gestorClientes;
     }
 
-    public void setFacturaController(FacturaController facturaController) {
-        this.facturaController = facturaController;
+    public void setGestorFacturas(GestorFacturas gestorFacturas) {
+        this.gestorFacturas = gestorFacturas;
     }
 
-    public void setLlamadaController(LlamadaController llamadaController) {
-        this.llamadaController = llamadaController;
+    public void setGestorLlamadas(GestorLlamadas gestorLlamadas) {
+        this.gestorLlamadas = gestorLlamadas;
     }
 
-    public ClienteController getClienteController() {
-        return clienteController;
+    public GestorClientes getGestorClientes() {
+        return gestorClientes;
     }
 
-    public FacturaController getFacturaController() {
-        return facturaController;
+    public GestorFacturas getGestorFacturas() {
+        return gestorFacturas;
     }
 
-    public LlamadaController getLlamadaController() {
-        return llamadaController;
+    public GestorLlamadas getGestorLlamadas() {
+        return gestorLlamadas;
     }
 }

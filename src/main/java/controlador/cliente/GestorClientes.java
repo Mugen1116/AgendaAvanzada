@@ -3,14 +3,13 @@ package controlador.cliente;
 import modelo.cliente.Cliente;
 import modelo.conjuntos.GetConjunto;
 import modelo.excepciones.*;
-import modelo.factoria.FactoriaObjetos;
-import modelo.tarifa.Tarifa;
+import modelo.factoria.FactoriaTarifas;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.*;
 
-public class ClienteController implements Serializable {
+public class GestorClientes implements Serializable {
 
     private  HashMap<String, Cliente> clientes;
 
@@ -23,7 +22,7 @@ public class ClienteController implements Serializable {
     }
 
     //Constructor
-    public ClienteController() {
+    public GestorClientes() {
         this.clientes = new HashMap<String, Cliente>();
     }
 
@@ -66,7 +65,7 @@ public class ClienteController implements Serializable {
         if (clientes.containsKey(cliente.getNIF())){
             Cliente clienteRegistrado = clientes.get(cliente.getNIF() );
             //Switch
-            FactoriaObjetos fabrica = new FactoriaObjetos();
+            FactoriaTarifas fabrica = new FactoriaTarifas();
             clienteRegistrado.setTarifa( fabrica.creaTarifa(tipoTarifa) );
             return true;
         }

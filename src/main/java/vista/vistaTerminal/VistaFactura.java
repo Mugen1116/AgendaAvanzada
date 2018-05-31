@@ -1,8 +1,8 @@
 package vista.vistaTerminal;
 
-import controlador.cliente.ClienteController;
-import controlador.factura.FacturaController;
-import controlador.llamada.LlamadaController;
+import controlador.cliente.GestorClientes;
+import controlador.factura.GestorFacturas;
+import controlador.llamada.GestorLlamadas;
 import modelo.cliente.Cliente;
 import modelo.excepciones.ClienteNoExiste;
 import modelo.excepciones.NoExisteFactura;
@@ -22,7 +22,7 @@ public class VistaFactura extends  VistaMadre {
     //==================================================
 
     //Super
-    FacturaController facturaController;
+    GestorFacturas gestorFacturas;
 
 
     //==================================================
@@ -33,11 +33,11 @@ public class VistaFactura extends  VistaMadre {
     //-------------------CONSTRUCTOR--------------------
     //==================================================
 
-   public VistaFactura (Scanner sc , LlamadaController llamadas,
-                         ClienteController clientes) {
+   public VistaFactura (Scanner sc , GestorLlamadas llamadas,
+                         GestorClientes clientes) {
         this.sc = sc;
-        this.facturaController = new FacturaController(llamadas);
-        this.clienteController = clientes;
+        this.gestorFacturas = new GestorFacturas(llamadas);
+        this.gestorClientes = clientes;
     }
 
     //==================================================
@@ -99,7 +99,7 @@ public class VistaFactura extends  VistaMadre {
         LocalDateTime fin = getFecha( sc );
         List<Factura> facturas = null;
         try {
-            facturas = facturaController.facturasEntreFechas(cliente, inicio, fin);
+            facturas = gestorFacturas.facturasEntreFechas(cliente, inicio, fin);
         } catch (NoExistenFacturasDeCliente e) {
             System.err.println( e.getMessage() );
         }
@@ -109,7 +109,7 @@ public class VistaFactura extends  VistaMadre {
     private void facturasClienteVista() {
         System.out.println("Listar todas las facturas de un cliente");
         try {
-            List<Factura> facturas = facturaController.getFacturasCliente(getCliente(sc));
+            List<Factura> facturas = gestorFacturas.getFacturasCliente(getCliente(sc));
             listaFacturas(facturas);
         }
         catch( NoExistenFacturasDeCliente e ){
@@ -135,7 +135,7 @@ public class VistaFactura extends  VistaMadre {
         System.out.println("Obtener información de una Factura");
         System.out.printf("Introduzca el identificador de la factura a consultar: ");
         try {
-            Factura factura = facturaController.getFactura( sc.nextLine() );
+            Factura factura = gestorFacturas.getFactura( sc.nextLine() );
             System.out.println(factura);
         }
         catch ( NoExisteFactura e ){
@@ -156,14 +156,14 @@ public class VistaFactura extends  VistaMadre {
         System.out.printf("NIF del cliente para facturar: ");
         Cliente cliente = null;
         try {
-            cliente = clienteController.getCliente( sc.nextLine() );
+            cliente = gestorClientes.getCliente( sc.nextLine() );
         } catch (ClienteNoExiste e) {
             System.err.println( e.getMessage() );
         }
         System.out.println("Emitiendo factura...");
         Factura exito = null;
         try {
-            exito = facturaController.emitirFactura( periodo, cliente );
+            exito = gestorFacturas.emitirFactura( periodo, cliente );
         } catch (NoHayLlamadasCliente noHayLlamadasCliente) {
             noHayLlamadasCliente.printStackTrace();
         } catch (ClienteNoExiste clienteNoExiste) {
@@ -174,7 +174,7 @@ public class VistaFactura extends  VistaMadre {
         else System.out.println("Error al emitir la factura, intentelo de nuevo");
     }
 
-    public FacturaController getFacturaController() { return facturaController; }
+    public GestorFacturas getGestorFacturas() { return gestorFacturas; }
 
     //==================================================
     //--------------------END METHODS-------------------

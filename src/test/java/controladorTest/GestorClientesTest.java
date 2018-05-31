@@ -1,13 +1,12 @@
 package controladorTest;
 
-import controlador.cliente.ClienteController;
+import controlador.cliente.GestorClientes;
 import modelo.cliente.Cliente;
 import modelo.direccion.Direccion;
 import modelo.excepciones.*;
-import modelo.factoria.FactoriaObjetos;
-import modelo.tarifa.Tarifa;
+import modelo.factoria.FactoriaClientes;
+import modelo.factoria.FactoriaTarifas;
 import modelo.tarifa.TarifaBasica;
-import modelo.utils.DateUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,21 +14,20 @@ import org.junit.jupiter.api.Test;
 
 import es.uji.belfern.generador.GeneradorDatosINE;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class ClienteControllerTest {
+public class GestorClientesTest  extends TestPadre {
 
-    private ClienteController controlador;
+    private GestorClientes controlador;
     private GeneradorDatosINE generador;
 
-    private static FactoriaObjetos factoria;
+    /*
+    private static FactoriaTarifas factoriaTarifas;
+    private static FactoriaClientes factoriaClientes;
 
     //Constantes de tarifas
 
@@ -38,15 +36,20 @@ public class ClienteControllerTest {
     static final String DOMINGOS = "Tarifa base de 15 cts/min + Tarifa de domingos gratis";
     static final String TARDES_Y_DOMINGOS = "Tarifa base de 15 cts/min + Tarifa de tardes, de 16:00 a 20:00 horas a 0.05 centimos/min + Tarifa de domingos gratis";
 
-    @BeforeAll
-    public static void InitAll(){
-        factoria = new FactoriaObjetos();
-    }
+    */
+
+//    @BeforeAll
+//    public static void InitAll(){
+//        factoriaTarifas = new FactoriaTarifas();
+//        factoriaClientes = new FactoriaClientes();
+//    }
+
+
     //Antes de lanzar cada test es necesario crear un nuevo controlador
     //Para no ir machacando el existente
     @BeforeEach
     public void SetUp(){
-        controlador = new ClienteController();
+        controlador = new GestorClientes();
         generador = new GeneradorDatosINE();
     }
     //Despues de cada test lo destruimos para asegurarnos de no estar reutilizando el que ya haya
@@ -61,35 +64,20 @@ public class ClienteControllerTest {
     //Insertar clientes repetidos
     //INsertar clientes que no existan
 
-    //Metodo auxiliar crear un cliente Random
-    public Cliente ClienteNuevo(){
-
-        Cliente nuevo = new Cliente();
-        nuevo.setNIF( generador.getNIF() );
-        nuevo.setNombre( generador.getNombre());
-        nuevo.setFechaAlta( LocalDateTime.now() );
-        nuevo.setTarifa( new TarifaBasica() );
-        //Como no se pueden generar random, ponemos manualmente
-        Direccion direction = new Direccion( 46520, "Valencia" , "Puerto de Sagunto");
-        nuevo.setDireccion(direction);
-        nuevo.setEmail( "patatita@uji.es" );
-
-        return nuevo;
-    }
     //Insertar clientes repetidos
     @Test
     public void insertsTest() throws NoHayClientes {
         //Insertar 10 clientes aleatorios
         for ( int i = 0; i < 10; i++ ) {
             try {
-                assertThat( controlador.altaCliente( ClienteNuevo() ), is(true) );
+                assertThat( controlador.altaCliente( creaClientePruebas() ), is(true) );
             } catch (ClienteExistente clienteExistente) {
                 clienteExistente.printStackTrace();
             }
         }
         //Intentar insertar un cliente dos veces
         //La segunda debe devolver falso
-        Cliente prueba = ClienteNuevo();
+        Cliente prueba = creaClientePruebas();
         String dniPrueba = "46076356L";
         prueba.setNIF( dniPrueba );
         try {
@@ -97,7 +85,7 @@ public class ClienteControllerTest {
         } catch (ClienteExistente clienteExistente) {
             clienteExistente.printStackTrace();
         }
-        prueba = ClienteNuevo();
+        prueba = creaClientePruebas();
         prueba.setNIF( dniPrueba );
         try {
             assertThat(controlador.altaCliente( prueba), is(false) );
@@ -116,7 +104,7 @@ public class ClienteControllerTest {
         //Primero insertar clientes
         for ( int i = 0; i < 10; i++ ) {
             try {
-                assertThat( controlador.altaCliente( ClienteNuevo() ), is(true) );
+                assertThat( controlador.altaCliente( creaClientePruebas() ), is(true) );
             } catch (ClienteExistente clienteExistente) {
                 clienteExistente.printStackTrace();
             }
@@ -152,16 +140,16 @@ public class ClienteControllerTest {
 
     @Test
     public void changeTarifaTest(){
-        Cliente nuevo = ClienteNuevo();
+        Cliente nuevo = creaClientePruebas();
         try {
             assertThat( controlador.altaCliente( nuevo), is(true));
         } catch (ClienteExistente clienteExistente) {
             clienteExistente.printStackTrace();
         }
-        assertThat( controlador.cambiarTarifa(nuevo , FactoriaObjetos.BASICA ), is(true));
+        assertThat( controlador.cambiarTarifa(nuevo , FactoriaTarifas.BASICA ), is(true));
         //Cambiar tarifa a cliente que no exista
 
-        assertThat( controlador.cambiarTarifa( ClienteNuevo(), FactoriaObjetos.BASICA), is(false));
+        assertThat( controlador.cambiarTarifa( creaClientePruebas(), FactoriaTarifas.BASICA), is(false));
 
     }
     @Test
@@ -169,7 +157,7 @@ public class ClienteControllerTest {
         LocalDateTime fechaAlta = LocalDateTime.of( 2018, 1, 1, 0, 0);
         LocalDateTime fechaAlta2 = LocalDateTime.of( 2018, 2, 12, 0 ,0);
 
-        Cliente nuevo = ClienteNuevo();
+        Cliente nuevo = creaClientePruebas();
         nuevo.setFechaAlta( fechaAlta );
         try {
             controlador.altaCliente( nuevo );
@@ -177,7 +165,7 @@ public class ClienteControllerTest {
             clienteExistente.printStackTrace();
         }
 
-        Cliente nuevo2 = ClienteNuevo();
+        Cliente nuevo2 = creaClientePruebas();
         nuevo2.setFechaAlta( fechaAlta2 );
         try {
             controlador.altaCliente( nuevo2 );
@@ -235,31 +223,32 @@ public class ClienteControllerTest {
 
     }
 
+    /*
     @Test
     public void factoriaTarifasTest() {
         Cliente clientePruebas = new Cliente();
         assertThat( clientePruebas.getTarifa().toString(), is (BASICA));
         //Le añadimos la tarifa de TARDES a la que ya tenía
-        clientePruebas.setTarifa( factoria.creaTarifa( FactoriaObjetos.TARDES) );
+        clientePruebas.setTarifa( factoriaTarifas.creaTarifa( FactoriaTarifas.TARDES) );
         assertThat( clientePruebas.getTarifa().toString(), is (TARDES));
         //Ahora la cambiamos por solo de domingos (+ la básica)
-        clientePruebas.setTarifa( factoria.creaTarifa( FactoriaObjetos.TARDES_Y_DOMINGOS));
+        clientePruebas.setTarifa( factoriaTarifas.creaTarifa( FactoriaTarifas.TARDES_Y_DOMINGOS));
         assertThat( clientePruebas.getTarifa().toString(), is(TARDES_Y_DOMINGOS));
         //Volvemos a dejarle la básica
-        clientePruebas.setTarifa( factoria.creaTarifa(FactoriaObjetos.BASICA) );
+        clientePruebas.setTarifa( factoriaTarifas.creaTarifa(FactoriaTarifas.BASICA) );
         assertThat( clientePruebas.getTarifa().toString(), is(BASICA) );
         //Y ahora que tenga las 3 al mismo tiempo
-        clientePruebas.setTarifa( factoria.creaTarifa(FactoriaObjetos.TARDES_Y_DOMINGOS) );
+        clientePruebas.setTarifa( factoriaTarifas.creaTarifa(FactoriaTarifas.TARDES_Y_DOMINGOS) );
         assertThat( clientePruebas.getTarifa().toString(), is(TARDES_Y_DOMINGOS));
     }
     @Test
     public void factoriaClientesTest(){
         Cliente clientePruebas = new Cliente();
         assertThat( clientePruebas.getTipo(), is( "Generico"));
-        clientePruebas = factoria.creaCliente( FactoriaObjetos.PARTICULAR);
+        clientePruebas = factoriaClientes.creaCliente( FactoriaClientes.PARTICULAR);
         assertThat( clientePruebas.getTipo(), is("Particular"));
-        clientePruebas = factoria.creaCliente( FactoriaObjetos.EMPRESA);
+        clientePruebas = factoriaClientes.creaCliente( FactoriaClientes.EMPRESA);
         assertThat( clientePruebas.getTipo(), is("Empresa"));
-
     }
+    */
 }

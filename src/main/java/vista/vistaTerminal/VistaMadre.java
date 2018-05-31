@@ -1,15 +1,14 @@
 package vista.vistaTerminal;
 
-import controlador.cliente.ClienteController;
+import controlador.cliente.GestorClientes;
 import modelo.cliente.Cliente;
 import modelo.excepciones.ClienteNoExiste;
 import modelo.excepciones.NoHayClientes;
-import modelo.utils.DateUtils;
+import modelo.factoria.FactoriaClientes;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Date;
 import java.util.Scanner;
 
 public abstract class VistaMadre {
@@ -18,7 +17,8 @@ public abstract class VistaMadre {
     //-------------------ATRIBUTOS----------------------
     //==================================================
     Scanner sc;
-    ClienteController clienteController;
+    GestorClientes gestorClientes;
+    FactoriaClientes factoriaClientes;
 
     //==================================================
     //-------------------END ATRIBUTOS------------------
@@ -72,7 +72,7 @@ public abstract class VistaMadre {
         System.out.printf("NIF del cliente: ");
         Cliente cliente = null;
         try {
-            cliente = clienteController.getCliente( sc.nextLine() );
+            cliente = gestorClientes.getCliente( sc.nextLine() );
         } catch (ClienteNoExiste clienteNoExiste) {
             System.err.println( clienteNoExiste.getMessage() );
         }

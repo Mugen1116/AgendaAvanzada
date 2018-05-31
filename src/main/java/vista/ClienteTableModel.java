@@ -1,6 +1,6 @@
 package vista;
 
-import controlador.cliente.ClienteController;
+import controlador.cliente.GestorClientes;
 import modelo.cliente.Cliente;
 
 import javax.swing.event.TableModelListener;
@@ -8,7 +8,6 @@ import javax.swing.table.TableModel;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.SortedMap;
 
 public class ClienteTableModel implements TableModel {
     /** The TableModel column names. */
@@ -23,12 +22,12 @@ public class ClienteTableModel implements TableModel {
     /** The list of TableModelListeners. */
     private final ArrayList<TableModelListener> tableModelListenerList = new ArrayList<TableModelListener>();
     /** The manager containing all the Student instances. */
-    private final ClienteController clienteController;
+    private final GestorClientes gestorClientes;
 
 
-    public ClienteTableModel(ClienteController clienteController) {
+    public ClienteTableModel(GestorClientes gestorClientes) {
         super();
-        this.clienteController = clienteController;
+        this.gestorClientes = gestorClientes;
     }
 
 
@@ -46,13 +45,13 @@ public class ClienteTableModel implements TableModel {
     }
 
     public int getRowCount() {
-        return clienteController.getClientes().size();
+        return gestorClientes.getClientes().size();
     }
 
 
     public void setValueAt(Object value, int fila, int columna) {
 //        Cliente cli = (Cliente) clientes.get( fila );
-//        HashMap<String, Cliente> clientesMap = clienteController.getClientes();
+//        HashMap<String, Cliente> clientesMap = gestorClientes.getClientes();
 //        String[] clienteArray = clientesMap.keySet().toArray(new String[clientesMap.keySet().size()]);
 //        Cliente cliente = clientesMap.get(clienteArray[fila] );
 //        final Object result;
@@ -85,7 +84,7 @@ public class ClienteTableModel implements TableModel {
 
     public Object getValueAt(int fila, int columna) {
 
-        HashMap<String, Cliente> clientesMap = clienteController.getClientes();
+        HashMap<String, Cliente> clientesMap = gestorClientes.getClientes();
         String[] clienteArray = clientesMap.keySet().toArray(new String[clientesMap.keySet().size()]);
         Cliente cliente = clientesMap.get(clienteArray[fila] );
         final Object result;

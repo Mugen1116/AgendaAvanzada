@@ -1,7 +1,7 @@
 package vista.vistaTerminal;
 
-import controlador.cliente.ClienteController;
-import controlador.llamada.LlamadaController;
+import controlador.cliente.GestorClientes;
+import controlador.llamada.GestorLlamadas;
 import modelo.cliente.Cliente;
 import modelo.excepciones.ClienteNoExiste;
 import modelo.excepciones.FechaInvalida;
@@ -24,7 +24,7 @@ public class VistaLlamada extends VistaMadre implements Serializable {
     //==================================================
 
     //Super
-    LlamadaController llamadaController;
+    GestorLlamadas gestorLlamadas;
     //==================================================
     //-------------------END ATRIBUTOS------------------
     //==================================================
@@ -32,10 +32,10 @@ public class VistaLlamada extends VistaMadre implements Serializable {
     //==================================================
     //-------------------CONSTRUCTOR--------------------
     //==================================================
-    public VistaLlamada( Scanner sc, ClienteController clientes){
+    public VistaLlamada( Scanner sc, GestorClientes clientes){
         this.sc = sc;
-        this.llamadaController = new LlamadaController();
-        this.clienteController = clientes;
+        this.gestorLlamadas = new GestorLlamadas();
+        this.gestorClientes = clientes;
     }
     //==================================================
     //-----------------END CONSTRUCTORS-----------------
@@ -45,8 +45,8 @@ public class VistaLlamada extends VistaMadre implements Serializable {
     //----------------------METHODS---------------------
     //==================================================
 
-    public LlamadaController getLlamadaController() {
-        return llamadaController;
+    public GestorLlamadas getGestorLlamadas() {
+        return gestorLlamadas;
     }
 
     @Override
@@ -93,7 +93,7 @@ public class VistaLlamada extends VistaMadre implements Serializable {
             System.out.println("Fecha fin (Hasta cuándo)");
             LocalDateTime fin = getFecha( sc );
             try {
-                List<Llamada> llamadas = llamadaController.llamadasEntreFechas(cliente, inicio, fin);
+                List<Llamada> llamadas = gestorLlamadas.llamadasEntreFechas(cliente, inicio, fin);
                 this.listaLlamadas(llamadas);
             }
             catch( NoHayLlamadasEntreFechas e) {
@@ -119,7 +119,7 @@ public class VistaLlamada extends VistaMadre implements Serializable {
             System.out.printf("¿Cuánto duró la llamada? (En minutos)");
             float duracion = Float.parseFloat( sc.nextLine() );
             Llamada llamada = new Llamada( telefono, fecha, duracion);
-            llamadaController.altaLlamada( cliente, llamada);
+            gestorLlamadas.altaLlamada( cliente, llamada);
             if ( llamada == null )
                 System.out.println("Ha ocurrido un error, vuelva a intentarlo");
             else
@@ -131,7 +131,7 @@ public class VistaLlamada extends VistaMadre implements Serializable {
         Cliente cliente = getCliente( sc );
         List<Llamada> llamadas = null;
         try {
-            llamadas = llamadaController.listaLlamadas( cliente);
+            llamadas = gestorLlamadas.listaLlamadas( cliente);
         } catch (NoHayLlamadasCliente noHayLlamadasCliente) {
             System.err.println( noHayLlamadasCliente.getMessage() );
         } catch (ClienteNoExiste e) {

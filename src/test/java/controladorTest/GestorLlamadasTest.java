@@ -1,6 +1,6 @@
 package controladorTest;
 
-import controlador.llamada.LlamadaController;
+import controlador.llamada.GestorLlamadas;
 import modelo.cliente.Cliente;
 import modelo.direccion.Direccion;
 import modelo.excepciones.ClienteNoExiste;
@@ -8,46 +8,29 @@ import modelo.excepciones.FechaInvalida;
 import modelo.excepciones.NoHayLlamadasCliente;
 import modelo.excepciones.NoHayLlamadasEntreFechas;
 import modelo.llamada.Llamada;
-import modelo.tarifa.Tarifa;
-import modelo.utils.DateUtils;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import es.uji.belfern.generador.GeneradorDatosINE;
-
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.Date;
 import java.util.LinkedList;
-import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 
 
-public class LlamadaControllerTest {
+public class GestorLlamadasTest {
 
-    private LlamadaController controlador;
+    private GestorLlamadas controlador;
     private Cliente cliente;
     private Cliente cliente2;
 
 
     @BeforeEach
     public void SetUp(){
-        controlador = new LlamadaController();
-        String nombre = "nombre";
-        String nif = "00000000A";
-        Direccion direccion = new Direccion();
-        String email = "email";
-        Date fechaAlta = new Date();
-        /*Tarifa tarifa = new Tarifa(0.0f);
-
-        cliente = new Cliente(nombre, nif, direccion, email, fechaAlta, tarifa);
-        cliente2 = new Cliente(nombre, nif, direccion, email, fechaAlta, tarifa);*/
+        controlador = new GestorLlamadas();
     }
 
     @AfterEach

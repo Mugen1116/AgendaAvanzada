@@ -72,8 +72,8 @@ public class Main {
         Guardar guardar = new Guardar();
         Agenda agenda = new Agenda();
         agenda.setClientes( vc.getClienteController().getClientes() );
-        agenda.setFacturas( vf.getFacturaController().getFacturas() );
-        agenda.setLlamadas( vl.getLlamadaController().getLlamadas() );
+        agenda.setFacturas( vf.getGestorFacturas().getFacturas() );
+        agenda.setLlamadas( vl.getGestorLlamadas().getLlamadas() );
         guardar.guardar( archivo, agenda );
     }
     private static Agenda load() {
@@ -93,12 +93,12 @@ public class Main {
         Agenda agenda = load();
         sc = new Scanner(System.in);
         vc = new VistaCliente(sc);
-        vl = new VistaLlamada(sc, vc.getClienteController());
-        vf = new VistaFactura(sc, vl.getLlamadaController(), vc.getClienteController());
+        vl = new VistaLlamada(sc, vc.getGestorClientes());
+        vf = new VistaFactura(sc, vl.getGestorLlamadas(), vc.getGestorClientes());
         if ( agenda != null ){
-            vc.getClienteController().setClientes( agenda.getClientes() );
-            vl.getLlamadaController().setLlamadas( agenda.getLlamadas() );
-            vf.getFacturaController().setFacturas( agenda.getFacturas() );
+            vc.getGestorClientes().setClientes( agenda.getClientes() );
+            vl.getGestorLlamadas().setLlamadas( agenda.getLlamadas() );
+            vf.getGestorFacturas().setFacturas( agenda.getFacturas() );
         }
         ControladorMenu();
     }
@@ -111,9 +111,9 @@ public class Main {
         VistaGraficaMadre vista = new VistaGrafica();
         if ( agenda != null ) {
 
-            vista.getClienteController().setClientes( agenda.getClientes() );
-            vista.getLlamadaController().setLlamadas( agenda.getLlamadas() );
-            vista.getFacturaController().setFacturas( agenda.getFacturas() );
+            vista.getGestorClientes().setClientes( agenda.getClientes() );
+            vista.getGestorLlamadas().setLlamadas( agenda.getLlamadas() );
+            vista.getGestorFacturas().setFacturas( agenda.getFacturas() );
 
         }
         vista.ejecutar();
