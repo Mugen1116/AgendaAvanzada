@@ -1,5 +1,8 @@
 package vista;
 
+import controlador.cliente.GestorClientes;
+import controlador.factura.GestorFacturas;
+import controlador.llamada.GestorLlamadas;
 import modelo.GuardarCargar.Cargar;
 import modelo.GuardarCargar.Guardar;
 import modelo.agenda.Agenda;
@@ -76,19 +79,33 @@ public class Main {
         agenda.setLlamadas( vl.getGestorLlamadas().getLlamadas() );
         guardar.guardar( archivo, agenda );
     }
-    private static Agenda load() {
+
+    public static void creaYAsignaControllers( VistaGraficaMadre madre ) {
+        madre.setGestorClientes( new GestorClientes() );
+        GestorLlamadas llamadas = new GestorLlamadas();
+        madre.setGestorLlamadas( llamadas );
+        madre.setGestorFacturas( new GestorFacturas( llamadas) );
+    }
+
+    public static Agenda loadAndInitAgenda ( VistaGraficaMadre vista ){
         System.out.println("Cargando datos.");
         Cargar cargar = new Cargar();
         Agenda agenda = cargar.cargar( "Agenda.bin");
+        creaYAsignaControllers( vista );
+        if ( agenda != null ){
+            vista.getGestorClientes().setClientes( agenda.getClientes() );
+            vista.getGestorLlamadas().setLlamadas( agenda.getLlamadas() );
+            vista.getGestorFacturas().setFacturas( agenda.getFacturas() );
+        }
         return agenda;
     }
     //=================================================
     //---------------------MAIN------------------------
     //=================================================
 
-    //Lo comento para probar
-
 /*
+//MAIN TERMINAL
+
     public static void main(String[] args) throws NoHayClientes {
         Agenda agenda = load();
         sc = new Scanner(System.in);
@@ -104,18 +121,9 @@ public class Main {
     }
 */
 
-
-
     public static void main(String[] args) {
-        Agenda agenda = load();
         VistaGraficaMadre vista = new VistaGrafica();
-        if ( agenda != null ) {
-
-            vista.getGestorClientes().setClientes( agenda.getClientes() );
-            vista.getGestorLlamadas().setLlamadas( agenda.getLlamadas() );
-            vista.getGestorFacturas().setFacturas( agenda.getFacturas() );
-
-        }
+        loadAndInitAgenda( vista );
         vista.ejecutar();
     }
 

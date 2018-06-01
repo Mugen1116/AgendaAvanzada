@@ -13,19 +13,13 @@ import modelo.utils.Periodo;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.time.LocalDateTime;
 //import java.awt.event.ActionEvent;
 //import java.awt.event.ActionListener;
 
 
-/*
-TODO *
-        Entrega Final
-        Reorganizar codigo, para delegar en otras clases
-        Para no tener 1000 lineas de codigo
-        Separar en VistaGraficaCliente, vistaGraficaLlamadas...
-        Validador para campos
- */
 
 public class VistaGrafica extends VistaGraficaMadre {
 
@@ -41,6 +35,13 @@ public class VistaGrafica extends VistaGraficaMadre {
 
         JFrame ventana = new JFrame("Menu Gestor");
         ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        ventana.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                guardarDatos();
+                System.exit(0);
+            }
+        });
 
 
         //=================================================================

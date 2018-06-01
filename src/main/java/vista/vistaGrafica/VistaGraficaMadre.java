@@ -27,15 +27,6 @@ public abstract class VistaGraficaMadre {
     GestorLlamadas gestorLlamadas;
 
 
-    public VistaGraficaMadre( ){
-
-        gestorClientes = new GestorClientes();
-        gestorLlamadas = new GestorLlamadas();
-        gestorFacturas = new GestorFacturas(gestorLlamadas);
-
-
-    }
-
     /*
      * * Coloca los paneles al segundo atributo
      */
